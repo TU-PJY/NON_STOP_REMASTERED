@@ -28,12 +28,15 @@ private:
 
 public:
 	Player();
+	void UpdateViewportPosition();
 	void UpdateLook();
 	void UpdateAnimation(float FT);
 	void UpdateMove(float FT);
 	void InputKey(KeyType Type, KeyState State, unsigned char NormalKey, int SpecialKey);
 	GLfloat GetPositionX();
 	GLfloat GetHeight();
+	GLfloat GetViewportPositionX();
+	GLfloat GetViewportHeight();
 	void UpdateJump(float FT);
 	void Update(float FT);
 	void Render();

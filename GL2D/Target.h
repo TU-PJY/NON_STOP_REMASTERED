@@ -9,6 +9,8 @@ private:
 	GLfloat PrevMouseX{}, PrevMouseY{};
 	GLfloat CurrentMouseX{}, CurrentMouseY{};
 
+	GLfloat ViewportX{}, ViewportY{};
+
 public:
 	GLfloat GetPositionX();
 	GLfloat GetHeight();

@@ -51,16 +51,25 @@ GLfloat Player::GetHeight() {
 	return Height;
 }
 
+GLfloat Player::GetViewportPositionX() {
+	return ViewportPositionX;
+}
 
+GLfloat Player::GetViewportHeight() {
+	return ViewportHeight;
+}
 
 Player::Player() {
 	SetImage(Image, "player");
 }
 
-void Player::UpdateLook() {
+void Player::UpdateViewportPosition() {
+	// 화면 상의 좌표 업데이트
 	ViewportPositionX = ViewportPosition().x;
 	ViewportHeight = ViewportPosition().y;
+}
 
+void Player::UpdateLook() {
 	if (auto Target = framework.Find("target"); Target) {
 		// 플레이어 위치와 조준점 위치에 따라 보는 방향이 달라진다
 		if (ViewportPositionX < Target->GetPositionX())
@@ -126,6 +135,9 @@ void Player::Update(float FT) {
 	// 플레이어 점프 업데이트
 	UpdateJump(FT);
 
+	// 플레이어 시점 업데이트
+	UpdateLook();
+
 	// 플레이어 애니메이션 업데이트
 	UpdateAnimation(FT);
 }
@@ -136,8 +148,8 @@ void Player::Render() {
 	RotateAxis(Rotation, 0.0, -0.1);
 	RotateVertical(H_Rotation);
 	Scale(0.3, 0.3 + Size);
-
-	UpdateLook();
-
 	RenderImage(Image);
+
+	SetPosition(0.0, -Size * 0.5);
+	UpdateViewportPosition();
 }

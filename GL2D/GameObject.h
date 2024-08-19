@@ -93,6 +93,8 @@ public:
 
 	virtual GLfloat GetPositionX() { return {}; }
 	virtual GLfloat GetHeight() { return{}; }
+	virtual GLfloat GetViewportPositionX() { return{}; }
+	virtual GLfloat GetViewportHeight() { return{}; }
 
 	virtual void PushCamera(GLfloat Value) {}
 
