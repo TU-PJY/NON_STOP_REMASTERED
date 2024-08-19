@@ -20,7 +20,7 @@ void Player::InputKey(KeyType Type, KeyState State, unsigned char NormalKey, int
 				// 플레이어가 땅 위에 있을 때만 점프 가능
 				if(psUtil.IsOnFloor(Height, FLOOR_HEIGHT))
 					// 점프 가속값 추가, 떨어지는 상태로 변경
-					psUtil.AddGravityAcc(4.0);
+					psUtil.AddGravityAcc(5.0);
 				break;
 			}
 			break;
@@ -71,7 +71,7 @@ void Player::UpdateMove(float FT) {
 
 void Player::UpdateJump(float FT) {
 	// 점프 가속도가 추가된 후에는 중력이 작용
-	psUtil.Fall(Height, 9.0, FT);
+	psUtil.Fall(Height, 10.0, FT);
 
 	// 플레이어 높이가 -0.3에 도달하는지 검사, 도달 시 점프 가속도가 0이 되어 중력 작용 중단
 	// FLOOR_HEIGHT는 EngineHeader.h에 constexpr로 정의되어있음, 참조.

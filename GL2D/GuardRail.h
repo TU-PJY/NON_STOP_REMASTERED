@@ -4,7 +4,7 @@
 class GuardRail : public GameObject {
 private:
 	Image Image{};
-	GLfloat PositionX{};
+	GLfloat PositionX{}, Height{};
 
 public:
 	GuardRail();
