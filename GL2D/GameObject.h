@@ -41,8 +41,8 @@ public:
 	void Scale(GLfloat ScaleX, GLfloat ScaleY);
 	void MoveStraight(GLfloat& Position, int MoveDirection, GLfloat Speed, float FT);
 	void MoveStraight(GLfloat& Position, GLfloat Speed, float FT);
-	void MoveForward(GLfloat& X, GLfloat& Y, GLfloat Speed, int MoveDirection, GLfloat RotationValue, float FT, bool Plus90Option=false);
-	void MoveForward(GLfloat& X, GLfloat& Y, GLfloat Speed, GLfloat RotationValue, float FT, bool Plus90Option=false);
+	void MoveForward(GLfloat& X, GLfloat& Y, GLfloat Speed, int MoveDirection, GLfloat RotationValue, float FT, bool Plus90Option = false);
+	void MoveForward(GLfloat& X, GLfloat& Y, GLfloat Speed, GLfloat RotationValue, float FT, bool Plus90Option = false);
 	GLfloat ASP(GLfloat Value);
 	void BeginProcess(ImageRenderMode Mode);
 	void RotateAxis(GLfloat RotationValue, GLfloat AxisX, GLfloat AxisY);
@@ -54,7 +54,7 @@ public:
 
 	void SetImage(Image& Image, std::string ImageName);
 	void FlipImage(Flip FlipOption);
-	void RenderImage(Image Image, GLfloat Transparency=1.0, GLfloat ImageWidth=0.0, GLfloat ImageHeight=0.0);
+	void RenderImage(Image Image, GLfloat Transparency = 1.0, GLfloat ImageWidth = 0.0, GLfloat ImageHeight = 0.0);
 
 	void FirstColorClipping();
 	void SecondColorClipping();
@@ -90,6 +90,10 @@ public:
 	virtual AABB GetAABB() { return {}; }
 	virtual OBB GetOBB() { return{}; }
 	virtual Range GetRange() { return {}; }
+
+	// player
+	virtual GLfloat GetPosition() { return {}; }
+	virtual GLfloat GetHeight() { return{}; }
 
 private:
 	void ProcessTransform(); 

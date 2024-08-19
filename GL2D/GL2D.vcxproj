@@ -140,11 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnimationUtil.cpp" />
+    <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="CameraUtil.cpp" />
     <ClCompile Include="CollisionUtil.cpp" />
     <ClCompile Include="DataUtil.cpp" />
     <ClCompile Include="FontLoaderUtil.cpp" />
     <ClCompile Include="Framework.cpp" />
+    <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="GuardRail.cpp" />
     <ClCompile Include="IntroMode.cpp" />
     <ClCompile Include="LoadingMode.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -167,12 +170,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationUtil.h" />
+    <ClInclude Include="CameraController.h" />
     <ClInclude Include="CameraUtil.h" />
     <ClInclude Include="CollisionUtil.h" />
     <ClInclude Include="DataUtil.h" />
     <ClInclude Include="FontLoaderUtil.h" />
     <ClInclude Include="EngineHeader.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="Ground.h" />
+    <ClInclude Include="GuardRail.h" />
     <ClInclude Include="ImageUtil.h" />
     <ClInclude Include="IntroMode.h" />
     <ClInclude Include="IntroScreen.h" />

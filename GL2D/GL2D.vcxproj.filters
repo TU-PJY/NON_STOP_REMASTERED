@@ -106,6 +106,18 @@
     <Filter Include="[1]___________[ GameMode ]\[ Play Mode ]">
       <UniqueIdentifier>{7b8ece9e-369e-41aa-9eb1-0f0dc2f9398d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Map ]">
+      <UniqueIdentifier>{49024225-2c7c-4242-be7b-55dbc334881f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ Ground ]">
+      <UniqueIdentifier>{69eff9ca-907b-4044-8b3f-666685a1e04d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Camera Conrtroller ]">
+      <UniqueIdentifier>{447cfc60-7455-4dd9-85a9-9b87ed77ccd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ GuardRail ]">
+      <UniqueIdentifier>{bd6cd68a-4f0d-47d0-b42b-3e9a73feb11a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayMode.cpp">
@@ -183,6 +195,15 @@
     <ClCompile Include="Player.cpp">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Player ]</Filter>
     </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ Ground ]</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraController.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Camera Conrtroller ]</Filter>
+    </ClCompile>
+    <ClCompile Include="GuardRail.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ GuardRail ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayMode.h">
@@ -256,6 +277,15 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Player ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ Ground ]</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraController.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Camera Conrtroller ]</Filter>
+    </ClInclude>
+    <ClInclude Include="GuardRail.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ GuardRail ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

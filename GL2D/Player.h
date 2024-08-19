@@ -20,6 +20,8 @@ public:
 	Player();
 	void UpdateMove(float FT);
 	void InputKey(KeyType Type, KeyState State, unsigned char NormalKey, int SpecialKey);
+	GLfloat GetPosition();
+	GLfloat GetHeight();
 	void UpdateJump(float FT);
 	void Update(float FT);
 	void Render();

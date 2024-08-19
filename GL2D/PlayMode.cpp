@@ -3,9 +3,19 @@
 #include "MouseUtil.h"
 #include "CameraUtil.h"
 
+#include "CameraController.h"
 #include "Player.h"
+#include "Ground.h"
+#include "GuardRail.h"
 
 std::string Play_Mode::PlayMode() {
+	// 카메라 컨트롤러 객체 추가
+	framework.AddObject(new CameraController, "camera_controller", Layer::L1);
+
+	// 맵 객체 추가
+	framework.AddObject(new Ground, "ground", Layer::L1);
+	framework.AddObject(new GuardRail, "guardrail", Layer::L3);
+
 	// 플레이어 객체 추가
 	framework.AddObject(new Player, "player", Layer::L2);
 

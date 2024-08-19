@@ -2,7 +2,9 @@
 
 std::vector<ImageInfo> ImageList
 {
-	{"player", "res//sprite//player.png"},
+	{"player", "res//sprite//player//player.png"},
+	{"ground", "res//sprite//map//ground.png"},
+	{"guardrail", "res//sprite//map//guardrail.png"},
 };
 
 std::vector<FileNameAndOption> SoundList

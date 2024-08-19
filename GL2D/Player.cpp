@@ -41,6 +41,15 @@ void Player::InputKey(KeyType Type, KeyState State, unsigned char NormalKey, int
 	}
 }
 
+GLfloat Player::GetPosition() {
+	return PositionX;
+}
+
+GLfloat Player::GetHeight() {
+	return Height;
+}
+
+
 Player::Player() {
 	SetImage(Image, "player");
 }
