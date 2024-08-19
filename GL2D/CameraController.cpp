@@ -1,14 +1,15 @@
 #include "CameraController.h"
 #include "CameraUtil.h"
 #include "Framework.h"
+#include "MouseUtil.h"
 #include <cmath>
 
 GLfloat CameraController::GetPosition() {
-	return PositionX;
+	return PositionX - PositionByCursor;
 }
 
 GLfloat CameraController::GetHeight() {
-	return Height;
+	return (FLOOR_HEIGHT + Height * 0.5) - HeightByCursor;
 }
 
 CameraController::CameraController() {
@@ -23,5 +24,8 @@ void CameraController::Update(float FT) {
 		Height = std::lerp(Height, -(Player->GetHeight() + FLOOR_HEIGHT), FT * 5);
 	}
 
-	camera.Move(PositionX, FLOOR_HEIGHT + Height * 0.5);
+	PositionByCursor = std::lerp(PositionByCursor, mouse.x * 0.3, FT * 10);
+	HeightByCursor = std::lerp(HeightByCursor, mouse.y * 0.3, FT * 10);
+
+	camera.Move(PositionX - PositionByCursor, (FLOOR_HEIGHT + Height * 0.5) - HeightByCursor);
 }

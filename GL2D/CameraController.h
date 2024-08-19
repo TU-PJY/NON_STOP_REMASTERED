@@ -4,6 +4,7 @@
 class CameraController : public GameObject {
 private:
 	GLfloat PositionX{}, Height{};
+	GLfloat PositionByCursor{}, HeightByCursor{};
 
 public:
 	CameraController();

@@ -118,6 +118,9 @@
     <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ GuardRail ]">
       <UniqueIdentifier>{bd6cd68a-4f0d-47d0-b42b-3e9a73feb11a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ BackGround ]">
+      <UniqueIdentifier>{d131446e-0c0c-4dba-8cbf-e4c141c685e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayMode.cpp">
@@ -204,6 +207,9 @@
     <ClCompile Include="GuardRail.cpp">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ GuardRail ]</Filter>
     </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ BackGround ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayMode.h">
@@ -286,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="GuardRail.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ GuardRail ]</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ BackGround ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,12 +7,14 @@
 #include "Player.h"
 #include "Ground.h"
 #include "GuardRail.h"
+#include "BackGround.h"
 
 std::string Play_Mode::PlayMode() {
 	// 카메라 컨트롤러 객체 추가
 	framework.AddObject(new CameraController, "camera_controller", Layer::L1);
 
 	// 맵 객체 추가
+	framework.AddObject(new BackGround, "background", Layer::L1);
 	framework.AddObject(new Ground, "ground", Layer::L1);
 	framework.AddObject(new GuardRail, "guardrail", Layer::L3);
 

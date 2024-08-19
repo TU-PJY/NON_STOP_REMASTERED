@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnimationUtil.cpp" />
+    <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="CameraUtil.cpp" />
     <ClCompile Include="CollisionUtil.cpp" />
@@ -170,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationUtil.h" />
+    <ClInclude Include="BackGround.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="CameraUtil.h" />
     <ClInclude Include="CollisionUtil.h" />
