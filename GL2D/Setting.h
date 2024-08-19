@@ -8,7 +8,7 @@ constexpr int WINDOW_WIDTH = 1200;
 constexpr int WINDOW_HEIGHT = 800;
 
 // fullscreen option
-constexpr bool FULL_SCREEN_OPTION = false;
+constexpr bool FULL_SCREEN_OPTION = true;
 
 // console window option
 constexpr bool SHOW_CONSOLE = true;

@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "MouseUtil.h"
+#include "Framework.h"
 #include <cmath>
 
 void Player::InputKey(KeyType Type, KeyState State, unsigned char NormalKey, int SpecialKey) {
@@ -43,7 +43,7 @@ void Player::InputKey(KeyType Type, KeyState State, unsigned char NormalKey, int
 	}
 }
 
-GLfloat Player::GetPosition() {
+GLfloat Player::GetPositionX() {
 	return PositionX;
 }
 
@@ -58,11 +58,13 @@ Player::Player() {
 }
 
 void Player::UpdateLook() {
-	// 플레이어 위치와 마우스 위치에 따라 보는 방향이 달라진다
-	if (ViewportPosition().x < mouse.x)
-		LookDir = Right;
-	else if (ViewportPosition().x > mouse.x)
-		LookDir = Left;
+	if (auto Target = framework.Find("target"); Target) {
+		// 플레이어 위치와 조준점 위치에 따라 보는 방향이 달라진다
+		if (ViewportPosition().x < Target->GetPositionX())
+			LookDir = Right;
+		else if (ViewportPosition().x > Target->GetPositionX())
+			LookDir = Left;
+	}
 }
 
 void Player::UpdateAnimation(float FT) {

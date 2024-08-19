@@ -7,7 +7,7 @@ BackGround::BackGround() {
 
 void BackGround::Update(float FT) {
 	if (auto CamController = framework.Find("camera_controller"); CamController) {
-		PositionX = CamController->GetPosition() * 0.3;
+		PositionX = CamController->GetPositionX() * 0.3;
 		Height = CamController->GetHeight() * 0.3;
 	}
 }

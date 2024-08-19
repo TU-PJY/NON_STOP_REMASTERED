@@ -91,9 +91,12 @@ public:
 	virtual OBB GetOBB() { return{}; }
 	virtual Range GetRange() { return {}; }
 
-	// player
-	virtual GLfloat GetPosition() { return {}; }
+	virtual GLfloat GetPositionX() { return {}; }
 	virtual GLfloat GetHeight() { return{}; }
+
+	virtual void PushCamera(GLfloat Value) {}
+
+
 
 private:
 	void ProcessTransform(); 

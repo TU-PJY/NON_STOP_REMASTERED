@@ -5,9 +5,12 @@
 
 #include "CameraController.h"
 #include "Player.h"
+
 #include "Ground.h"
 #include "GuardRail.h"
 #include "BackGround.h"
+
+#include "Target.h"
 
 std::string Play_Mode::PlayMode() {
 	// 카메라 컨트롤러 객체 추가
@@ -21,7 +24,13 @@ std::string Play_Mode::PlayMode() {
 	// 플레이어 객체 추가
 	framework.AddObject(new Player, "player", Layer::L2);
 
+	// 조준점 객체 추가
+	framework.AddObject(new Target, "target", Layer::L4);
+
+	// 컨트롤러 설정
 	framework.SetController(Controller, ModeType::Default);
+
+	glutSetCursor(GLUT_CURSOR_NONE);
 	return __func__;
 }
 
@@ -65,10 +74,12 @@ void Play_Mode::SpecialKeyUp(int KEY, int X, int Y) {
 
 void Play_Mode::MouseMotion(int X, int Y) {
 	mouse.ConvertPosition(X, Y);
+	glutWarpPointer(WIDTH / 2, HEIGHT / 2);
 }
 
 void Play_Mode::MousePassiveMotion(int X, int Y) {
 	mouse.ConvertPosition(X, Y);
+	glutWarpPointer(WIDTH / 2, HEIGHT / 2);
 }
 
 void Play_Mode::Controller() {

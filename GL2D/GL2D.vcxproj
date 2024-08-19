@@ -166,6 +166,7 @@
     <ClCompile Include="SoundUtil.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="SystemResources.cpp" />
+    <ClCompile Include="Target.cpp" />
     <ClCompile Include="TextUtil.cpp" />
     <ClCompile Include="TimerUtil.cpp" />
   </ItemGroup>
@@ -196,6 +197,7 @@
     <ClInclude Include="ShaderUtil.h" />
     <ClInclude Include="SoundUtil.h" />
     <ClInclude Include="Setting.h" />
+    <ClInclude Include="Target.h" />
     <ClInclude Include="TextUtil.h" />
     <ClInclude Include="TimerUtil.h" />
   </ItemGroup>

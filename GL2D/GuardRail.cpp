@@ -8,7 +8,7 @@ GuardRail::GuardRail() {
 void GuardRail::Update(float FT) {
 	// 카메라의 X좌표 위치와 높이를 가져와 가드레일이 카메라 가까이 위치한 것처럼 연출한다
 	if (auto CamController = framework.Find("camera_controller"); CamController) {
-		PositionX = CamController->GetPosition() * 0.5;
+		PositionX = CamController->GetPositionX() * 0.5;
 		Height = CamController->GetHeight() * 0.2;
 	}
 }

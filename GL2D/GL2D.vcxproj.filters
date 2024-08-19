@@ -121,6 +121,9 @@
     <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ BackGround ]">
       <UniqueIdentifier>{d131446e-0c0c-4dba-8cbf-e4c141c685e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ UI ]">
+      <UniqueIdentifier>{6b4d43ff-8f4b-4d2a-b2b1-1d248186394e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayMode.cpp">
@@ -210,6 +213,9 @@
     <ClCompile Include="BackGround.cpp">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ BackGround ]</Filter>
     </ClCompile>
+    <ClCompile Include="Target.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ UI ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayMode.h">
@@ -295,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="BackGround.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Map ]\[ BackGround ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Target.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ UI ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
