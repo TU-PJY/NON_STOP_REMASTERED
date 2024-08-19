@@ -3,7 +3,7 @@
 
 class Target : public GameObject {
 private:
-	Image Image{};
+	Image TargetImage{};
 	GLfloat PositionX{}, PositionY{};
 
 	GLfloat PrevMouseX{}, PrevMouseY{};

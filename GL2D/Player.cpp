@@ -58,11 +58,14 @@ Player::Player() {
 }
 
 void Player::UpdateLook() {
+	ViewportPositionX = ViewportPosition().x;
+	ViewportHeight = ViewportPosition().y;
+
 	if (auto Target = framework.Find("target"); Target) {
 		// 플레이어 위치와 조준점 위치에 따라 보는 방향이 달라진다
-		if (ViewportPosition().x < Target->GetPositionX())
+		if (ViewportPositionX < Target->GetPositionX())
 			LookDir = Right;
-		else if (ViewportPosition().x > Target->GetPositionX())
+		else if (ViewportPositionX > Target->GetPositionX())
 			LookDir = Left;
 	}
 }

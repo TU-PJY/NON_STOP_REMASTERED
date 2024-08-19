@@ -8,7 +8,9 @@ std::vector<ImageInfo> ImageList
 	{"guardrail", "res//sprite//map//guardrail.png"},
 	{"background", "res//sprite//map//background.png"},
 
-	{"target", "res//sprite//ui//target.png"}
+	{"target", "res//sprite//ui//target.png"},
+
+	{"scar_h", "res//sprite//gun//scar_h.png"},
 };
 
 std::vector<FileNameAndOption> SoundList

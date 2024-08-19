@@ -22,6 +22,8 @@ private:
 	GLfloat Size{};
 	GLfloat ScaleValue{};
 
+	GLfloat ViewportPositionX{}, ViewportHeight{};
+
 	int LookDir{ Right };
 
 public:
