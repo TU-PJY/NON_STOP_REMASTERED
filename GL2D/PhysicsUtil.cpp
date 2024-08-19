@@ -18,7 +18,7 @@ void PhysicsUtil::Fall(GLfloat& Position, GLfloat Gravity, float FT) {
 }
 
 bool PhysicsUtil::IsOnFloor(GLfloat Position, GLfloat FloorHeight) {
-	if (Position == FloorHeight)
+	if (!FallingState && Position == FloorHeight)
 		return true;
 
 	return false;

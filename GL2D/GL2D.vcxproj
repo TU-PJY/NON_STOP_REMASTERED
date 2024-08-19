@@ -147,10 +147,11 @@
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="IntroMode.cpp" />
     <ClCompile Include="LoadingMode.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="ResourceList.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ImageUtil.cpp" />
-    <ClCompile Include="Mode1.cpp" />
+    <ClCompile Include="PlayMode.cpp" />
     <ClCompile Include="MouseUtil.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="PhysicsUtil.cpp" />
@@ -177,10 +178,11 @@
     <ClInclude Include="IntroScreen.h" />
     <ClInclude Include="LoadingMode.h" />
     <ClInclude Include="LoadingScreen.h" />
-    <ClInclude Include="Mode1.h" />
+    <ClInclude Include="PlayMode.h" />
     <ClInclude Include="MouseUtil.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="PhysicsUtil.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="RandomUtil.h" />
     <ClInclude Include="RenderModeUtil.h" />
     <ClInclude Include="ShaderUtil.h" />

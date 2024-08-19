@@ -58,9 +58,6 @@
     <Filter Include="[1]___________[ GameMode ]">
       <UniqueIdentifier>{824d0f24-8e5b-4c58-99e5-e019f51ea99a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[1]___________[ GameMode ]\[ Mode1 ]">
-      <UniqueIdentifier>{7b8ece9e-369e-41aa-9eb1-0f0dc2f9398d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[4]___________[ Resources ]">
       <UniqueIdentifier>{a23e0c3a-d6ca-4199-bc98-de8c1d7c55be}</UniqueIdentifier>
     </Filter>
@@ -103,10 +100,16 @@
     <Filter Include="[5]___________[ mata_ENGINE ]\[ System]\[ Main ]">
       <UniqueIdentifier>{0db3b7f8-93be-4b88-bfa5-da8ad252be70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Player ]">
+      <UniqueIdentifier>{a7fa1660-a673-412c-95e7-54d77c00ef9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[1]___________[ GameMode ]\[ Play Mode ]">
+      <UniqueIdentifier>{7b8ece9e-369e-41aa-9eb1-0f0dc2f9398d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Mode1.cpp">
-      <Filter>[1]___________[ GameMode ]\[ Mode1 ]</Filter>
+    <ClCompile Include="PlayMode.cpp">
+      <Filter>[1]___________[ GameMode ]\[ Play Mode ]</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>[2]___________[ Object ]\[3][ Object Template ]</Filter>
@@ -177,10 +180,13 @@
     <ClCompile Include="Display.cpp">
       <Filter>[5]___________[ mata_ENGINE ]\[ System]\[ Main ]</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Player ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mode1.h">
-      <Filter>[1]___________[ GameMode ]\[ Mode1 ]</Filter>
+    <ClInclude Include="PlayMode.h">
+      <Filter>[1]___________[ GameMode ]\[ Play Mode ]</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>[2]___________[ Object ]\[3][ Object Template ]</Filter>
@@ -247,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="IntroMode.h">
       <Filter>[5]___________[ mata_ENGINE ]\[ System]\[ System Screen ]\[ Intro Screen ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Player ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

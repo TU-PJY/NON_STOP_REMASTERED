@@ -62,3 +62,6 @@ extern std::vector<FileNameAndOption> SoundList;
 extern std::vector<ImageInfo> SystemImageList;
 extern std::vector<FileNameAndOption> SystemSoundList;
 extern Start_Mode StartMode;
+
+// global game value
+constexpr GLfloat FLOOR_HEIGHT = -0.4;

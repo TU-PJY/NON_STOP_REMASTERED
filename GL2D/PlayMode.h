@@ -2,8 +2,8 @@
 #include "MouseUtil.h"
 #include <string>
 
-namespace Mode1 {
-	std::string GameMode1();
+namespace Play_Mode {
+	std::string PlayMode();
 
 	void ProcessKeyboard(KeyType Type, KeyState State, unsigned char NormalKey, int SpecialKey);
 	void ProcessMouse(int Button, int State, int X, int Y);

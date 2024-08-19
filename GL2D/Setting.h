@@ -14,12 +14,12 @@ constexpr bool FULL_SCREEN_OPTION = false;
 constexpr bool SHOW_CONSOLE = true;
 
 // intro screen option
-constexpr bool ENABLE_INTRO_SCREEN = true;
+constexpr bool ENABLE_INTRO_SCREEN = false;
 
 // framework layer option
 // 'END' should be typed at last
 enum class Layer
-{ L1, L2, L3, END };
+{ L1, L2, L3, L4, END };
 
 // show boundbox option
 #define SHOW_BOUND_BOX
