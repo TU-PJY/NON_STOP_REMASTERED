@@ -11,15 +11,10 @@ void Scar::Update(float FT) {
 	if (auto Player = framework.Find("player"); Player) {
 		GunX = Player->GetPositionX();
 		GunY = Player->GetHeight();
-
-		if (auto Target = framework.Find("target"); Target) {
-			if (Player->GetLookDir() == 1)
-				Rotation = atan2(Target->GetHeight() - ViewportY, Target->GetPositionX() - ViewportX) * (180 / 3.14);
-
-			else if (Player->GetLookDir() == 0)
-				Rotation = atan2(ViewportY - Target->GetHeight(), ViewportX - Target->GetPositionX()) * (180 / 3.14);
-		}
 	}
+
+	if (auto Target = framework.Find("target"); Target)
+		LookAt(ViewportX, ViewportY, Target->GetPositionX(), Target->GetHeight(), Rotation, 20, FT);
 }
 
 void Scar::Render() {
@@ -27,10 +22,14 @@ void Scar::Render() {
 		BeginProcess(ImageRenderMode::Default);
 		SetPosition(GunX, GunY);
 		Scale(0.3, 0.3);
-		Rotate(Rotation);
 
-		if (Player->GetLookDir() == 0)
+		if (Player->GetLookDir() == 0) {
+			Rotate(Rotation - 90);
 			FlipImage(Flip::Horizontal);
+		}
+
+		else
+			Rotate(Rotation + 90);
 
 		RenderImage(Image, 1.0, 200, 100);
 

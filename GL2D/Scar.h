@@ -4,7 +4,7 @@
 class Scar : public GameObject {
 private:
 	Image Image{};
-	GLfloat Rotation{};
+	GLfloat Rotation{}, RotationResult{};
 
 	GLfloat GunX{}, GunY{};
 	GLfloat ViewportX{}, ViewportY{};

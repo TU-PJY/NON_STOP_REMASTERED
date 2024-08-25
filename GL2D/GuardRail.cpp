@@ -15,6 +15,6 @@ void GuardRail::Update(float FT) {
 void GuardRail::Render() {
 	BeginProcess(ImageRenderMode::Default);
 	SetPosition(PositionX, Height - 0.9);
-	Scale(3.0, 3.0);
+	Scale(6.0, 3.0);
 	RenderImage(Image, 1.0, 4500, 800);
 }

@@ -2,6 +2,7 @@
 #include "CameraUtil.h"
 #include "MouseUtil.h"
 #include <cmath>
+#include <iostream>
 
 GLfloat CameraController::GetPositionX() {
 	return FinalPositionX;
@@ -23,7 +24,13 @@ void CameraController::PushCamera(GLfloat Value) {
 void CameraController::Update(float FT) {
 	// 카메라는 플레이어를 추적
 	if (auto Player = framework.Find("player"); Player) {
-		PositionX = std::lerp(PositionX, -Player->GetPositionX(), FT * 5);
+		if(Player->GetPositionX() > 5.8)
+			PositionX = std::lerp(PositionX, -5.8, FT * 5);
+		else if(Player->GetPositionX() < -5.8)
+			PositionX = std::lerp(PositionX, 5.8, FT * 5);
+		else
+			PositionX = std::lerp(PositionX, -Player->GetPositionX(), FT * 5);
+
 		Height = std::lerp(Height, -(Player->GetHeight() + FLOOR_HEIGHT), FT * 5);
 	}
 

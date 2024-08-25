@@ -14,6 +14,6 @@ void BackGround::Update(float FT) {
 void BackGround::Render() {
 	BeginProcess(ImageRenderMode::Static);
 	SetPosition(PositionX, Height);
-	Scale(3.0, 3.0);
+	Scale(4.0, 4.0);
 	RenderImage(Image, 1.0, 4500, 2000);
 }

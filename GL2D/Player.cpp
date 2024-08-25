@@ -69,7 +69,7 @@ Player::Player() {
 
 void Player::UpdateViewportPosition() {
 	// 화면 상의 좌표 업데이트
-	ViewportPositionX = ViewportPosition().x;
+	ViewportPositionX = ASP(ViewportPosition().x);
 	ViewportHeight = ViewportPosition().y;
 }
 
