@@ -16,6 +16,7 @@ void Camera::Init() {
 	SetCamera();
 }
 
+
 void Camera::SetCamera() {
 	using namespace glm;
 
@@ -28,12 +29,12 @@ void Camera::SetCamera() {
 	CamPos = vec3(0.0f, 0.0f, 1.0f);
 	CamDirection = vec3(0.0f, 0.0f, 0.0f);
 	CamUp = vec3(0.0f, 1.0f, 0.0f);
+	glm::mat4 RotM{};
 
 	ViewMatrix = lookAt(CamPos, CamDirection, CamUp);
 
-	ViewMatrix = translate(ViewMatrix, vec3(PositionX, PositionY, 0.0));
 	ViewMatrix = rotate(ViewMatrix, glm::radians(Rotation), vec3(0.0, 0.0, 1.0));
-
+	ViewMatrix = translate(ViewMatrix, vec3(PositionX, PositionY, 0.0));
 	Projection = ortho((ASPECT * -1.0f) / Zoom, (ASPECT * 1.0f) / Zoom, -1.0f / Zoom, 1.0f / Zoom, -100.0f, 100.0f);
 }
 

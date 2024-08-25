@@ -12,6 +12,10 @@ GLfloat CameraController::GetHeight() {
 	return FinalHeight;
 }
 
+GLfloat CameraController::GetRotation() {
+	return Rotation;
+}
+
 CameraController::CameraController() {
 	if (auto Player = framework.Find("player"); Player)
 		Height = -(Player->GetHeight() + FLOOR_HEIGHT);
@@ -19,6 +23,14 @@ CameraController::CameraController() {
 
 void CameraController::PushCamera(GLfloat Value) {
 
+}
+
+void CameraController::ShakeCamera(GLfloat Value) {
+	ShakeValue += Value;
+}
+
+void CameraController::AddTiltShake(GLfloat Value) {
+	Rotation = Value;
 }
 
 void CameraController::Update(float FT) {
@@ -39,8 +51,19 @@ void CameraController::Update(float FT) {
 		HeightByCursor = std::lerp(HeightByCursor, Target->GetHeight() * 0.3, FT * 10);
 	}
 
-	FinalPositionX = PositionX - PositionXByCursor;
-	FinalHeight = (FLOOR_HEIGHT + Height * 0.5) - HeightByCursor;
+	Rotation = std::lerp(Rotation, 0.0, FT * 10);
+
+	ShakeX = randomUtil.Gen(Dist::Real, -ShakeValue, ShakeValue);
+	ShakeY = randomUtil.Gen(Dist::Real, -ShakeValue, ShakeValue);
+
+	ResultShakeX = std::lerp(ResultShakeX, ShakeX, FT * 5);
+	ResultShakeY = std::lerp(ResultShakeY, ShakeY, FT * 5);
+
+	ShakeValue = std::lerp(ShakeValue, 0.0, FT * 10);
+
+	FinalPositionX = PositionX - PositionXByCursor - ResultShakeX;
+	FinalHeight = (FLOOR_HEIGHT + Height * 0.5) - HeightByCursor - ResultShakeY;
 
 	camera.Move(FinalPositionX, FinalHeight);
+	camera.Rotate(Rotation);
 }

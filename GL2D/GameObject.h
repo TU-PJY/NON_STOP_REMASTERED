@@ -99,8 +99,13 @@ public:
 	virtual int GetLookDir() { return{}; }
 
 	virtual void PushCamera(GLfloat Value) {}
+	virtual void ShakeCamera(GLfloat Value) {}
+	virtual void AddTiltShake(GLfloat Value) {}
 
+	virtual void ShootGun() {}
+	virtual void StopShootGun() {}
 
+	virtual void GiveRecoil(GLfloat Value) {}
 
 private:
 	void ProcessTransform(); 

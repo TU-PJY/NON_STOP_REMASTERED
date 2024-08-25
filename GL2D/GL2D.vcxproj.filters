@@ -127,6 +127,21 @@
     <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Gun ]">
       <UniqueIdentifier>{df1f81a7-647a-4b5a-aa0e-f306cf25cf77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Gun ]\[ Scar H ]">
+      <UniqueIdentifier>{ef478a7d-0e63-497c-a9ce-969c8d2162fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Prop ]">
+      <UniqueIdentifier>{1a1e9ece-92bb-4733-ad03-b265b6f59da1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Prop ]\[ Bullet AR ]">
+      <UniqueIdentifier>{ad3e55a0-4192-4424-aade-8128bae23022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Prop ]\[ Gun Flame ]">
+      <UniqueIdentifier>{d975ee34-ced1-4c07-abb2-9e4cfe13025b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Prop ]\[ Casing ]">
+      <UniqueIdentifier>{74c91619-86ed-410c-a706-1b0f233a9898}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayMode.cpp">
@@ -219,8 +234,17 @@
     <ClCompile Include="Target.cpp">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ UI ]</Filter>
     </ClCompile>
+    <ClCompile Include="BulletAR.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Prop ]\[ Bullet AR ]</Filter>
+    </ClCompile>
     <ClCompile Include="Scar.cpp">
-      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Gun ]</Filter>
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Gun ]\[ Scar H ]</Filter>
+    </ClCompile>
+    <ClCompile Include="GunFlame.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Prop ]\[ Gun Flame ]</Filter>
+    </ClCompile>
+    <ClCompile Include="Casing.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Prop ]\[ Casing ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,8 +335,17 @@
     <ClInclude Include="Target.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ UI ]</Filter>
     </ClInclude>
+    <ClInclude Include="BulletAR.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Prop ]\[ Bullet AR ]</Filter>
+    </ClInclude>
     <ClInclude Include="Scar.h">
-      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Gun ]</Filter>
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Gun ]\[ Scar H ]</Filter>
+    </ClInclude>
+    <ClInclude Include="GunFlame.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Prop ]\[ Gun Flame ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Casing.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Prop ]\[ Casing ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

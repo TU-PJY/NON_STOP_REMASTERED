@@ -26,6 +26,8 @@ private:
 
 	int LookDir{ Right };
 
+	std::string GunName{"scar"};
+
 public:
 	Player();
 	void UpdateViewportPosition();
@@ -33,6 +35,7 @@ public:
 	void UpdateAnimation(float FT);
 	void UpdateMove(float FT);
 	void InputKey(KeyType Type, KeyState State, unsigned char NormalKey, int SpecialKey);
+	void InputMouse(int Button, int State, int X, int Y);
 	GLfloat GetPositionX();
 	GLfloat GetHeight();
 	GLfloat GetViewportPositionX();

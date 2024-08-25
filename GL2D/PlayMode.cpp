@@ -49,11 +49,12 @@ void Play_Mode::ProcessKeyboard(KeyType Type, KeyState State, unsigned char Norm
 	}
 	
 	// 플레이어 키보드 조작
-	if (auto Player = framework.Find("player"); Player)
-		Player->InputKey(Type, State, NormalKey, SpecialKey);
+	framework.InputKey("player", Type, State, NormalKey, SpecialKey);
 }
 
 void Play_Mode::ProcessMouse(int Button, int State, int X, int Y) {
+	// 플레이어 마우스 클릭 조작
+	framework.InputMouse("player", Button, State, X, Y);
 }
 
 void Play_Mode::ProcessMouseWheel(int Button, int Wheel, int X, int Y) {

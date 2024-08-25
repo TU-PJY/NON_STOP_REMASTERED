@@ -8,13 +8,15 @@ private:
 
 	GLfloat PrevMouseX{}, PrevMouseY{};
 	GLfloat CurrentMouseX{}, CurrentMouseY{};
-
 	GLfloat ViewportX{}, ViewportY{};
+
+	RandomUtil randomUtil;
 
 public:
 	GLfloat GetPositionX();
 	GLfloat GetHeight();
 	Target();
+	void GiveRecoil(GLfloat Value);
 	void Update(float FT);
 	void Render();
 };

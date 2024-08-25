@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Framework.h"
 #include <cmath>
+#include <iostream>
 
 void Player::InputKey(KeyType Type, KeyState State, unsigned char NormalKey, int SpecialKey) {
 	switch (Type) {
@@ -37,6 +38,24 @@ void Player::InputKey(KeyType Type, KeyState State, unsigned char NormalKey, int
 				MoveRight = false;
 				break;
 			}
+			break;
+		}
+		break;
+	}
+}
+
+void Player::InputMouse(int Button, int State, int X, int Y) {
+	switch (Button) {
+	case GLUT_LEFT_BUTTON:
+		switch (State) {
+		case GLUT_DOWN:
+			if (auto Gun = framework.Find(GunName); Gun)
+				Gun->ShootGun();
+			break;
+
+		case GLUT_UP:
+			if (auto Gun = framework.Find(GunName); Gun)
+				Gun->StopShootGun();
 			break;
 		}
 		break;

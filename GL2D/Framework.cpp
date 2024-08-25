@@ -11,16 +11,17 @@ std::string Framework::Mode() {
 	return CurrentRunningMode;
 }
 
+
 void Framework::Routine() {
 	if (RoutineRunningActivated) {
 		for (int i = 0; i < Layers; ++i) {
-			for (auto It = begin(ObjectDeque[i]); It != end(ObjectDeque[i]); ++It) {
-				if (!(*It)->DeleteObjectMarked) {
-					if (FloatingRunningActivated && FloatingFocusActivated && (*It)->FloatingObjectMarked)
-						(*It)->Update(FrameTime);
+			for (auto const& O : ObjectDeque[i]) {
+				if (!O->DeleteObjectMarked) {
+					if (FloatingRunningActivated && FloatingFocusActivated && O->FloatingObjectMarked)
+						O->Update(FrameTime);
 					else
-						(*It)->Update(FrameTime);
-					(*It)->Render();
+						O->Update(FrameTime);
+					O->Render();
 				}
 			}
 
@@ -116,15 +117,13 @@ void Framework::AddObject(GameObject* Object, std::string Tag, Layer AddLayer, b
 	Object->ObjectTag = Tag;
 	Object->PrevLayer = DestLayer;
 
-	if (Tag != "MATA_ENGINE_CONTAINER_DUMMY") {
-		ObjectList.insert(std::make_pair(Tag, Object));
-
-		if (SetFloatingObject) 
-			Object->FloatingObjectMarked = true;
+	if (SetFloatingObject) 
+		Object->FloatingObjectMarked = true;
 		
-		if (SetStaticObject) 
-			Object->StaticObjectMarked = true;
-	}
+	if (SetStaticObject) 
+		Object->StaticObjectMarked = true;
+
+	ObjectList.insert(std::make_pair(Tag, Object));
 }
 
 void Framework::SwapLayer(GameObject* Object, Layer TargetLayer) {
@@ -194,14 +193,12 @@ void Framework::Exit() {
 	glutDestroyWindow(1);
 }
 
+
 //////// private ///////////////
 void Framework::UpdateContainer(int i) {
 	auto It = std::erase_if(ObjectList, [](const std::pair<std::string, GameObject*>& Object) {
 		return Object.second->DeleteObjectMarked;
 		});
-
-	if (It == 0)
-		return;
 
 	for (auto It = begin(ObjectDeque[i]); It != end(ObjectDeque[i]);) {
 		if ((*It)->DeleteObjectMarked) {

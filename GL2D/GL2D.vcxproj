@@ -75,6 +75,10 @@
     <IncludePath>FMOD\api\core\inc;$(IncludePath)</IncludePath>
     <LibraryPath>FMOD\api\core\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>FMOD\api\core\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>FMOD\api\core\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -109,10 +113,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>freeglut.lib glew32.lib fmod_vc.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -139,16 +146,19 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BulletAR.cpp" />
     <ClCompile Include="AnimationUtil.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="CameraUtil.cpp" />
+    <ClCompile Include="Casing.cpp" />
     <ClCompile Include="CollisionUtil.cpp" />
     <ClCompile Include="DataUtil.cpp" />
     <ClCompile Include="FontLoaderUtil.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="GuardRail.cpp" />
+    <ClCompile Include="GunFlame.cpp" />
     <ClCompile Include="IntroMode.cpp" />
     <ClCompile Include="LoadingMode.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -172,10 +182,12 @@
     <ClCompile Include="TimerUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BulletAR.h" />
     <ClInclude Include="AnimationUtil.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="CameraUtil.h" />
+    <ClInclude Include="Casing.h" />
     <ClInclude Include="CollisionUtil.h" />
     <ClInclude Include="DataUtil.h" />
     <ClInclude Include="FontLoaderUtil.h" />
@@ -183,6 +195,7 @@
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="GuardRail.h" />
+    <ClInclude Include="GunFlame.h" />
     <ClInclude Include="ImageUtil.h" />
     <ClInclude Include="IntroMode.h" />
     <ClInclude Include="IntroScreen.h" />
