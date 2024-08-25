@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "Framework.h"
 
 class GuardRail : public GameObject {
 private:

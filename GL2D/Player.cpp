@@ -59,6 +59,10 @@ GLfloat Player::GetViewportHeight() {
 	return ViewportHeight;
 }
 
+int Player::GetLookDir() {
+	return LookDir;
+}
+
 Player::Player() {
 	SetImage(Image, "player");
 }
@@ -101,6 +105,7 @@ void Player::UpdateAnimation(float FT) {
 	else if (LookDir == Left)
 		H_Rotation = std::lerp(H_Rotation, 180, FT * 10);
 
+	// 움직이면 걷는 모션을 재생한다
 	Size = lsAni.Update(ScaleValue, FT * 10);
 }
 

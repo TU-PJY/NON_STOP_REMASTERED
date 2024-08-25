@@ -161,6 +161,7 @@
     <ClCompile Include="PhysicsUtil.cpp" />
     <ClCompile Include="RandomUtil.cpp" />
     <ClCompile Include="RenderModeUtil.cpp" />
+    <ClCompile Include="Scar.cpp" />
     <ClCompile Include="SetUp.cpp" />
     <ClCompile Include="ShaderUtil.cpp" />
     <ClCompile Include="SoundUtil.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomUtil.h" />
     <ClInclude Include="RenderModeUtil.h" />
+    <ClInclude Include="Scar.h" />
     <ClInclude Include="ShaderUtil.h" />
     <ClInclude Include="SoundUtil.h" />
     <ClInclude Include="Setting.h" />

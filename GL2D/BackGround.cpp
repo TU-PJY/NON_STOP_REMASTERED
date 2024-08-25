@@ -1,5 +1,4 @@
 #include "BackGround.h"
-#include "Framework.h"
 
 BackGround::BackGround() {
 	SetImage(Image, "background");

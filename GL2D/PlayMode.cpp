@@ -12,6 +12,8 @@
 
 #include "Target.h"
 
+#include "Scar.h"
+
 std::string Play_Mode::PlayMode() {
 	// 카메라 컨트롤러 객체 추가
 	framework.AddObject(new CameraController, "camera_controller", Layer::L1);
@@ -23,6 +25,9 @@ std::string Play_Mode::PlayMode() {
 
 	// 플레이어 객체 추가
 	framework.AddObject(new Player, "player", Layer::L2);
+
+	// 총 객체 추가
+	framework.AddObject(new Scar, "scar", Layer::L2);
 
 	// 조준점 객체 추가
 	framework.AddObject(new Target, "target", Layer::L4);

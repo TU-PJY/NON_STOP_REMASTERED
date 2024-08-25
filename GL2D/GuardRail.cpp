@@ -1,5 +1,4 @@
 #include "GuardRail.h"
-#include "Framework.h"
 
 GuardRail::GuardRail() {
 	SetImage(Image, "guardrail");

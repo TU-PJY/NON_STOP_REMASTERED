@@ -124,6 +124,9 @@
     <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ UI ]">
       <UniqueIdentifier>{6b4d43ff-8f4b-4d2a-b2b1-1d248186394e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ Gun ]">
+      <UniqueIdentifier>{df1f81a7-647a-4b5a-aa0e-f306cf25cf77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayMode.cpp">
@@ -216,6 +219,9 @@
     <ClCompile Include="Target.cpp">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ UI ]</Filter>
     </ClCompile>
+    <ClCompile Include="Scar.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Gun ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayMode.h">
@@ -304,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="Target.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ UI ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Scar.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ Gun ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

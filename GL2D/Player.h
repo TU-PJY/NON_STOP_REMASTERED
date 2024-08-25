@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "Framework.h"
 
 enum PlayerLook
 {Left, Right};
@@ -37,6 +37,7 @@ public:
 	GLfloat GetHeight();
 	GLfloat GetViewportPositionX();
 	GLfloat GetViewportHeight();
+	int GetLookDir();
 	void UpdateJump(float FT);
 	void Update(float FT);
 	void Render();
