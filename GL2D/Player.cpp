@@ -161,4 +161,6 @@ void Player::Render() {
 	RenderImage(Image);
 
 	SetPosition(0.0, -Size * 0.5);
+
+	UpdateViewportPosition(ViewportPositionX, ViewportHeight);
 }

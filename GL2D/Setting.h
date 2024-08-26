@@ -25,6 +25,6 @@ enum class Layer
 #define SHOW_BOUND_BOX
 
 // start background color option
-constexpr float R = 0.2;
-constexpr float G = 0.2;
-constexpr float B = 0.2;
+constexpr float R = 0.0;
+constexpr float G = 0.0;
+constexpr float B = 0.0;
