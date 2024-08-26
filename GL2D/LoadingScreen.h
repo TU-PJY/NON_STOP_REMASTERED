@@ -23,6 +23,7 @@ public:
 		soundUtil.Init();
 
 		LoadGlobalImage();
+		LoadGlobalSound();
 
 		if (!ENABLE_INTRO_SCREEN) {
 			SetBackColor(R, G, B);

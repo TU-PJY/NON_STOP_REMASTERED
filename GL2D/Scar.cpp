@@ -7,6 +7,7 @@
 
 Scar::Scar() {
 	SetImage(Image, "scar_h");
+	SetSound(ShootSound, "scar_shoot");
 }
 
 void Scar::ShootGun() {
@@ -34,15 +35,17 @@ void Scar::UpdateShoot(float FT) {
 
 	if (TriggerActivated) {
 		if (Delay <= 0) {
+			PlaySound(ShootSound, Ch);
+
 			framework.AddObject(new BulletAR(Rotation + 90,
-				GunX + cos((Rotation + 90) * (3.14 / 180)) * 0.3,
-				GunY + sin((Rotation + 90) * (3.14 / 180)) * 0.3,
-				10.0, Dir),
+				GunX + cos((Rotation + 90) * (3.14 / 180)) * 0.4,
+				GunY + sin((Rotation + 90) * (3.14 / 180)) * 0.4,
+				7.0, Dir),
 				"bullet_ar", Layer::L2);
 
 			framework.AddObject(new GunFlame(Rotation + 90,
-				GunX + cos((Rotation + 90) * (3.14 / 180)) * 0.3,
-				GunY + sin((Rotation + 90) * (3.14 / 180)) * 0.3),
+				GunX + cos((Rotation + 90) * (3.14 / 180)) * 0.35,
+				GunY + sin((Rotation + 90) * (3.14 / 180)) * 0.35),
 				"gun_flame", Layer::L2);
 
 			framework.AddObject(new Casing(GunX, GunY, Dir), "casing", Layer::L2);
@@ -52,7 +55,7 @@ void Scar::UpdateShoot(float FT) {
 			RecoilPositionY += sin((Rotation + 90) * (3.14 / 180)) * 0.1;
 
 
-			Delay = 0.1;
+			Delay = 0.125;
 
 			if (TargetPtr)
 				TargetPtr->GiveRecoil(0.07);

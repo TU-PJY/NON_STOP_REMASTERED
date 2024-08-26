@@ -4,6 +4,10 @@
 class Scar : public GameObject {
 private:
 	Image Image{};
+
+	Sound ShootSound{};
+	Channel Ch{};
+
 	GLfloat Rotation{}, RecoilRotation{};
 
 

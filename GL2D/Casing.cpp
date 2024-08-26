@@ -15,11 +15,12 @@ void Casing::Update(float FT) {
 	psUtil.Fall(CasingPositionY, 10.0, FT);
 
 	if (psUtil.IsHitFloor(CasingPositionY, FLOOR_HEIGHT - 0.2)) {
-		MoveSpeed *= 0.5;
+		MoveSpeed *= 0.7;
 		RotationSpeed *= 0.5;
+		PlaySound(CasingHitSound, CasingChannel);
 	}
 
-	psUtil.BounceFloor(CasingPositionY, FLOOR_HEIGHT - 0.2, 0.7, 0.1);
+	psUtil.BounceFloor(CasingPositionY, FLOOR_HEIGHT - 0.2, 0.7, 0.5);
 
 	if (MoveActivated) {
 		if (Dir == 0) {
@@ -33,8 +34,14 @@ void Casing::Update(float FT) {
 		}
 	}
 
-	if(!psUtil.GetFallingState())
-		framework.DeleteSelf(this);
+	if (!psUtil.GetFallingState()) {
+		RotationSpeed = 0;
+		MoveSpeed = 0;
+
+		timerUtil.Update(FT);
+		if(timerUtil.MiliSec() >= 0.3)
+			framework.DeleteSelf(this);
+	}
 }
 
 void Casing::Render() {

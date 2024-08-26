@@ -9,7 +9,7 @@ void SoundUtil::Init() {
 	if (Result != FMOD_OK)	
 		exit(EXIT_FAILURE);
 
-	SoundSystem->init(32, FMOD_INIT_NORMAL, ExtDvData);
+	SoundSystem->init(64, FMOD_INIT_NORMAL, ExtDvData);
 	SoundSystem->createDSPByType(FMOD_DSP_TYPE_LOWPASS, &LowPass);
 	SoundSystem->set3DSettings(1.0, 1.0, 2.0); 
 

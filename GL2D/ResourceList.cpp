@@ -1,5 +1,6 @@
 #include "EngineHeader.h"
 #include "ImageUtil.h"
+#include "SoundUtil.h"
 
 std::vector<ImageInfo> ImageList
 {
@@ -20,8 +21,11 @@ std::vector<ImageInfo> ImageList
 
 std::vector<FileNameAndOption> SoundList
 {
-	{"scar_shoot", "res//sound//scar_h.wav"},
-	{"scar_shoot_distance", "res//sound//scar_h_distance.wav"},
+	{"scar_shoot", "res//sound//gun/scar_h.wav", FMOD_DEFAULT},
+	{"scar_shoot_distance", "res//sound//gun/scar_h_distance.wav", FMOD_DEFAULT},
+
+	{"casing_hit", "res//sound//casing//casing_hit.wav", FMOD_DEFAULT},
+	{"casing_stop", "res//sound//casing//casing_stop.wav", FMOD_DEFAULT},
 };
 
 // global image
@@ -34,4 +38,14 @@ void LoadGlobalImage() {
 	CasingImage = imageUtil.SetGlobalImage(CasingImage, "casing");
 	GunFlameImage = imageUtil.SetGlobalImage(GunFlameImage, "gun_flame");
 	BulletARImage = imageUtil.SetGlobalImage(BulletARImage, "bullet_ar");
+}
+
+// global sound
+FMOD::Sound* CasingHitSound;
+
+// global Channel
+FMOD::Channel* CasingChannel;
+
+void LoadGlobalSound() {
+	CasingHitSound = soundUtil.GetSound("casing_hit");
 }

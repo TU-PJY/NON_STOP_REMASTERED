@@ -44,6 +44,7 @@ void SetGlOption();
 GLvoid GLMain();
 GLvoid DisplayReshape(int w, int h);
 void LoadGlobalImage();
+void LoadGlobalSound();
 
 extern glm::vec3 BackColor;
 
@@ -74,3 +75,9 @@ constexpr GLfloat FLOOR_HEIGHT = -0.4;
 extern unsigned int CasingImage;
 extern unsigned int GunFlameImage;
 extern unsigned int BulletARImage;
+
+//global sound
+extern FMOD::Sound* CasingHitSound;
+
+// global channel
+extern FMOD::Channel* CasingChannel;
