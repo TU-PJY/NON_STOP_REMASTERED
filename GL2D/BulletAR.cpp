@@ -1,7 +1,6 @@
 #include "BulletAR.h"
 
 BulletAR::BulletAR(GLfloat RotationValue, GLfloat XPos, GLfloat YPos, GLfloat Speed, int DirValue) {
-	SetImage(Image, "bullet_ar");
 	Rotation = RotationValue;
 	BulletX = XPos;
 	BulletY = YPos;
@@ -20,5 +19,5 @@ void BulletAR::Render() {
 	SetPosition(BulletX, BulletY);
 	Rotate(Rotation);
 	Scale(0.2, 0.2);
-	RenderImage(Image);
+	RenderImage(BulletARImage);
 }

@@ -12,6 +12,7 @@ public:
 	void Init();
 	void LoadImageFromFile(unsigned int& Image, const char* FileName);
 	void SetImage(unsigned int& Image, std::string ImageName);
+	unsigned int SetGlobalImage(unsigned int Image, std::string ImageName);
 	void Render(unsigned int ImageVar);
 
 private:

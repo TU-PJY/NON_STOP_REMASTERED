@@ -1,7 +1,6 @@
 #include "Casing.h"
 
 Casing::Casing(GLfloat XPos, GLfloat YPos, int DirValue) {
-	SetImage(Image, "casing");
 	CasingPositionX = XPos;
 	CasingPositionY = YPos;
 
@@ -34,13 +33,8 @@ void Casing::Update(float FT) {
 		}
 	}
 
-	if(!psUtil.GetFallingState()) {
-		MoveActivated = false;
-
-		timerUtil.Update(FT);
-		if (timerUtil.MiliSec() >= 0.5)
-			framework.DeleteSelf(this);
-	}
+	if(!psUtil.GetFallingState())
+		framework.DeleteSelf(this);
 }
 
 void Casing::Render() {
@@ -48,5 +42,8 @@ void Casing::Render() {
 	SetPosition(CasingPositionX, CasingPositionY);
 	Rotate(Rotation);
 	Scale(0.05, 0.05);
-	RenderImage(Image);
+
+	// 짧은 시간에 매우 높은 빈도로 생성되는 객체이므로 성능 향상을 위해 하나의 전역 이미지를 돌려쓴다
+	// EngineHeade.h에 전역 선언, ResourceList.cpp에 정의 되어있음
+	RenderImage(CasingImage);
 }

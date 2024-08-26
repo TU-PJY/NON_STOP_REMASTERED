@@ -3,7 +3,6 @@
 
 class BulletAR : public GameObject {
 private:
-	Image Image{};
 	GLfloat Rotation{};
 	GLfloat BulletX{}, BulletY{};
 	GLfloat MoveSpeed{};

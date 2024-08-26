@@ -48,9 +48,9 @@ public:
 	void RotateAxis(GLfloat RotationValue, GLfloat AxisX, GLfloat AxisY);
 	void LookAt(GLfloat FromX, GLfloat FromY, GLfloat ToX, GLfloat ToY, GLfloat& RotationVar, GLfloat RotationSpeed, float FT);
 	void LookAt(GLfloat Rotation, GLfloat& RotationVar, GLfloat RotationSpeed, float FT);
+	void UpdateViewportPosition(GLfloat& ValueX, GLfloat& ValueY, bool ApplyAspect=true);
 	void SetColor(GLfloat R, GLfloat G, GLfloat B);
 	void SetColorRGB(int R, int G, int B);
-	glm::vec4 ViewportPosition();
 
 	void SetImage(Image& Image, std::string ImageName);
 	void FlipImage(Flip FlipOption);
@@ -111,6 +111,7 @@ private:
 	void ProcessTransform(); 
 	GLfloat NormalizeDegree(GLfloat Degree);
 	GLfloat CalculateShortestRotation(GLfloat CurrentDegree, GLfloat DegreeDest);
+	glm::vec4 ViewportPosition();
 };
 
 // dummy object for avoiding iterator error

@@ -22,6 +22,8 @@ public:
 		imageUtil.Init();
 		soundUtil.Init();
 
+		LoadGlobalImage();
+
 		if (!ENABLE_INTRO_SCREEN) {
 			SetBackColor(R, G, B);
 			framework.SwitchMode(StartMode);

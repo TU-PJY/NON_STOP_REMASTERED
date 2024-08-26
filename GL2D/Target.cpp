@@ -45,7 +45,4 @@ void Target::Render() {
 	Scale(0.3, 0.3);
 	SetPosition(PositionX, PositionY);
 	RenderImage(TargetImage);
-
-	ViewportX = ViewportPosition().x;
-	ViewportY = ViewportPosition().y;
 ;}

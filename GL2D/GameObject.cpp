@@ -88,11 +88,12 @@ GLfloat GameObject::ASP(GLfloat Value) {
 	return Value * ASPECT;
 }
 
-glm::vec4 GameObject::ViewportPosition() {
-	glm::mat4 Result = TranslateMatrix * RotateMatrix * ScaleMatrix;
-	glm::vec4 Position = camera.Projection * camera.ViewMatrix * Result * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-	return Position;
+void GameObject::UpdateViewportPosition(GLfloat& ValueX, GLfloat& ValueY, bool ApplyAspect) {
+	if (ApplyAspect)
+		ValueX = ASP(ViewportPosition().x);
+	else
+		ValueX = ViewportPosition().x;
+	ValueY = ViewportPosition().y;
 }
 
 void GameObject::BeginProcess(ImageRenderMode Mode) {
@@ -273,4 +274,11 @@ GLfloat GameObject::CalculateShortestRotation(GLfloat CurrentDegree, GLfloat Deg
 		Diff += 360;
 
 	return Diff;
+}
+
+glm::vec4 GameObject::ViewportPosition() {
+	glm::mat4 Result = TranslateMatrix * RotateMatrix * ScaleMatrix;
+	glm::vec4 Position = camera.Projection * camera.ViewMatrix * Result * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	return Position;
 }

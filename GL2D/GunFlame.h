@@ -3,7 +3,6 @@
 
 class GunFlame : public GameObject {
 private:
-	Image Image{}, Blur{};
 	GLfloat FlamePositionX{}, FlamePositionY{};
 	GLfloat Rotation{};
 	

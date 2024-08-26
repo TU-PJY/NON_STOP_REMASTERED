@@ -123,6 +123,5 @@ void Scar::Render() {
 
 	RenderImage(Image, 1.0, 200, 100);
 
-	ViewportX = ASP(ViewportPosition().x);
-	ViewportY = ViewportPosition().y;
+	UpdateViewportPosition(ViewportX, ViewportY);
 }

@@ -3,7 +3,6 @@
 
 class Casing : public GameObject {
 private:
-	Image Image{};
 	GLfloat Rotation{}, RotationSpeed{4000};
 	GLfloat CasingPositionX{}, CasingPositionY{};
 	PhysicsUtil psUtil;

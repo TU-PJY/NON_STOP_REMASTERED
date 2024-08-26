@@ -8,7 +8,6 @@ private:
 
 	GLfloat PrevMouseX{}, PrevMouseY{};
 	GLfloat CurrentMouseX{}, CurrentMouseY{};
-	GLfloat ViewportX{}, ViewportY{};
 
 	RandomUtil randomUtil;
 

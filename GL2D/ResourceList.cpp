@@ -1,4 +1,5 @@
 #include "EngineHeader.h"
+#include "ImageUtil.h"
 
 std::vector<ImageInfo> ImageList
 {
@@ -22,3 +23,15 @@ std::vector<FileNameAndOption> SoundList
 	{"scar_shoot", "res//sound//scar_h.wav"},
 	{"scar_shoot_distance", "res//sound//scar_h_distance.wav"},
 };
+
+// global image
+unsigned int CasingImage;
+unsigned int GunFlameImage;
+unsigned int BulletARImage;
+
+// load global Image
+void LoadGlobalImage() {
+	CasingImage = imageUtil.SetGlobalImage(CasingImage, "casing");
+	GunFlameImage = imageUtil.SetGlobalImage(GunFlameImage, "gun_flame");
+	BulletARImage = imageUtil.SetGlobalImage(BulletARImage, "bullet_ar");
+}

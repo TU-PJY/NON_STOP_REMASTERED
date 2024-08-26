@@ -30,7 +30,6 @@ private:
 
 public:
 	Player();
-	void UpdateViewportPosition();
 	void UpdateLook();
 	void UpdateAnimation(float FT);
 	void UpdateMove(float FT);
@@ -38,8 +37,6 @@ public:
 	void InputMouse(int Button, int State, int X, int Y);
 	GLfloat GetPositionX();
 	GLfloat GetHeight();
-	GLfloat GetViewportPositionX();
-	GLfloat GetViewportHeight();
 	int GetLookDir();
 	void UpdateJump(float FT);
 	void Update(float FT);

@@ -41,6 +41,14 @@ void ImageUtil::SetImage(unsigned int& Image, std::string ImageName) {
 		Image = -1;
 }
 
+unsigned int ImageUtil::SetGlobalImage(unsigned int Image, std::string ImageName) {
+	auto It = LoadedImageList.find(ImageName);
+	if (It != end(LoadedImageList))
+		return It->second;
+	else
+		return 0;
+}
+
 void ImageUtil::Render(unsigned int ImageVar) {
 	glBindVertexArray(VAO);
 	glBindTexture(GL_TEXTURE_2D, ImageVar);

@@ -43,6 +43,7 @@ void InitSystem();
 void SetGlOption();
 GLvoid GLMain();
 GLvoid DisplayReshape(int w, int h);
+void LoadGlobalImage();
 
 extern glm::vec3 BackColor;
 
@@ -63,5 +64,13 @@ extern std::vector<ImageInfo> SystemImageList;
 extern std::vector<FileNameAndOption> SystemSoundList;
 extern Start_Mode StartMode;
 
+
+//////////////// global vars
+
 // global game value
 constexpr GLfloat FLOOR_HEIGHT = -0.4;
+
+// global image
+extern unsigned int CasingImage;
+extern unsigned int GunFlameImage;
+extern unsigned int BulletARImage;

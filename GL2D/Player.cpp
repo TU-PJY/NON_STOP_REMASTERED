@@ -70,26 +70,12 @@ GLfloat Player::GetHeight() {
 	return Height;
 }
 
-GLfloat Player::GetViewportPositionX() {
-	return ViewportPositionX;
-}
-
-GLfloat Player::GetViewportHeight() {
-	return ViewportHeight;
-}
-
 int Player::GetLookDir() {
 	return LookDir;
 }
 
 Player::Player() {
 	SetImage(Image, "player");
-}
-
-void Player::UpdateViewportPosition() {
-	// 화면 상의 좌표 업데이트
-	ViewportPositionX = ASP(ViewportPosition().x);
-	ViewportHeight = ViewportPosition().y;
 }
 
 void Player::UpdateLook() {
@@ -175,5 +161,4 @@ void Player::Render() {
 	RenderImage(Image);
 
 	SetPosition(0.0, -Size * 0.5);
-	UpdateViewportPosition();
 }

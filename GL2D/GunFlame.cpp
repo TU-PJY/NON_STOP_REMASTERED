@@ -2,7 +2,6 @@
 #include <cmath>
 
 GunFlame::GunFlame(GLfloat RotationValue, GLfloat XPos, GLfloat YPos) {
-	SetImage(Image, "gun_flame");
 	Rotation = RotationValue;
 	FlamePositionX = XPos;
 	FlamePositionY = YPos;
@@ -19,5 +18,5 @@ void GunFlame::Render() {
 	SetPosition(FlamePositionX, FlamePositionY);
 	Rotate(Rotation);
 	Scale(0.3, 0.3);
-	RenderImage(Image);
+	RenderImage(GunFlameImage);
 }
