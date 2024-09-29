@@ -50,18 +50,18 @@ void Scar::UpdateShoot(float FT) {
 
 			framework.AddObject(new Casing(GunX, GunY, Dir), "casing", Layer::L2);
 
-			RecoilRotation += 10;
+			/*RecoilRotation += 10;
 			RecoilPositionX += cos((Rotation + 90) * (3.14 / 180)) * 0.1;
-			RecoilPositionY += sin((Rotation + 90) * (3.14 / 180)) * 0.1;
+			RecoilPositionY += sin((Rotation + 90) * (3.14 / 180)) * 0.1;*/
 
 
 			Delay = 0.125;
 
-			if (TargetPtr)
+			/*if (TargetPtr)
 				TargetPtr->GiveRecoil(0.07);
 
 			if (CameraPtr)
-				CameraPtr->ShakeCamera(0.5);
+				CameraPtr->ShakeCamera(0.5);*/
 		}
 	}
 }
