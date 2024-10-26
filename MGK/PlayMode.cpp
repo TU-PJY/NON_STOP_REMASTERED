@@ -55,9 +55,11 @@ void PlayMode::Destructor() {
 	imageUtil.Release(PlayerImage);
 	imageUtil.Release(SCAR_H_Image);
 	imageUtil.Release(FlameImage);
+	imageUtil.Release(IndicatorBackImage);
 
 	// »ç¿îµå
 	soundUtil.Release(SCAR_H_Shoot);
+	soundUtil.Release(AR_Reload);
 }
 
 void PlayMode::ProcessKeyboard(int State, unsigned char NormalKey, int SpecialKey) {
