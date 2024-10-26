@@ -5,13 +5,6 @@
 
 #include "SCAR_H.h"
 
-
-Player::Player(){
-	// 물리엔진의 중력과 바닥 위치 지정
-	pUtil.SetGravity(15);
-	pUtil.SetFloorHeight(-0.5);
-}
-
 void Player::InputKey(int State, unsigned char NormalKey, int SpecialKey) {
 	switch (State) {
 	case NORMAL_KEY_DOWN:
@@ -43,14 +36,25 @@ void Player::InputMouse(int State) {
 	}
 }
 
-void Player::UpdateGun() {
-	// 자기가 가진 총 이름에 따라 다른 총이 scene에 추가된다.
-	if (!GunPtr) {
-		if (GunName == "SCAR_H")
-			scene.AddObject(new SCAR_H(0.13), GunName, LAYER_3);
+Player::Player(const char* Name) {
+	// 물리엔진의 중력과 바닥 위치 지정
+	pUtil.SetGravity(15);
+	pUtil.SetFloorHeight(-0.5);
 
-		GunPtr = scene.Find(GunName);
-	}
+	GunName = Name;
+}
+
+void Player::AddGunObject() {
+	// 자기가 가진 총 이름에 따라 다른 총이 scene에 추가된다.
+	if (GunName == "SCAR_H")
+		scene.AddObject(new SCAR_H(0.13), GunName, LAYER_3);
+
+	GunPtr = scene.Find(GunName);
+}
+
+void Player::UpdateGun() {
+	if (!GunPtr)
+		AddGunObject();
 
 	// 총 오브젝트 포인터가 있다면 총으로 플레이어의 정보를 보낸다. (위치, 각도, 방아쇠 당김 등)
 	if (GunPtr) {

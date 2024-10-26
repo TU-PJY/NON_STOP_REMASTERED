@@ -27,7 +27,7 @@ void PlayMode::Start() {
 	// playmode에 필요한 오브젝트들을 scene에 추가한다.
 	scene.AddObject(new BackGround, "background", LAYER_1);
 	scene.AddObject(new Crosshair, "crosshair", LAYER_4);
-	scene.AddObject(new Player, "player", LAYER_3);
+	scene.AddObject(new Player("SCAR_H"), "player", LAYER_3);
 
 	scene.RegisterController(Controller, MODE_TYPE_DEFAULT);
 	scene.RegisterDestructor(Destructor);

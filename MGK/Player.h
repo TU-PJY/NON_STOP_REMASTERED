@@ -31,7 +31,7 @@ private:
 	bool TriggerState{};
 
 	// 플레이어가 들고있는 총 이름
-	const char* GunName{"SCAR_H"};
+	const char* GunName{};
 
 	// 플레이어가 들고있는 총 오브젝트 포인터
 	GameObject* GunPtr{};
@@ -40,13 +40,15 @@ private:
 	AABB aabb;
 
 public:
-	Player();
+	Player(const char* Name);
 
 	// 키 입력 컨트롤러
 	void InputKey(int State, unsigned char NormalKey, int SpecialKey);
 
 	// 마우스 입력 컨트롤러
 	void InputMouse(int State);
+
+	void AddGunObject();
 
 	void UpdateGun();
 
