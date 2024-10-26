@@ -4,7 +4,7 @@
 
 // 추가가 필요한 오브젝트의 헤더파일을 포함한다.
 #include "Player.h"
-
+#include "BackGround.h"
 
 void PlayMode::Start() {
 	// 배경색을 밝은 색으로 바꾼다.
@@ -12,10 +12,13 @@ void PlayMode::Start() {
 
 	// playmode에 필요한 리소스들을 로드한다.
 	imageUtil.Import(PlayerImage, "res//commando_right.png", IMAGE_TYPE_NEAREST);
+	imageUtil.Import(BackGroundImage, "res//BackGround_wide.png", IMAGE_TYPE_NEAREST);
 
 	// playmode에 필요한 오브젝트들을 scene에 추가한다.
-	// player의 경우 2번 레이어에 추가헸다.
-	scene.AddObject(new Player, "player", LAYER_2);
+	scene.AddObject(new BackGround, "background", LAYER_1);
+	
+	// player의 경우 3번 레이어에 추가헸다.
+	scene.AddObject(new Player, "player", LAYER_3);
 
 	scene.RegisterController(Controller, MODE_TYPE_DEFAULT);
 	scene.RegisterDestructor(Destructor);
@@ -24,6 +27,7 @@ void PlayMode::Start() {
 
 void PlayMode::Destructor() {
 	// 모드가 끝나면 로드했던 리소스를 메모리에서 해제한다.
+	imageUtil.Release(BackGroundImage);
 	imageUtil.Release(PlayerImage);
 }
 
