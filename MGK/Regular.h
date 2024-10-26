@@ -10,6 +10,8 @@ private:
 	GLfloat Speed{ 1.0 };
 	AABB aabb;
 
+	std::string Type{ "regular" };
+
 	// 대미지 받았음을 표시하는 빨간 색
 	GLfloat RedColor{};
 

@@ -19,6 +19,12 @@ private:
 	// 플레이어가 가지는 총의 현재 장탄수
 	int CurrentAmmo{};
 	int PrevAmmo{};
+	
+	// 플레이어 총 재장전 상태
+	bool ReloadState{};
+
+	// 재장전 진행도 수치
+	GLfloat ReloadProgress{}, EntireReloadProgress{};
 
 	// 장탄수 텍스트 높이
 	GLfloat Height{};
@@ -26,15 +32,32 @@ private:
 	// 장탄수를 표시하기 위한 텍스트
 	TextUtil text;
 
+	// 재장전을 표시하기 위한 선
+	LineBrush line;
+
 public:
 	IndAmmo() {
 		text.Init(L"맑은 고딕", FW_BOLD);
+		line.SetRenderType(RENDER_TYPE_STATIC);
+		line.SetColor(1.0, 1.0, 1.0);
+
 		PrevAmmo = CurrentAmmo;
 	}
 
 	// 현재 장탄수를 입력한다
 	void InputCurrentAmmo(int Value) {
 		CurrentAmmo = Value;
+	}
+
+	// 재장전 상태를 입력한다
+	void InputReloadState(bool State) {
+		ReloadState = State;
+	}
+
+	// 재장전 진척도를 입력한다
+	void InputReloadProgress(GLfloat CurrentProgress, GLfloat EntireProgress) {
+		EntireReloadProgress = EntireProgress;
+		ReloadProgress = CurrentProgress;
 	}
 
 	void UpdateFunc(float FT) {
@@ -66,5 +89,26 @@ public:
 
 		if(PlayerGunName == "SCAR_H")
 			Render(SCAR_H_Image);
+
+		// 재장전 진행도 막대 표시
+		if (ReloadState) {
+			GLfloat X1 = ASP(1.0) - 0.8;
+			line.Draw(X1, -1.0 + 0.22, X1 + 0.7 * (ReloadProgress / EntireReloadProgress), -1.0 + 0.22, 0.02);
+		}
+	}
+};
+
+class IndGrenade : public GameObject {
+private:
+	bool UseEnable{};
+	int RemainedTime{};
+
+public:
+	void UpdateFunc(float FT) {
+
+	}
+
+	void RenderFunc() {
+
 	}
 };

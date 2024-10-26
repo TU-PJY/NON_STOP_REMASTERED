@@ -4,18 +4,28 @@ private:
 	int LookDir{};
 	GLfloat Rotation{};
 	GLfloat RecoilPosition{};
+
 	TimerUtil ShootingTimer;
 	GLfloat ShootTime{};
+
 	bool TriggerState{};
+
 	SoundChannel ch{};
+
 	GameObject* CrosshairPtr{};
-	int CurrentAmmo{};
+	GameObject* IndPtr{};
+
+	int CurrentAmmo{25};
+	bool ReloadState{};
+
+	TimerUtil reloadTimer;
 
 public:
 	GunNameHere(GLfloat Time) {
 		ShootTime = Time;
-		if (auto crosshair = scene.Find("crosshair"); crosshair)
-			CrosshairPtr = crosshair;
+		CrosshairPtr = scene.Find("crosshair");
+		IndPtr = scene.Find("indammo");
+		IndPtr->InputCurrentAmmo(CurrentAmmo);
 	}
 
 	void InputPosition(glm::vec2 PositionValue) {
@@ -34,11 +44,32 @@ public:
 		TriggerState = State;
 	}
 
+	void Reload() {
+		if (CurrentAmmo < 25 && !ReloadState) {
+			PlaySound(AR_Reload, ch, 0);
+			IndPtr->InputReloadState(true);
+			ReloadState = true;
+		}
+	}
+
+	void UpdateReload(float FT) {
+		reloadTimer.Update(FT);
+		IndPtr->InputReloadProgress(reloadTimer.MiliSec(2), );
+
+		if (reloadTimer.MiliSec(1) >= ) {
+			CurrentAmmo = ;
+			IndPtr->InputCurrentAmmo(CurrentAmmo);
+			reloadTimer.Reset();
+			IndPtr->InputReloadState(false);
+			ReloadState = false;
+		}
+	}
+
 	void UpdateFunc(float FT) {
 		if (ShootingTimer.MiliSec(2) < ShootTime)
 			ShootingTimer.Update(FT);
 
-		if (TriggerState) {
+		if (CurrentAmmo != 0 && !ReloadState && TriggerState) {
 			if (ShootingTimer.MiliSec(2) >= ShootTime) {
 				PlaySound(SCAR_H_Shoot, ch, 0);
 
@@ -48,16 +79,22 @@ public:
 					Rotation
 				), "flame", LAYER_3);
 
-				RecoilPosition = ;
-				CrosshairPtr->GiveRecoil(  );
-				cameraCon.AddShakeValue(  );
+				RecoilPosition = 0.1;
+				CrosshairPtr->GiveRecoil();
+				cameraCon.AddShakeValue();
 				CrosshairPtr->ShootGun();
+
+				--CurrentAmmo;
+				IndPtr->InputCurrentAmmo(CurrentAmmo);
 
 				ShootingTimer.Reset();
 			}
 		}
 
 		RecoilPosition = Math::Lerp(RecoilPosition, 0.0, 15, FT);
+
+		if (ReloadState)
+			UpdateReload(FT);
 	}
 
 	void RenderFunc() {
@@ -76,6 +113,6 @@ public:
 		}
 
 		Transform::Scale(ScaleMatrix, 0.36, 0.36);
-		Render(SCAR_H_Image);
+		Render();
 	}
 };

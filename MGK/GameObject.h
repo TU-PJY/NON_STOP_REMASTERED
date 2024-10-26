@@ -102,6 +102,9 @@ public:
 	virtual void ShootGun() {}
 	virtual void GiveDamage(int Damage) {}
 	virtual void InputCurrentAmmo(int Value) {}
+	virtual void Reload() {}
+	virtual void InputReloadState(bool State) {}
+	virtual void InputReloadProgress(GLfloat CurrentProgress, GLfloat EntireProgress) {}
 
 private:
 	void PrepareRender(); 

@@ -11,6 +11,11 @@ void Player::InputKey(int State, unsigned char NormalKey, int SpecialKey) {
 		switch (NormalKey) {
 		case 'a': MoveLeft = true; break;
 		case 'd': MoveRight = true; break;
+
+		case 'r':
+			GunPtr->Reload();
+			break;
+
 		case NK_SPACE: 
 			if (!JumpState) {
 				pUtil.SetGravityAcc(6.0);

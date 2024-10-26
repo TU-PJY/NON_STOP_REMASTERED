@@ -37,6 +37,12 @@ private:
 	// 현재 장탄수
 	int CurrentAmmo{25};
 
+	// 재장전 여부
+	bool ReloadState{};
+
+	// 재장전 타미어
+	TimerUtil reloadTimer;
+
 public:
 	// 총 이름 입력, 이름에 따라 발사 속도가 정해진다
 	SCAR_H(GLfloat Time) {
@@ -65,8 +71,38 @@ public:
 		Rotation = Value;
 	}
 
+	// 방아쇠 당김 상태를 부여한다.
 	void InputTriggerState(bool State) {
 		TriggerState = State;
+	}
+
+	// 총을 재장전 한다.
+	void Reload() {
+		if (CurrentAmmo < 25 && !ReloadState) {
+			PlaySound(AR_Reload, ch, 0);
+
+			// 재장전 상태 활성화를 인디케이터로 전송
+			IndPtr->InputReloadState(true);
+			ReloadState = true;
+		}
+	}
+
+	// 재장전을 업데이트 한다.
+	void UpdateReload(float FT) {
+		reloadTimer.Update(FT);
+
+		// 재장전 진척도를 인디케이터로 전송한다.
+		IndPtr->InputReloadProgress(reloadTimer.MiliSec(2), 0.7);
+
+		if (reloadTimer.MiliSec(1) >= 0.7) {
+			CurrentAmmo = 25;
+			IndPtr->InputCurrentAmmo(CurrentAmmo);
+			reloadTimer.Reset();
+
+			// 재장전 상태 비활성화를 인디케이터로 전송
+			IndPtr->InputReloadState(false);
+			ReloadState = false;
+		}
 	}
 
 	void UpdateFunc(float FT) {
@@ -77,7 +113,7 @@ public:
 		// 격발 시 사운드 출력과 함께 불꽃 오브젝트를 추가한다
 		// 크로스헤어에는 반동을 준다.
 		// 카메라에는 흔들림 수치를 추가한다.
-		if (CurrentAmmo != 0 && TriggerState) {
+		if (CurrentAmmo != 0 && !ReloadState && TriggerState) {
 			if (ShootingTimer.MiliSec(2) >= ShootTime) {
 				PlaySound(SCAR_H_Shoot, ch, 0);
 
@@ -105,6 +141,10 @@ public:
 		}
 
 		RecoilPosition = Math::Lerp(RecoilPosition, 0.0, 15, FT);
+
+		// 제장전 상태일 경우 재장전 업데이트
+		if (ReloadState)
+			UpdateReload(FT);
 	}
 
 	void RenderFunc() {

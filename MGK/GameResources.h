@@ -13,3 +13,4 @@ extern Image SCAR_H_Image;
 
 // PlayMode에 필요한 사운드들
 extern Sound SCAR_H_Shoot;
+extern Sound AR_Reload;
