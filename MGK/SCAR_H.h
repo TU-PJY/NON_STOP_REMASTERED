@@ -67,8 +67,8 @@ public:
 		// 카메라에는 흔들림 수치를 추가한다.
 		if (TriggerState) {
 			if (ShootingTimer.MiliSec(2) >= ShootTime) {
-				ShootingTimer.Reset();
 				PlaySound(SCAR_H_Shoot, ch, 0);
+
 				scene.AddObject(new Flame(
 					Position.x + cos(glm::radians(Rotation)) * 0.35, 
 					Position.y + sin(glm::radians(Rotation)) * 0.35,
@@ -78,6 +78,11 @@ public:
 				RecoilPosition = 0.1;
 				CrosshairPtr->GiveRecoil(0.07);
 				cameraCon.AddShakeValue(1.0);
+
+				// 크로스헤어에 발사 상태를 부여한다.
+				CrosshairPtr->ShootGun();
+
+				ShootingTimer.Reset();
 			}
 		}
 

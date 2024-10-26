@@ -9,7 +9,7 @@ typedef void(*Function)(void);
 typedef void(*ControllerFunction)(void);
 constexpr int Layers = END;
 
-using LayerIter = std::map<const char*, GameObject*>::iterator;
+using LayerIter = std::multimap<const char*, GameObject*>::iterator;
 
 typedef struct {
 	LayerIter First, End;
@@ -36,7 +36,7 @@ enum ObjectType {
 class Scene {
 private:
 	std::array<std::vector<GameObject*>, Layers> ObjectList;
-	std::map<const char*, GameObject*> ObjectIndex;
+	std::multimap<const char*, GameObject*> ObjectIndex;
 
 	const char*						  CurrentRunningMode{};
 	const char*						  PrevRunningMode{};

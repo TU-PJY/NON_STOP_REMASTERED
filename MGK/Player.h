@@ -31,7 +31,7 @@ private:
 	bool TriggerState{};
 
 	// 플레이어가 들고있는 총 이름
-	const char* GunName{};
+	std::string GunName{};
 
 	// 플레이어가 들고있는 총 오브젝트 포인터
 	GameObject* GunPtr{};
@@ -40,7 +40,7 @@ private:
 	AABB aabb;
 
 public:
-	Player(const char* Name);
+	Player(std::string Name);
 
 	// 키 입력 컨트롤러
 	void InputKey(int State, unsigned char NormalKey, int SpecialKey);

@@ -137,3 +137,5 @@ namespace Framework {
 }
 
 extern GLfloat MouseSensivity;
+
+extern std::string PlayerGunName;

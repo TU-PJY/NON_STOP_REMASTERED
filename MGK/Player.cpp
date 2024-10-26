@@ -36,7 +36,7 @@ void Player::InputMouse(int State) {
 	}
 }
 
-Player::Player(const char* Name) {
+Player::Player(std::string Name) {
 	// 물리엔진의 중력과 바닥 위치 지정
 	pUtil.SetGravity(15);
 	pUtil.SetFloorHeight(-0.5);
@@ -47,9 +47,9 @@ Player::Player(const char* Name) {
 void Player::AddGunObject() {
 	// 자기가 가진 총 이름에 따라 다른 총이 scene에 추가된다.
 	if (GunName == "SCAR_H")
-		scene.AddObject(new SCAR_H(0.13), GunName, LAYER_3);
+		scene.AddObject(new SCAR_H(0.13), GunName.c_str(), LAYER_3);
 
-	GunPtr = scene.Find(GunName);
+	GunPtr = scene.Find(GunName.c_str());
 }
 
 void Player::UpdateGun() {

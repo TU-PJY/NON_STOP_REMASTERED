@@ -99,6 +99,8 @@ public:
 	virtual void InputRotation(GLfloat Value) {}
 	virtual void InputTriggerState(bool State) {}
 	virtual void GiveRecoil(GLfloat Value) {}
+	virtual void ShootGun() {}
+	virtual void GiveDamage(int Damage) {}
 
 private:
 	void PrepareRender(); 

@@ -25,6 +25,8 @@ GLfloat MouseSensivity = 0.5;
 
 bool FullscreenState;
 
+std::string PlayerGunName;
+
 GLfloat ASPECT;
 ViewportRect WindowRect;
 glm::vec3 BackColor;

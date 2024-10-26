@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "MouseUtil.h"
 #include "CameraController.h"
+#include "Scene.h"
 
 class Crosshair : public GameObject {
 private:
@@ -12,13 +13,16 @@ private:
 	glm::vec2 RealPosition{};
 
 	// 랜덤 생성 타격 지점
-	glm::vec2 RandomTarget{};
+	glm::vec2 TargetPoint{};
 
 	// 반동 수치
 	GLfloat Recoil{};
 
 	// 선 그리기 클래스
 	LineBrush line;
+
+	// 격발 여부
+	bool ShootState{};
 
 public:
 	Crosshair() {
@@ -33,13 +37,33 @@ public:
 		Recoil += Value;
 	}
 
+	// 총알을 발사한다.
+	void ShootGun() {
+		// 랜덤한 지점을 생성한다.
+		TargetPoint.x = Random::Gen(DIST_REAL, RealPosition.x - 0.03 - Recoil, RealPosition.x + 0.03 + Recoil);
+		TargetPoint.y = Random::Gen(DIST_REAL, RealPosition.y - 0.03 - Recoil, RealPosition.y + 0.03 + Recoil);
+
+		// monster 태그를 가진 범위를 얻는다.
+		ObjectRange MonsterRange = scene.EqualRange("monster");
+
+		// 범위 내에 있는 모든 오브젝트의 AABB 충돌 검사를 통해 대미지 부여 여부를 결정한다.
+		for (auto It = MonsterRange.First; It != MonsterRange.End; ++It) {
+			if (It->second->GetAABB().CheckCollisionPoint(TargetPoint.x, TargetPoint.y)) {
+
+				// 플레이어의 총에 따라 대미지가 다르게 부여된다.
+				if (PlayerGunName == "SCAR_H")
+					It->second->GiveDamage(20);
+			}
+		}
+	}
+
 	void UpdateFunc(float FT) {
 		// 크로스 헤어가 표시되는 위치 지정
 		Position.x = mouse.x;
 		Position.y = mouse.y;
 
 		// 월드 상의 크로스헤어 위치 지정
-		RealPosition.x = mouse.x + cameraCon.Position.x;
+		RealPosition.x = mouse.x - cameraCon.Position.x;
 		RealPosition.y = mouse.y;
 
 		// 반동 수치를 점차 줄인다
