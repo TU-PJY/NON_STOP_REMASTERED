@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "BackGround.h"
 #include "Crosshair.h"
+#include "MonsterGenerator.h"
 
 void PlayMode::Start() {
 	// 배경색을 밝은 색으로 바꾼다.
@@ -20,6 +21,7 @@ void PlayMode::Start() {
 	imageUtil.Import(SCAR_H_Image, "res//SCAR_H_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(PlayerImage, "res//commando_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(FlameImage, "res//flame_right.png", IMAGE_TYPE_NEAREST);
+	imageUtil.Import(RegularMonsterImage, "res//monster_right.png", IMAGE_TYPE_NEAREST);
 
 	// 사운드
 	soundUtil.Import(SCAR_H_Shoot, "res//sounds//scar_shoot.ogg", FMOD_DEFAULT);
@@ -28,6 +30,7 @@ void PlayMode::Start() {
 	scene.AddObject(new BackGround, "background", LAYER_1);
 	scene.AddObject(new Crosshair, "crosshair", LAYER_4);
 	scene.AddObject(new Player("SCAR_H"), "player", LAYER_3);
+	scene.AddObject(new MonsterGenerator, "monster_generator", LAYER_1);
 
 	scene.RegisterController(Controller, MODE_TYPE_DEFAULT);
 	scene.RegisterDestructor(Destructor);

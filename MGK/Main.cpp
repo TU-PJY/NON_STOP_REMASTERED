@@ -35,9 +35,7 @@ GLvoid Framework::Framework() {
 	glutPostRedisplay();
 
 	UpdateActivateCommand = true;
-}
-
-void main(int argc, char** argv) {
+}void main(int argc, char** argv) {
 	Framework::SetupSystem(argc, argv);
 	glutDisplayFunc(Framework::Framework);
 	glutReshapeFunc(Framework::DisplayReshape);

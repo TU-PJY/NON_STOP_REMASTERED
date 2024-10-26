@@ -196,7 +196,9 @@
     <ClInclude Include="Flame.h" />
     <ClInclude Include="FontUtil.h" />
     <ClInclude Include="EngineHeader.h" />
+    <ClInclude Include="MonsterGenerator.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Regular.h" />
     <ClInclude Include="SCAR_H.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ImageUtil.h" />

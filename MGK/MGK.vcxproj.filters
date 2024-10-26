@@ -172,6 +172,12 @@
     <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ Crosshair ]">
       <UniqueIdentifier>{b7511b5a-e30d-44c7-9b72-00baeb658e36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Monster Generator ]">
+      <UniqueIdentifier>{f2560e04-0749-44a8-9634-69b5bb5aa8a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Monster ]">
+      <UniqueIdentifier>{b7ad4653-adfd-4592-94c6-5230dca463c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayMode.cpp">
@@ -410,9 +416,6 @@
     <ClInclude Include="TransformUtil.h">
       <Filter>[4]___________[ Util ]\[ Transform Util ]</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[Player]</Filter>
-    </ClInclude>
     <ClInclude Include="BackGround.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[BackGround]</Filter>
     </ClInclude>
@@ -424,6 +427,15 @@
     </ClInclude>
     <ClInclude Include="Crosshair.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ Crosshair ]</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterGenerator.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Monster Generator ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Regular.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Monster ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[Player]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
