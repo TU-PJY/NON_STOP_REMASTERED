@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "MouseUtil.h"
 #include "CameraCOntroller.h"
+#include "Scene.h"
 
 Player::Player(){
 	// 물리엔진의 중력과 바닥 위치 지정
@@ -33,7 +34,26 @@ void Player::InputKey(int State, unsigned char NormalKey, int SpecialKey) {
 }
 
 void Player::InputMouse(int State) {
+	switch (State) { // 좌클릭 시 격발, 좌클릭 해제 시 격발 해제
+	case LEFT_BUTTON_DOWN: TriggerState = true; break;
+	case LEFT_BUTTON_UP: TriggerState = false; break;
+	}
+}
 
+void Player::UpdateGun() {
+	// 총 오브젝트 포인터가 없다면 포인터를 찾는다
+	if (!GunPtr) {
+		if (auto gun = scene.Find(GunName); gun)
+			GunPtr = gun;
+	}
+
+	// 총 오브젝트 포인터가 있다면 총으로 플레이어의 정보를 보낸다. (위치, 각도, 방아쇠 당김 등)
+	if (GunPtr) {
+		GunPtr->InputPosition(Position);
+		GunPtr->InputLookDir(LookDir);
+		GunPtr->InputRotation(Math::CalcDegree(Position.x, Position.y, mouse.x - cameraCon.Position.x, mouse.y));
+		GunPtr->InputTriggerState(TriggerState);
+	}
 }
 
 void Player::UpdateFunc(float FT) {
@@ -60,6 +80,8 @@ void Player::UpdateFunc(float FT) {
 	pUtil.UpdateFalling(Position.y, FT);
 	if (!pUtil.GetFallingState())
 		JumpState = false;
+
+	UpdateGun();
 }
 
 void Player::RenderFunc() {
@@ -73,14 +95,19 @@ void Player::RenderFunc() {
 	Transform::Scale(ScaleMatrix, 0.15, 0.15);
 
 	// 왼쪽을 바라보는 경우 수평방향으로 이미지 반전
-	if (LookDir == LOOK_LEFT)
+	if (LookDir == LOOK_LEFT) {
+		if (JumpState)
+			Transform::Rotate(RotateMatrix, 20.0);
 		Flip(FLIP_H);
+	}
+
+	else if (LookDir == LOOK_RIGHT) {
+		if (JumpState)
+			Transform::Rotate(RotateMatrix, -20.0);
+	}
 
 	// 렌더링에 필요한 데이터들을 쉐이더로 전달 후 최종 렌더링
 	Render(PlayerImage);
-
-	// 플레이어의 뷰포트 기준 위치 계산
-	UpdateViewportPosition(ViewportPosition);
 }
 
 glm::vec2 Player::GetPosition() {

@@ -151,11 +151,23 @@
     <Filter Include="[1]___________[ GameMode ]\[ PlayMode ]">
       <UniqueIdentifier>{7b8ece9e-369e-41aa-9eb1-0f0dc2f9398d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\%28 Player %29">
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]">
+      <UniqueIdentifier>{d78cc630-1296-48d0-b518-e3f2fe02fe90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[BackGround]">
+      <UniqueIdentifier>{6d3c23bc-0696-463e-ae95-822a802772d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[Player]">
       <UniqueIdentifier>{3d31032f-3340-4346-be81-de187d31e8eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\%28 BackGround %29">
-      <UniqueIdentifier>{6d3c23bc-0696-463e-ae95-822a802772d7}</UniqueIdentifier>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Gun ]">
+      <UniqueIdentifier>{1a0e6309-8d03-4517-bdf8-d3f47d9fd89f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]">
+      <UniqueIdentifier>{ca79ad9d-b928-4f7c-bcee-23b57b5c73c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ Flame ]">
+      <UniqueIdentifier>{6ffb7c94-fad9-40a7-97ea-4866a6d66642}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -277,7 +289,10 @@
       <Filter>[4]___________[ Util ]\[ Transform Util ]</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>[2]___________[ Object ]\[1][ Main Object ]\%28 Player %29</Filter>
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[Player]</Filter>
+    </ClCompile>
+    <ClCompile Include="Flame.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ Flame ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,10 +408,16 @@
       <Filter>[4]___________[ Util ]\[ Transform Util ]</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>[2]___________[ Object ]\[1][ Main Object ]\%28 Player %29</Filter>
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[Player]</Filter>
     </ClInclude>
     <ClInclude Include="BackGround.h">
-      <Filter>[2]___________[ Object ]\[1][ Main Object ]\%28 BackGround %29</Filter>
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[BackGround]</Filter>
+    </ClInclude>
+    <ClInclude Include="SCAR_H.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Gun ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Flame.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ Flame ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

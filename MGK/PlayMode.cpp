@@ -5,20 +5,28 @@
 // 추가가 필요한 오브젝트의 헤더파일을 포함한다.
 #include "Player.h"
 #include "BackGround.h"
+#include "SCAR_H.h"
 
 void PlayMode::Start() {
 	// 배경색을 밝은 색으로 바꾼다.
-	Framework::SetBackColor(0.5, 0.5, 0.5);
+	Framework::SetBackColorRGB(166, 166, 166);
 
 	// playmode에 필요한 리소스들을 로드한다.
-	imageUtil.Import(PlayerImage, "res//commando_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(BackGroundImage, "res//BackGround_wide.png", IMAGE_TYPE_NEAREST);
+	imageUtil.Import(SCAR_H_Image, "res//SCAR_H_right.png", IMAGE_TYPE_NEAREST);
+	imageUtil.Import(PlayerImage, "res//commando_right.png", IMAGE_TYPE_NEAREST);
+	imageUtil.Import(FlameImage, "res//flame_right.png", IMAGE_TYPE_NEAREST);
+
+	soundUtil.Import(SCAR_H_Shoot, "res//sounds//scar_shoot.ogg", FMOD_DEFAULT);
 
 	// playmode에 필요한 오브젝트들을 scene에 추가한다.
 	scene.AddObject(new BackGround, "background", LAYER_1);
 	
 	// player의 경우 3번 레이어에 추가헸다.
 	scene.AddObject(new Player, "player", LAYER_3);
+
+	// 총 추가
+	scene.AddObject(new SCAR_H(0.13), "SCAR_H", LAYER_3);
 
 	scene.RegisterController(Controller, MODE_TYPE_DEFAULT);
 	scene.RegisterDestructor(Destructor);
@@ -48,6 +56,8 @@ void PlayMode::ProcessKeyboard(int State, unsigned char NormalKey, int SpecialKe
 }
 
 void PlayMode::ProcessMouseButton(int State) {
+	if (auto player = scene.Find("player"); player)
+		player->InputMouse(State);
 }
 
 void PlayMode::ProcessMouseWheel(int State) {

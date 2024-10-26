@@ -94,6 +94,10 @@ public:
 
 	// custom defined functions
 	virtual glm::vec2 GetPosition() { return{}; }
+	virtual void InputPosition(glm::vec2 PositionValue) {}
+	virtual void InputLookDir(int Dir) {}
+	virtual void InputRotation(GLfloat Value) {}
+	virtual void InputTriggerState(bool State) {}
 
 private:
 	void PrepareRender(); 

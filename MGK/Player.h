@@ -2,8 +2,8 @@
 #include "GameObject.h"
 
 enum EnumLookDir{
-	LOOK_RIGHT,
-	LOOK_LEFT
+	LOOK_LEFT,
+	LOOK_RIGHT
 };
 
 // GameObject 클래스로부터 상속
@@ -11,9 +11,6 @@ class Player : public GameObject {
 private:
 	// 플레이어 위치
 	glm::vec2 Position{0.0, -0.5};
-
-	// 플레이어의 뷰포트 기준 위치
-	glm::vec2 ViewportPosition{};
 
 	// 플레이어 이동 속도
 	GLfloat Speed{ 2.5 };
@@ -30,6 +27,15 @@ private:
 	// 플레이어 점프 여부
 	bool JumpState{};
 
+	// 플레이어 방아쇠 당김 여부
+	bool TriggerState{};
+
+	// 플레이어가 들고있는 총 이름
+	const char* GunName{"SCAR_H"};
+
+	// 플레이어가 들고있는 총 오브젝트 포인터
+	GameObject* GunPtr{};
+
 public:
 	Player();
 
@@ -38,6 +44,8 @@ public:
 
 	// 마우스 입력 컨트롤러
 	void InputMouse(int State);
+
+	void UpdateGun();
 
 	// 업데이트 함수
 	// FT는 프레임타임. Scene클래스로부터 받는다.

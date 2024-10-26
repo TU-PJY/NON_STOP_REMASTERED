@@ -16,8 +16,6 @@ void CameraController::Update(float FT) {
 
 		else if (Position.x - ASPECT < -7.5)
 			Position.x = -7.5 + ASPECT;
-
-		std::cout << Position.x << std::endl;
 	}
 	
 	CalcMatrix();
