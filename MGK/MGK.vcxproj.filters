@@ -178,6 +178,9 @@
     <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Monster ]">
       <UniqueIdentifier>{b7ad4653-adfd-4592-94c6-5230dca463c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ UI ]">
+      <UniqueIdentifier>{d311ac09-7ef1-4434-a603-c254fef3f600}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayMode.cpp">
@@ -437,9 +440,15 @@
     <ClInclude Include="Player.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[Player]</Filter>
     </ClInclude>
+    <ClInclude Include="UIProps.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ UI ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ModeTemplate.txt">
+      <Filter>[7]___________[ Template ]</Filter>
+    </Text>
+    <Text Include="GunClassTemplate.txt">
       <Filter>[7]___________[ Template ]</Filter>
     </Text>
   </ItemGroup>

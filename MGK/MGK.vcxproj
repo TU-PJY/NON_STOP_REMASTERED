@@ -226,9 +226,11 @@
     <ClInclude Include="tinyxml\tinystr.h" />
     <ClInclude Include="tinyxml\tinyxml.h" />
     <ClInclude Include="TransformUtil.h" />
+    <ClInclude Include="UIProps.h" />
     <ClInclude Include="UiUtil.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="GunClassTemplate.txt" />
     <Text Include="ModeTemplate.txt" />
   </ItemGroup>
   <ItemGroup>

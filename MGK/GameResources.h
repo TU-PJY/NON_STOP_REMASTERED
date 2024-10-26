@@ -6,6 +6,7 @@ extern Image PlayerImage;
 extern Image BackGroundImage;
 extern Image FlameImage;
 extern Image RegularMonsterImage;
+extern Image IndicatorBackImage;
 
 // รั ภฬนฬม๖ต้
 extern Image SCAR_H_Image;

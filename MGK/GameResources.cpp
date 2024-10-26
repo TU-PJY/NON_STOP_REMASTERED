@@ -7,6 +7,7 @@ Image PlayerImage;
 Image BackGroundImage;
 Image FlameImage;
 Image RegularMonsterImage;
+Image IndicatorBackImage;
 
 // รั ภฬนฬม๖ต้
 Image SCAR_H_Image;

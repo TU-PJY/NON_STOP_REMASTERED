@@ -7,6 +7,7 @@
 #include "BackGround.h"
 #include "Crosshair.h"
 #include "MonsterGenerator.h"
+#include "UIProps.h"
 
 void PlayMode::Start() {
 	// 배경색을 밝은 색으로 바꾼다.
@@ -22,17 +23,24 @@ void PlayMode::Start() {
 	imageUtil.Import(PlayerImage, "res//commando_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(FlameImage, "res//flame_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(RegularMonsterImage, "res//monster_right.png", IMAGE_TYPE_NEAREST);
+	imageUtil.Import(IndicatorBackImage, "res//indicator_back.png", IMAGE_TYPE_NEAREST);
 
 	// 사운드
 	soundUtil.Import(SCAR_H_Shoot, "res//sounds//scar_shoot.ogg", FMOD_DEFAULT);
 
+	// 개발 시에는 여기다가 플레이어 총 이름을 정의하나, 나중에 메인 화면 모드에서 정의하도록 할 예정이다
 	PlayerGunName = "SCAR_H";
 
 	// playmode에 필요한 오브젝트들을 scene에 추가한다.
-	scene.AddObject(new BackGround, "background", LAYER_1);
-	scene.AddObject(new Crosshair, "crosshair", LAYER_4);
-	scene.AddObject(new Player(PlayerGunName), "player", LAYER_3);
+	// UI 오브젝트 및 무형 오브젝트
 	scene.AddObject(new MonsterGenerator, "monster_generator", LAYER_1);
+	scene.AddObject(new IndBack, "indback", LAYER_5);
+	scene.AddObject(new IndAmmo, "indammo", LAYER_5);
+	scene.AddObject(new Crosshair, "crosshair", LAYER_4);
+
+	// 일반 오브젝트
+	scene.AddObject(new BackGround, "background", LAYER_1);
+	scene.AddObject(new Player(PlayerGunName), "player", LAYER_3);
 
 	scene.RegisterController(Controller, MODE_TYPE_DEFAULT);
 	scene.RegisterDestructor(Destructor);

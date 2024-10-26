@@ -36,7 +36,7 @@ constexpr bool SHOW_CONSOLE = true;
 // scene layer option
 // 'END' should be typed at last
 enum Layer
-{ LAYER_1, LAYER_2, LAYER_3, LAYER_4, END };
+{ LAYER_1, LAYER_2, LAYER_3, LAYER_4, LAYER_5, END };
 
 // scene container reserve option
 constexpr int OBJECT_LIST_RESERVE = 500;

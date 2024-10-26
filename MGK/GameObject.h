@@ -101,6 +101,7 @@ public:
 	virtual void GiveRecoil(GLfloat Value) {}
 	virtual void ShootGun() {}
 	virtual void GiveDamage(int Damage) {}
+	virtual void InputCurrentAmmo(int Value) {}
 
 private:
 	void PrepareRender(); 

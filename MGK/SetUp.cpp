@@ -20,9 +20,6 @@ int PREV_WIDTH, PREV_HEIGHT;
 
 float DestFPS;
 int FPSLimit;
-
-GLfloat MouseSensivity = 0.5;
-
 bool FullscreenState;
 
 std::string PlayerGunName;

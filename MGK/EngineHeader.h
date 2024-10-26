@@ -136,6 +136,4 @@ namespace Framework {
 	void LoadShader();
 }
 
-extern GLfloat MouseSensivity;
-
 extern std::string PlayerGunName;
