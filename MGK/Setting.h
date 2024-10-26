@@ -6,7 +6,7 @@ constexpr const char* WINDOW_NAME = "MGK-2";
 
 // window size
 constexpr int WINDOW_WIDTH = 1200;
-constexpr int WINDOW_HEIGHT = 800;
+constexpr int WINDOW_HEIGHT = 1200;
 
 // fullscreen option
 constexpr bool FULL_SCREEN_OPTION = false;

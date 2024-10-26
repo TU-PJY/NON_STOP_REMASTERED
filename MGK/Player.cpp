@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "MouseUtil.h"
+#include "CameraCOntroller.h"
 
 Player::Player(){
 	// 물리엔진의 중력과 바닥 위치 지정
@@ -37,12 +38,23 @@ void Player::InputMouse(int State) {
 
 void Player::UpdateFunc(float FT) {
 	// 움직임 여부에 따라 이동 방향이 달라진다.
-	if (MoveRight)  Position.x += Speed * FT;
-	if (MoveLeft)   Position.x -= Speed * FT;
+	// 범위 밖을 나가지 않도록 한다.
+	if (MoveRight) {
+		Position.x += Speed * FT;
+		if (Position.x > 7.5)
+			Position.x = 7.5;
+	}
+
+	if (MoveLeft) {
+		Position.x -= Speed * FT;
+		if (Position.x < -7.5)
+			Position.x = -7.5;
+	}
 
 	// 마우스 위치에 따라 바라보는 방향이 달라진다.
-	if      (mouse.x > Position.x)  LookDir = LOOK_RIGHT;
-	else if (mouse.x < Position.x)  LookDir = LOOK_LEFT;
+	// 마우스 위치에 카메라 위치를 포함시켜야 한다.
+	if      (mouse.x - cameraCon.Position.x > Position.x)  LookDir = LOOK_RIGHT;
+	else if (mouse.x - cameraCon.Position.x < Position.x)  LookDir = LOOK_LEFT;
 
 	// 플레이어 점프 업데이트
 	pUtil.UpdateFalling(Position.y, FT);
@@ -66,4 +78,11 @@ void Player::RenderFunc() {
 
 	// 렌더링에 필요한 데이터들을 쉐이더로 전달 후 최종 렌더링
 	Render(PlayerImage);
+
+	// 플레이어의 뷰포트 기준 위치 계산
+	UpdateViewportPosition(ViewportPosition);
+}
+
+glm::vec2 Player::GetPosition() {
+	return Position;
 }

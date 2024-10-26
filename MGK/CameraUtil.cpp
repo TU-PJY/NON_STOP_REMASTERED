@@ -1,4 +1,5 @@
 #include "CameraUtil.h"
+#include "CameraController.h"
 
 void Camera::CalculateASPECT() {
 	ASPECT = (float)WIDTH / (float)HEIGHT;
@@ -22,11 +23,17 @@ void Camera::Init() {
 	SetCamera(RENDER_TYPE_DEFAULT);
 }
 
+void Camera::InputFrameTime(float FT) {
+	FrameTime = FT;
+}
+
 void Camera::SetCamera(int RenderType) {
 	using namespace glm;
 
 	if(PREV_WIDTH != WIDTH || PREV_HEIGHT != HEIGHT)
 		CalculateASPECT();
+
+	cameraCon.Update(FrameTime);
 
 	CamPos = vec3(0.0f, 0.0f, 1.0f);
 	CamDirection = vec3(0.0f, 0.0f, 0.0f);

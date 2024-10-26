@@ -12,8 +12,11 @@ private:
 	// 플레이어 위치
 	glm::vec2 Position{0.0, -0.5};
 
+	// 플레이어의 뷰포트 기준 위치
+	glm::vec2 ViewportPosition{};
+
 	// 플레이어 이동 속도
-	GLfloat Speed{ 2.0 };
+	GLfloat Speed{ 2.5 };
 
 	// 플레이어 이동 방향
 	int LookDir{};
@@ -42,4 +45,7 @@ public:
 
 	// 렌더링 함수
 	void RenderFunc();
+
+	// 다른 객체 또는 위치에서 플레이어의 위치 값을 얻을 수 있도록 한다.
+	glm::vec2 GetPosition();
 };

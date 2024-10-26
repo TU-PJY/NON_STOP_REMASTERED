@@ -1,10 +1,25 @@
 #include "CameraController.h"
 #include "CameraUtil.h"
 #include "TransformUtil.h"
+#include "Scene.h"
 
 void CameraController::Update(float FT) {
-	// add logic here
+	// playmode 카메라 무빙 업데이트
+	if (scene.Mode() == "PlayMode") {
+		// 플레이어의 위치를 추적한다.
+		if (auto player = scene.Find("player"); player)
+			Position.x = -player->GetPosition().x;
 
+		// 맵 가장자리에 카메라가 위치할 경우 추적하지 않는다.
+		if (Position.x + ASPECT > 7.5)
+			Position.x = 7.5 - ASPECT;
+
+		else if (Position.x - ASPECT < -7.5)
+			Position.x = -7.5 + ASPECT;
+
+		std::cout << Position.x << std::endl;
+	}
+	
 	CalcMatrix();
 }
 

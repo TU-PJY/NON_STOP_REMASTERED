@@ -16,7 +16,6 @@ GLvoid Framework::Framework() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	if (UpdateActivateCommand) {
-		cameraCon.Update(DeltaTime);
 		scene.Routine();
 		soundUtil.Update();
 	}
@@ -28,6 +27,7 @@ GLvoid Framework::Framework() {
 
 	DeltaTime = (CurrentTime - PrevTime) / 1000.0;
 	scene.InputFrameTime(DeltaTime);
+	camera.InputFrameTime(DeltaTime);
 
 	PrevTime = CurrentTime;
 

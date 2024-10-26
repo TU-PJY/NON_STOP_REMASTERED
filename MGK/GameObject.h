@@ -52,7 +52,7 @@ public:
 	// viewport functions
 	void UpdateViewportPosition(GLfloat& ValueX, GLfloat& ValueY, bool ApplyAspect = true);
 	void UpdateLocalPosition(GLfloat& ValueX, GLfloat& ValueY);
-	void UpdateViewportPosition(glm::vec2& Position, bool ApplyAspect);
+	void UpdateViewportPosition(glm::vec2& Position, bool ApplyAspect=true);
 	void UpdateLocalPosition(glm::vec2& Position);
 	GLfloat ASP(GLfloat Value);
 
@@ -91,6 +91,9 @@ public:
 	virtual AABB GetAABB() { return {}; }
 	virtual OOBB GetOBB() { return{}; }
 	virtual BoundingSphere GetRange() { return {}; }
+
+	// custom defined functions
+	virtual glm::vec2 GetPosition() { return{}; }
 
 private:
 	void PrepareRender(); 
