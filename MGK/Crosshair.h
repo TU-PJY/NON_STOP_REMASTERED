@@ -51,15 +51,15 @@ public:
 
 	void RenderFunc() {
 		// left
-		line.Draw(Position.x - 0.2 - Recoil, Position.y, Position.x - 0.05 - Recoil, Position.y, 0.01);
+		line.Draw(Position.x - 0.15 - Recoil, Position.y, Position.x - 0.03 - Recoil, Position.y, 0.015);
 
 		// right
-		line.Draw(Position.x + 0.05 + Recoil, Position.y, Position.x + 0.2 + Recoil, Position.y, 0.01);
+		line.Draw(Position.x + 0.03 + Recoil, Position.y, Position.x + 0.15 + Recoil, Position.y, 0.015);
 
 		// upper
-		line.Draw(Position.x, Position.y + 0.05 + Recoil, Position.x, Position.y + 0.2 + Recoil, 0.01);
+		line.Draw(Position.x, Position.y + 0.03 + Recoil, Position.x, Position.y + 0.15 + Recoil, 0.015);
 
 		// under
-		line.Draw(Position.x, Position.y - 0.2 - Recoil, Position.x, Position.y - 0.05 - Recoil, 0.01);
+		line.Draw(Position.x, Position.y - 0.15 - Recoil, Position.x, Position.y - 0.03 - Recoil, 0.015);
 	}
 };
