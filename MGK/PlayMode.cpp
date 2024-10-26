@@ -12,6 +12,9 @@ void PlayMode::Start() {
 	// 배경색을 밝은 색으로 바꾼다.
 	Framework::SetBackColorRGB(166, 166, 166);
 
+	// 커서 숨김
+	glutSetCursor(GLUT_CURSOR_NONE);
+
 	// playmode에 필요한 리소스들을 로드한다.
 	imageUtil.Import(BackGroundImage, "res//BackGround_wide.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(SCAR_H_Image, "res//SCAR_H_right.png", IMAGE_TYPE_NEAREST);
@@ -81,16 +84,10 @@ void PlayMode::SpecialKeyUp(int KEY, int X, int Y) {
 
 void PlayMode::MouseMotion(int X, int Y) {
 	mouse.ConvertPosition(X, Y);
-	mouse.CrossX += mouse.x * MouseSensivity;
-	mouse.CrossY += mouse.y * MouseSensivity;
-	glutWarpPointer(WIDTH / 2, HEIGHT / 2);
 }
 
 void PlayMode::MousePassiveMotion(int X, int Y) {
 	mouse.ConvertPosition(X, Y);
-	mouse.CrossX += mouse.x * MouseSensivity;
-	mouse.CrossY += mouse.y * MouseSensivity;
-	glutWarpPointer(WIDTH / 2, HEIGHT / 2);
 }
 
 void PlayMode::MouseWheel(int Button, int Wheel, int X, int Y) {
