@@ -36,6 +36,9 @@ private:
 	// 플레이어가 들고있는 총 오브젝트 포인터
 	GameObject* GunPtr{};
 
+	// AABB
+	AABB aabb;
+
 public:
 	Player();
 

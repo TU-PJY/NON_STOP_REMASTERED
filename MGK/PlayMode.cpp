@@ -16,17 +16,20 @@ void PlayMode::Start() {
 	glutSetCursor(GLUT_CURSOR_NONE);
 
 	// playmode에 필요한 리소스들을 로드한다.
+	// 이미지
 	imageUtil.Import(BackGroundImage, "res//BackGround_wide.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(SCAR_H_Image, "res//SCAR_H_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(PlayerImage, "res//commando_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(FlameImage, "res//flame_right.png", IMAGE_TYPE_NEAREST);
 
+	// 사운드
 	soundUtil.Import(SCAR_H_Shoot, "res//sounds//scar_shoot.ogg", FMOD_DEFAULT);
 
 	// playmode에 필요한 오브젝트들을 scene에 추가한다.
 	scene.AddObject(new BackGround, "background", LAYER_1);
 	scene.AddObject(new Crosshair, "crosshair", LAYER_4);
 	scene.AddObject(new Player, "player", LAYER_3);
+
 	scene.AddObject(new SCAR_H(0.13), "SCAR_H", LAYER_3);
 
 	scene.RegisterController(Controller, MODE_TYPE_DEFAULT);
@@ -36,8 +39,14 @@ void PlayMode::Start() {
 
 void PlayMode::Destructor() {
 	// 모드가 끝나면 로드했던 리소스를 메모리에서 해제한다.
+	// 이미지
 	imageUtil.Release(BackGroundImage);
 	imageUtil.Release(PlayerImage);
+	imageUtil.Release(SCAR_H_Image);
+	imageUtil.Release(FlameImage);
+
+	// 사운드
+	soundUtil.Release(SCAR_H_Shoot);
 }
 
 void PlayMode::ProcessKeyboard(int State, unsigned char NormalKey, int SpecialKey) {

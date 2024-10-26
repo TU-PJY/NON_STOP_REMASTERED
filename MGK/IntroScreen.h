@@ -86,12 +86,12 @@ public:
 
 		if (Scene == 1) {
 			Transform::Rotate(RotateMatrix, Rotation);
-			Transform::Scale(ScaleMatrix, LogoSize * 0.5, LogoSize * 0.5);
+			Transform::Scale(ScaleMatrix, LogoSize, LogoSize);
 			Render(ImageEngineLogo, LogoTransparent);
 		}
 
 		else if (Scene == 2 || Scene == 3) {
-			Transform::Scale(ScaleMatrix, LogoSize * 0.5, LogoSize * 0.5);
+			Transform::Scale(ScaleMatrix, LogoSize, LogoSize);
 			Render(ImageFMODLogo, LogoTransparent);
 		}
 	}

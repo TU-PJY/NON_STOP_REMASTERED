@@ -17,6 +17,6 @@ void Flame::RenderFunc() {
 	InitMatrix();
 	Transform::Move(TranslateMatrix, Position);
 	Transform::Rotate(RotateMatrix, Rotation);
-	Transform::Scale(ScaleMatrix, 0.2, 0.2);
+	Transform::Scale(ScaleMatrix, 0.4, 0.4);
 	Render(FlameImage, FlameTransparent);
 }

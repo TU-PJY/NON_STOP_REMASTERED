@@ -6,7 +6,7 @@ public:
 	void RenderFunc() {
 		InitMatrix();
 		Transform::Move(TranslateMatrix, 0.0, 0.5);
-		Transform::Scale(ScaleMatrix, 8.0, 8.0);
+		Transform::Scale(ScaleMatrix, 16.0, 16.0);
 		Render(BackGroundImage);
 	}
 };

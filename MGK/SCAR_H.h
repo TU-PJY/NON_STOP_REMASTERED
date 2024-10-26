@@ -100,7 +100,7 @@ public:
 			Transform::Move(TranslateMatrix, 0.15 - RecoilPosition, 0.0);
 		}
 
-		Transform::Scale(ScaleMatrix, 0.18, 0.18);
+		Transform::Scale(ScaleMatrix, 0.36, 0.36);
 		Render(SCAR_H_Image);
 	}
 };

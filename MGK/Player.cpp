@@ -82,6 +82,9 @@ void Player::UpdateFunc(float FT) {
 		JumpState = false;
 
 	UpdateGun();
+
+	// AABB 업데이트
+	aabb.Update(Position.x, Position.y, 0.25, 0.3);
 }
 
 void Player::RenderFunc() {
@@ -92,7 +95,7 @@ void Player::RenderFunc() {
 	Transform::Move(TranslateMatrix, Position);
 
 	// 플레이어 출력 크기 조정
-	Transform::Scale(ScaleMatrix, 0.15, 0.15);
+	Transform::Scale(ScaleMatrix, 0.3, 0.3);
 
 	// 왼쪽을 바라보는 경우 수평방향으로 이미지 반전
 	if (LookDir == LOOK_LEFT) {
@@ -108,6 +111,9 @@ void Player::RenderFunc() {
 
 	// 렌더링에 필요한 데이터들을 쉐이더로 전달 후 최종 렌더링
 	Render(PlayerImage);
+
+	// AABB 렌더링
+	aabb.Render();
 }
 
 glm::vec2 Player::GetPosition() {

@@ -19,23 +19,28 @@ void CameraController::Update(float FT) {
 
 		else if (Position.x - ASPECT < -7.5)
 			Position.x = -7.5 + ASPECT;
+
+		ShakeCamera(FT);
 	}
 
-	ShakeCamera(FT);
 	
 	CalcMatrix();
 }
 
 void CameraController::ShakeCamera(float FT) {
+	// 흔들림 정도 랜덤 생성
 	GLfloat RandShakeX = Random::Gen(DIST_REAL, -ShakeValue.x, ShakeValue.x);
 	GLfloat RandShakeY = Random::Gen(DIST_REAL, -ShakeValue.y, ShakeValue.y);
 
+	// 부드럽게 화면을 흔든다.
 	Shake.x = Math::Lerp(Shake.x, RandShakeX, 1, FT);
 	Shake.y = Math::Lerp(Shake.y, RandShakeY, 1, FT);
 
+	// 흔들림 수치가 감소한다.
 	ShakeValue.x = Math::Lerp(ShakeValue.x, 0.0, 1, FT);
 	ShakeValue.y = Math::Lerp(ShakeValue.y, 0.0, 1, FT);
 
+	// 흔들림 수치가 0.0미만으로 감소되지 않도록 한다.
 	EX::ClampValue(ShakeValue.x, 0.0, CLAMP_LESS);
 	EX::ClampValue(ShakeValue.y, 0.0, CLAMP_LESS);
 }
