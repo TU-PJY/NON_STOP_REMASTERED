@@ -1,7 +1,7 @@
 #pragma once
 #include "EngineHeader.h"
 
-namespace GameMode1 {
+namespace PlayMode {
 	void Start();
 	void Destructor();
 

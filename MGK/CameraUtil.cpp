@@ -44,13 +44,13 @@ void Camera::PrepareRender(int ShaderType) {
 
 	if (StaticMode) {
 		ViewMatrix = lookAt(CamPos, CamDirection, CamUp);
-		Projection = glm::ortho((ASPECT * -1.0f), (ASPECT * 1.0f), -1.0f, 1.0f, -1.0f, 1.0f);
+		Projection = glm::ortho((ASPECT * -1.0f), (ASPECT * 1.0f), -1.0f, 1.0f, -100.0f, 100.0f);
 	}
 
 	else {
 		ViewMatrix = lookAt(CamPos, CamDirection, CamUp);
 		ViewMatrix = ViewMatrix * TranslateMatrix * RotateMatrix;
-		Projection = glm::ortho((ASPECT * -1.0f) / ZoomValue, (ASPECT * 1.0f) / ZoomValue, -1.0f / ZoomValue, 1.0f / ZoomValue, -1.0f, 1.0f);
+		Projection = glm::ortho((ASPECT * -1.0f) / ZoomValue, (ASPECT * 1.0f) / ZoomValue, -1.0f / ZoomValue, 1.0f / ZoomValue, -100.0f, 100.0f);
 	}
 
 	if (ShaderType == SHADER_TYPE_IMAGE) {

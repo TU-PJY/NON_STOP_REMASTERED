@@ -13,9 +13,6 @@
     <Filter Include="[1]___________[ GameMode ]">
       <UniqueIdentifier>{824d0f24-8e5b-4c58-99e5-e019f51ea99a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[1]___________[ GameMode ]\[ Mode1 ]">
-      <UniqueIdentifier>{7b8ece9e-369e-41aa-9eb1-0f0dc2f9398d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[2]___________[ Object ]\[3][ Object Template ]">
       <UniqueIdentifier>{f67944b9-c91f-464e-976e-0b8958cf7ab9}</UniqueIdentifier>
     </Filter>
@@ -151,10 +148,16 @@
     <Filter Include="[5]___________[ Resources ]\[ Game Data ]">
       <UniqueIdentifier>{5cc44f36-1978-4df0-84ee-7042daee1b18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[1]___________[ GameMode ]\[ PlayMode ]">
+      <UniqueIdentifier>{7b8ece9e-369e-41aa-9eb1-0f0dc2f9398d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\%28 Player %29">
+      <UniqueIdentifier>{3d31032f-3340-4346-be81-de187d31e8eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameMode1.cpp">
-      <Filter>[1]___________[ GameMode ]\[ Mode1 ]</Filter>
+    <ClCompile Include="PlayMode.cpp">
+      <Filter>[1]___________[ GameMode ]\[ PlayMode ]</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>[2]___________[ Object ]\[3][ Object Template ]</Filter>
@@ -270,10 +273,13 @@
     <ClCompile Include="TransformUtil.cpp">
       <Filter>[4]___________[ Util ]\[ Transform Util ]</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\%28 Player %29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameMode1.h">
-      <Filter>[1]___________[ GameMode ]\[ Mode1 ]</Filter>
+    <ClInclude Include="PlayMode.h">
+      <Filter>[1]___________[ GameMode ]\[ PlayMode ]</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>[2]___________[ Object ]\[3][ Object Template ]</Filter>
@@ -382,6 +388,9 @@
     </ClInclude>
     <ClInclude Include="TransformUtil.h">
       <Filter>[4]___________[ Util ]\[ Transform Util ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\%28 Player %29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
