@@ -135,3 +135,5 @@ namespace Framework {
 	void SetupWindow();
 	void LoadShader();
 }
+
+extern GLfloat MouseSensivity;

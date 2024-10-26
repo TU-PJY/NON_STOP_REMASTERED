@@ -98,6 +98,7 @@ public:
 	virtual void InputLookDir(int Dir) {}
 	virtual void InputRotation(GLfloat Value) {}
 	virtual void InputTriggerState(bool State) {}
+	virtual void GiveRecoil(GLfloat Value) {}
 
 private:
 	void PrepareRender(); 

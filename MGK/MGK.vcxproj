@@ -189,6 +189,7 @@
     <ClInclude Include="CameraUtil.h" />
     <ClInclude Include="ClippingUtil.h" />
     <ClInclude Include="CollisionUtil.h" />
+    <ClInclude Include="Crosshair.h" />
     <ClInclude Include="DataList.h" />
     <ClInclude Include="FileUtil.h" />
     <ClInclude Include="ExUtil.h" />

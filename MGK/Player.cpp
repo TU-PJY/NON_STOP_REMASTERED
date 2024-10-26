@@ -51,7 +51,7 @@ void Player::UpdateGun() {
 	if (GunPtr) {
 		GunPtr->InputPosition(Position);
 		GunPtr->InputLookDir(LookDir);
-		GunPtr->InputRotation(Math::CalcDegree(Position.x, Position.y, mouse.x - cameraCon.Position.x, mouse.y));
+		GunPtr->InputRotation(Math::CalcDegree(Position.x, Position.y, mouse.CrossX - cameraCon.Position.x, mouse.CrossY));
 		GunPtr->InputTriggerState(TriggerState);
 	}
 }
@@ -73,8 +73,8 @@ void Player::UpdateFunc(float FT) {
 
 	// 마우스 위치에 따라 바라보는 방향이 달라진다.
 	// 마우스 위치에 카메라 위치를 포함시켜야 한다.
-	if      (mouse.x - cameraCon.Position.x > Position.x)  LookDir = LOOK_RIGHT;
-	else if (mouse.x - cameraCon.Position.x < Position.x)  LookDir = LOOK_LEFT;
+	if      (mouse.CrossX - cameraCon.Position.x > Position.x)  LookDir = LOOK_RIGHT;
+	else if (mouse.CrossX - cameraCon.Position.x < Position.x)  LookDir = LOOK_LEFT;
 
 	// 플레이어 점프 업데이트
 	pUtil.UpdateFalling(Position.y, FT);

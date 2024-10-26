@@ -169,6 +169,9 @@
     <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ Flame ]">
       <UniqueIdentifier>{6ffb7c94-fad9-40a7-97ea-4866a6d66642}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ Crosshair ]">
+      <UniqueIdentifier>{b7511b5a-e30d-44c7-9b72-00baeb658e36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayMode.cpp">
@@ -418,6 +421,9 @@
     </ClInclude>
     <ClInclude Include="Flame.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ Flame ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Crosshair.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ Crosshair ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

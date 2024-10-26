@@ -5,8 +5,8 @@
 constexpr const char* WINDOW_NAME = "MGK-2";
 
 // window size
-constexpr int WINDOW_WIDTH = 1200;
-constexpr int WINDOW_HEIGHT = 1200;
+constexpr int WINDOW_WIDTH = 1500;
+constexpr int WINDOW_HEIGHT = 1000;
 
 // fullscreen option
 constexpr bool FULL_SCREEN_OPTION = false;
@@ -36,7 +36,7 @@ constexpr bool SHOW_CONSOLE = true;
 // scene layer option
 // 'END' should be typed at last
 enum Layer
-{ LAYER_1, LAYER_2, LAYER_3, END };
+{ LAYER_1, LAYER_2, LAYER_3, LAYER_4, END };
 
 // scene container reserve option
 constexpr int OBJECT_LIST_RESERVE = 500;

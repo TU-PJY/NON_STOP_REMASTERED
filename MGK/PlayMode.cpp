@@ -5,6 +5,7 @@
 // 추가가 필요한 오브젝트의 헤더파일을 포함한다.
 #include "Player.h"
 #include "BackGround.h"
+#include "Crosshair.h"
 #include "SCAR_H.h"
 
 void PlayMode::Start() {
@@ -21,11 +22,8 @@ void PlayMode::Start() {
 
 	// playmode에 필요한 오브젝트들을 scene에 추가한다.
 	scene.AddObject(new BackGround, "background", LAYER_1);
-	
-	// player의 경우 3번 레이어에 추가헸다.
+	scene.AddObject(new Crosshair, "crosshair", LAYER_4);
 	scene.AddObject(new Player, "player", LAYER_3);
-
-	// 총 추가
 	scene.AddObject(new SCAR_H(0.13), "SCAR_H", LAYER_3);
 
 	scene.RegisterController(Controller, MODE_TYPE_DEFAULT);
@@ -83,10 +81,16 @@ void PlayMode::SpecialKeyUp(int KEY, int X, int Y) {
 
 void PlayMode::MouseMotion(int X, int Y) {
 	mouse.ConvertPosition(X, Y);
+	mouse.CrossX += mouse.x * MouseSensivity;
+	mouse.CrossY += mouse.y * MouseSensivity;
+	glutWarpPointer(WIDTH / 2, HEIGHT / 2);
 }
 
 void PlayMode::MousePassiveMotion(int X, int Y) {
 	mouse.ConvertPosition(X, Y);
+	mouse.CrossX += mouse.x * MouseSensivity;
+	mouse.CrossY += mouse.y * MouseSensivity;
+	glutWarpPointer(WIDTH / 2, HEIGHT / 2);
 }
 
 void PlayMode::MouseWheel(int Button, int Wheel, int X, int Y) {
