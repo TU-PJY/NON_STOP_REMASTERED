@@ -6,7 +6,6 @@
 #include "Player.h"
 #include "BackGround.h"
 #include "Crosshair.h"
-#include "SCAR_H.h"
 
 void PlayMode::Start() {
 	// 배경색을 밝은 색으로 바꾼다.
@@ -29,8 +28,6 @@ void PlayMode::Start() {
 	scene.AddObject(new BackGround, "background", LAYER_1);
 	scene.AddObject(new Crosshair, "crosshair", LAYER_4);
 	scene.AddObject(new Player, "player", LAYER_3);
-
-	scene.AddObject(new SCAR_H(0.13), "SCAR_H", LAYER_3);
 
 	scene.RegisterController(Controller, MODE_TYPE_DEFAULT);
 	scene.RegisterDestructor(Destructor);

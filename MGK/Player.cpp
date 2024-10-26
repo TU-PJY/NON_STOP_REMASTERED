@@ -3,6 +3,9 @@
 #include "CameraCOntroller.h"
 #include "Scene.h"
 
+#include "SCAR_H.h"
+
+
 Player::Player(){
 	// 물리엔진의 중력과 바닥 위치 지정
 	pUtil.SetGravity(15);
@@ -41,10 +44,12 @@ void Player::InputMouse(int State) {
 }
 
 void Player::UpdateGun() {
-	// 총 오브젝트 포인터가 없다면 포인터를 찾는다
+	// 자기가 가진 총 이름에 따라 다른 총이 scene에 추가된다.
 	if (!GunPtr) {
-		if (auto gun = scene.Find(GunName); gun)
-			GunPtr = gun;
+		if (GunName == "SCAR_H")
+			scene.AddObject(new SCAR_H(0.13), GunName, LAYER_3);
+
+		GunPtr = scene.Find(GunName);
 	}
 
 	// 총 오브젝트 포인터가 있다면 총으로 플레이어의 정보를 보낸다. (위치, 각도, 방아쇠 당김 등)
