@@ -2,6 +2,9 @@
 #include "CameraUtil.h"
 #include "TransformUtil.h"
 #include "Scene.h"
+#include "RandomUtil.h"
+#include "MathUtil.h"
+#include "EXUtil.h"
 
 void CameraController::Update(float FT) {
 	// playmode 카메라 무빙 업데이트
@@ -17,8 +20,29 @@ void CameraController::Update(float FT) {
 		else if (Position.x - ASPECT < -7.5)
 			Position.x = -7.5 + ASPECT;
 	}
+
+	ShakeCamera(FT);
 	
 	CalcMatrix();
+}
+
+void CameraController::ShakeCamera(float FT) {
+	GLfloat RandShakeX = Random::Gen(DIST_REAL, -ShakeValue.x, ShakeValue.x);
+	GLfloat RandShakeY = Random::Gen(DIST_REAL, -ShakeValue.y, ShakeValue.y);
+
+	Shake.x = Math::Lerp(Shake.x, RandShakeX, 1, FT);
+	Shake.y = Math::Lerp(Shake.y, RandShakeY, 1, FT);
+
+	ShakeValue.x = Math::Lerp(ShakeValue.x, 0.0, 1, FT);
+	ShakeValue.y = Math::Lerp(ShakeValue.y, 0.0, 1, FT);
+
+	EX::ClampValue(ShakeValue.x, 0.0, CLAMP_LESS);
+	EX::ClampValue(ShakeValue.y, 0.0, CLAMP_LESS);
+}
+
+void CameraController::AddShakeValue(GLfloat Value) {
+	ShakeValue.x += Value;
+	ShakeValue.y += Value;
 }
 
 void CameraController::InitMatrix() {
@@ -28,7 +52,7 @@ void CameraController::InitMatrix() {
 
 void CameraController::CalcMatrix() {
 	InitMatrix();
-	Transform::Move(camera.TranslateMatrix, Position.x, Position.y);
+	Transform::Move(camera.TranslateMatrix, Position.x + Shake.x, Position.y + Shake.y);
 	Transform::Rotate(camera.RotateMatrix, Rotation);
 }
 

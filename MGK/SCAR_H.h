@@ -14,7 +14,7 @@ private:
 	GLfloat Rotation{};
 
 	// 반동
-	GLfloat Recoil{};
+	GLfloat RecoilPosition{};
 
 	// 격발 타이밍 타이머
 	TimerUtil ShootingTimer;
@@ -64,6 +64,7 @@ public:
 		// 방아쇠를 당긴 상태에서는 일정 간격으로 격발된다.
 		// 격발 시 사운드 출력과 함께 불꽃 오브젝트를 추가한다
 		// 크로스헤어에는 반동을 준다.
+		// 카메라에는 흔들림 수치를 추가한다.
 		if (TriggerState) {
 			if (ShootingTimer.MiliSec(2) >= ShootTime) {
 				ShootingTimer.Reset();
@@ -74,13 +75,13 @@ public:
 					Rotation
 				), "flame", LAYER_3);
 
-				Recoil = 0.1;
-
-				CrosshairPtr->GiveRecoil(0.08);
+				RecoilPosition = 0.1;
+				CrosshairPtr->GiveRecoil(0.07);
+				cameraCon.AddShakeValue(1.0);
 			}
 		}
 
-		Recoil = Math::Lerp(Recoil, 0.0, 15, FT);
+		RecoilPosition = Math::Lerp(RecoilPosition, 0.0, 15, FT);
 	}
 
 	void RenderFunc() {
@@ -90,13 +91,13 @@ public:
 		// 왼쪽 방향
 		if (LookDir == 0) {
 			Transform::Rotate(TranslateMatrix, Rotation + 180.0);
-			Transform::Move(TranslateMatrix, -0.15 + Recoil, 0.0);
+			Transform::Move(TranslateMatrix, -0.15 + RecoilPosition, 0.0);
 			Flip(FLIP_H);
 		}
 		// 오른쪽 방향
 		else if (LookDir == 1) {
 			Transform::Rotate(TranslateMatrix, Rotation);
-			Transform::Move(TranslateMatrix, 0.15 - Recoil, 0.0);
+			Transform::Move(TranslateMatrix, 0.15 - RecoilPosition, 0.0);
 		}
 
 		Transform::Scale(ScaleMatrix, 0.18, 0.18);
