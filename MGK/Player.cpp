@@ -43,10 +43,14 @@ void Player::InputMouse(int State) {
 
 Player::Player(std::string Name) {
 	// 물리엔진의 중력과 바닥 위치 지정
-	pUtil.SetGravity(15);
+	pUtil.SetGravity(14);
 	pUtil.SetFloorHeight(-0.5);
 
 	GunName = Name;
+
+	// 체력 인디케이터 오브젝트 포인터 얻기
+	IndHPPtr = scene.Find("indhp");
+	IndHPPtr->InputCurrentHP(HP);
 }
 
 void Player::AddGunObject() {

@@ -44,8 +44,6 @@ public:
 		text.Init(L"맑은 고딕", FW_BOLD);
 		line.SetRenderType(RENDER_TYPE_STATIC);
 		line.SetColor(1.0, 1.0, 1.0);
-
-		PrevAmmo = CurrentAmmo;
 	}
 
 	// 현재 장탄수를 입력한다
@@ -121,5 +119,45 @@ public:
 // 체력 인디케이터
 class IndHP : public GameObject {
 private:
+	// 플레이어 현재 체력
+	int CurrentHP{};
 
+	// 인디케이터가 기억하는 이전 체력
+	int PrevHP{};
+
+	// 체력 바 표시용 선
+	LineBrush line;
+
+	// 체력 표시용 텍스트
+	TextUtil text;
+
+public:
+	IndHP() {
+		text.Init(L"맑은 고딕", FW_BOLD);
+		text.SetColor(1.0, 1.0, 1.0);
+		line.SetRenderType(RENDER_TYPE_STATIC);
+	}
+
+	// 플레이어의 현재 HP를 입력한다.
+	void InputCurrentHP(int Value) {
+		CurrentHP = Value;
+	}
+
+	void UpdateFunc(float FT) {
+		if (CurrentHP != PrevHP) {
+			
+		}
+	}
+
+	void RenderFunc() {
+		GLfloat PositionX = ASP(-1.0) + 0.1;
+
+		line.SetColor(0.0, 0.0, 0.0);
+		line.Draw(PositionX, -1.0 + 0.1, PositionX + 0.7, -1.0 + 0.1, 0.1);
+
+		line.SetColor(1.0, 0.0, 0.0);
+		line.Draw(PositionX, -1.0 + 0.1, PositionX + 0.7 * ( (float)CurrentHP / 100.0 ), -1.0 + 0.1, 0.08);
+
+		text.Render(ASP(-1.0) + 0.07, -1.0 + 0.075, 0.1, 1.0, L"%d", CurrentHP);
+	}
 };

@@ -37,6 +37,7 @@ void PlayMode::Start() {
 	scene.AddObject(new MonsterGenerator, "monster_generator", LAYER_1);
 	scene.AddObject(new IndBack, "indback", LAYER_5);
 	scene.AddObject(new IndAmmo, "indammo", LAYER_5);
+	scene.AddObject(new IndHP, "indhp", LAYER_5);
 	scene.AddObject(new Crosshair, "crosshair", LAYER_4);
 
 	// 일반 오브젝트

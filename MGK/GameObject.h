@@ -105,6 +105,7 @@ public:
 	virtual void Reload() {}
 	virtual void InputReloadState(bool State) {}
 	virtual void InputReloadProgress(GLfloat CurrentProgress, GLfloat EntireProgress) {}
+	virtual void InputCurrentHP(int Value) {}
 
 private:
 	void PrepareRender(); 

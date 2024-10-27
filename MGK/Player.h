@@ -36,8 +36,15 @@ private:
 	// 플레이어가 들고있는 총 오브젝트 포인터
 	GameObject* GunPtr{};
 
+	// 플레이어 hp 인디케이터 포인터
+	GameObject* IndHPPtr{};
+
 	// AABB
 	AABB aabb;
+
+
+	// 체력
+	int HP{ 100 };
 
 public:
 	Player(std::string Name);
