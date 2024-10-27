@@ -52,7 +52,7 @@ public:
 
 				// 플레이어의 총에 따라 대미지가 다르게 부여된다.
 				if (PlayerGunName == "SCAR_H")
-					It->second->GiveDamage(20);
+					It->second->GiveDamage(25);
 			}
 		}
 	}

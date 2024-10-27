@@ -4,29 +4,14 @@
 
 class SCAR_H : public GameObject {
 private:
-	// 위치
-	glm::vec2 Position{};
-
-	// 바라보는 방향
-	int LookDir{};
-
-	// 회전 값
-	GLfloat Rotation{};
-
-	// 반동
-	GLfloat RecoilPosition{};
-
-	// 격발 타이밍 타이머
-	TimerUtil ShootingTimer;
-
 	// 격발 타이밍
-	GLfloat ShootTime{};
+	GLfloat ShootTime{ 0.13 };
+
+	// 현재 장탄수
+	int CurrentAmmo{ 25 };
 
 	// 방아쇠 당김 여부
 	bool TriggerState{};
-
-	// 사운드 출력을 위한 채널
-	SoundChannel ch{};
 
 	// 크로스헤어 오브젝트 포인터
 	GameObject* CrosshairPtr{};
@@ -34,20 +19,34 @@ private:
 	// 인디케이터 오브젝트 포인터
 	GameObject* IndPtr{};
 
-	// 현재 장탄수
-	int CurrentAmmo{25};
+
+	// 위치
+	glm::vec2 Position{};
+
+	// 회전 값
+	GLfloat Rotation{};
+
+	// 바라보는 방향
+	int LookDir{};
+
+	// 반동
+	GLfloat RecoilPosition{};
+
+	// 격발 타이머
+	TimerUtil ShootingTimer;
+
+	// 재장전 타이머
+	TimerUtil reloadTimer;
+
+	// 사운드 출력을 위한 채널
+	SoundChannel ch{};
 
 	// 재장전 여부
 	bool ReloadState{};
 
-	// 재장전 타미어
-	TimerUtil reloadTimer;
-
 public:
 	// 총 이름 입력, 이름에 따라 발사 속도가 정해진다
-	SCAR_H(GLfloat Time) {
-		ShootTime = Time;
-
+	SCAR_H() {
 		// 크로스 헤어 포인터 얻기
 		CrosshairPtr = scene.Find("crosshair");
 
@@ -94,6 +93,7 @@ public:
 		// 재장전 진척도를 인디케이터로 전송한다.
 		IndPtr->InputReloadProgress(reloadTimer.MiliSec(2), 0.7);
 
+		// 재장전이 완료되었을 때
 		if (reloadTimer.MiliSec(1) >= 0.7) {
 			CurrentAmmo = 25;
 			IndPtr->InputCurrentAmmo(CurrentAmmo);
@@ -108,34 +108,35 @@ public:
 	void UpdateFunc(float FT) {
 		if (ShootingTimer.MiliSec(2) < ShootTime)
 			ShootingTimer.Update(FT);
-
+	
 		// 방아쇠를 당긴 상태에서는 일정 간격으로 격발된다.
-		// 격발 시 사운드 출력과 함께 불꽃 오브젝트를 추가한다
-		// 크로스헤어에는 반동을 준다.
-		// 카메라에는 흔들림 수치를 추가한다.
 		if (CurrentAmmo != 0 && !ReloadState && TriggerState) {
 			if (ShootingTimer.MiliSec(2) >= ShootTime) {
+
+				// 불꽃 오브젝트의 위치가 총구 앞에 위치하도록 계산
+				glm::vec2 FlamePosition{};
+				FlamePosition.x = Position.x + cos(glm::radians(Rotation)) * 0.35;
+				FlamePosition.y = Position.y + sin(glm::radians(Rotation)) * 0.35;
+
+				// 격발 시 사운드 출력과 함께 불꽃 오브젝트를 추가한다
 				PlaySound(SCAR_H_Shoot, ch, 0);
+				scene.AddObject(new Flame(FlamePosition.x, FlamePosition.y, Rotation ), "flame", LAYER_3);
 
-				scene.AddObject(new Flame(
-					Position.x + cos(glm::radians(Rotation)) * 0.35, 
-					Position.y + sin(glm::radians(Rotation)) * 0.35,
-					Rotation
-				), "flame", LAYER_3);
-
+				// 총 오브젝트에 반동을 준다.
 				RecoilPosition = 0.1;
-				CrosshairPtr->GiveRecoil(0.07);
-				cameraCon.AddShakeValue(1.0);
 
-				// 크로스헤어에 발사 상태를 부여한다.
+				// 크로스헤어에는 반동을 주고, 발사 상태를 부여한다.
+				CrosshairPtr->GiveRecoil(0.07);
 				CrosshairPtr->ShootGun();
 
-				// 탄약을 소비한다.
-				--CurrentAmmo;
+				// 카메라에는 흔들림 수치를 추가한다.
+				cameraCon.AddShakeValue(1.5);
 
-				// 인디케이터로 현재 장탄수 전송
+				// 탄약을 소비하고, 현재 장탄수를 인디케이터로 전송한다.
+				--CurrentAmmo;
 				IndPtr->InputCurrentAmmo(CurrentAmmo);
 
+				// 타이머 리셋
 				ShootingTimer.Reset();
 			}
 		}

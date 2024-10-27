@@ -37,8 +37,8 @@ void CameraController::ShakeCamera(float FT) {
 	Shake.y = Math::Lerp(Shake.y, RandShakeY, 1, FT);
 
 	// 흔들림 수치가 감소한다.
-	ShakeValue.x = Math::Lerp(ShakeValue.x, 0.0, 1, FT);
-	ShakeValue.y = Math::Lerp(ShakeValue.y, 0.0, 1, FT);
+	ShakeValue.x = Math::Lerp(ShakeValue.x, 0.0, 0.5, FT);
+	ShakeValue.y = Math::Lerp(ShakeValue.y, 0.0, 0.5, FT);
 
 	// 흔들림 수치가 0.0미만으로 감소되지 않도록 한다.
 	EX::ClampValue(ShakeValue.x, 0.0, CLAMP_LESS);

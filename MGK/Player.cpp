@@ -52,7 +52,7 @@ Player::Player(std::string Name) {
 void Player::AddGunObject() {
 	// 자기가 가진 총 이름에 따라 다른 총이 scene에 추가된다.
 	if (GunName == "SCAR_H")
-		scene.AddObject(new SCAR_H(0.13), GunName.c_str(), LAYER_3);
+		scene.AddObject(new SCAR_H, GunName.c_str(), LAYER_3);
 
 	GunPtr = scene.Find(GunName.c_str());
 }
