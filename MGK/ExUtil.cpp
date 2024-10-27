@@ -18,3 +18,8 @@ void EX::ClampValue(float& Value, float Dest, int Type) {
 	if ((Type == CLAMP_GREATER && Value > Dest) || (Type == CLAMP_LESS && Value < Dest))
 		Value = Dest;
 }
+
+void EX::ClampValue(int& Value, int Dest, int Type) {
+	if ((Type == CLAMP_GREATER && Value > Dest) || (Type == CLAMP_LESS && Value < Dest))
+		Value = Dest;
+}

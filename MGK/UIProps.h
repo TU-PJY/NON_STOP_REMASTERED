@@ -143,20 +143,15 @@ public:
 		CurrentHP = Value;
 	}
 
-	void UpdateFunc(float FT) {
-		if (CurrentHP != PrevHP) {
-			
-		}
-	}
-
 	void RenderFunc() {
 		GLfloat PositionX = ASP(-1.0) + 0.1;
+		GLfloat PositionY = -1.0 + 0.1;
 
 		line.SetColor(0.0, 0.0, 0.0);
-		line.Draw(PositionX, -1.0 + 0.1, PositionX + 0.7, -1.0 + 0.1, 0.1);
+		line.Draw(PositionX, PositionY, PositionX + 0.7, PositionY, 0.1);
 
 		line.SetColor(1.0, 0.0, 0.0);
-		line.Draw(PositionX, -1.0 + 0.1, PositionX + 0.7 * ( (float)CurrentHP / 100.0 ), -1.0 + 0.1, 0.08);
+		line.Draw(PositionX, PositionY, PositionX + 0.7 * ( (float)CurrentHP / 100.0 ), PositionY, 0.08);
 
 		text.Render(ASP(-1.0) + 0.06, -1.0 + 0.075, 0.1, 1.0, L"%d", CurrentHP);
 	}

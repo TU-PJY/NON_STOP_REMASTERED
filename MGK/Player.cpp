@@ -42,7 +42,25 @@ void Player::InputMouse(int State) {
 	}
 }
 
+AABB Player::GetAABB() {
+	return aabb;
+}
 
+
+void Player::GiveDamage(int Damage) {
+	if (HurtEnableState) {
+		HP -= Damage;
+		EX::ClampValue(HP, 0, CLAMP_LESS);
+
+		IndHPPtr->InputCurrentHP(HP);
+		HurtTimer.Reset();
+
+		// 카메라 흔들림 추가
+		cameraCon.AddShakeValue(3.0);
+
+		HurtEnableState = false;
+	}
+}
 
 Player::Player(std::string Name) {
 	// 물리엔진의 중력과 바닥 위치 지정
@@ -77,6 +95,28 @@ void Player::UpdateGun() {
 	}
 }
 
+void Player::UpdateHurtCoolTime(float FT) {
+	if (!HurtEnableState)
+		HurtTimer.Update(FT);
+	if (HurtTimer.MiliSec(2) >= HurtCoolTime)
+		HurtEnableState = true;
+}
+
+void Player::UpdateHeal(float FT) {
+	if(HP < 100)
+		HealTimer.Update(FT);
+
+	if (HealTimer.MiliSec(2) >= HealCoolTime) {
+		HealTimer.Interpolate(HealCoolTime);
+		HP += 1;
+
+		if (HP == 100)
+			HealTimer.Reset();
+
+		IndHPPtr->InputCurrentHP(HP);
+	}
+}
+
 void Player::UpdateFunc(float FT) {
 	// 움직임 여부에 따라 이동 방향이 달라진다.
 	// 범위 밖을 나가지 않도록 한다.
@@ -106,7 +146,14 @@ void Player::UpdateFunc(float FT) {
 		LandState = true;
 	}
 
+	// 총 업데이트
 	UpdateGun();
+
+	// 대미지 입기 쿨타임 업데이트
+	UpdateHurtCoolTime(FT);
+
+	// 회복 업데이트
+	UpdateHeal(FT);
 
 	// AABB 업데이트
 	aabb.Update(Position.x, Position.y, 0.25, 0.3);

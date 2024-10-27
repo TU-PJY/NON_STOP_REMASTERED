@@ -49,6 +49,17 @@ private:
 	// 체력
 	int HP{ 100 };
 
+	// 대미지 쿨타임
+	TimerUtil HurtTimer;
+	GLfloat HurtCoolTime{ 0.7 };
+
+	// 대미지 입을 수 있는 여부
+	bool HurtEnableState{true};
+
+	// 회콕 쿨타임
+	TimerUtil HealTimer;
+	GLfloat HealCoolTime{ 1.0 };
+
 public:
 	Player(std::string Name);
 
@@ -58,9 +69,17 @@ public:
 	// 마우스 입력 컨트롤러
 	void InputMouse(int State);
 
+	AABB GetAABB();
+
 	void AddGunObject();
 
 	void UpdateGun();
+
+	void UpdateHurtCoolTime(float FT);
+
+	void UpdateHeal(float FT);
+
+	void GiveDamage(int Value);
 
 	// 업데이트 함수
 	// FT는 프레임타임. Scene클래스로부터 받는다.
