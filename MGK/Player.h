@@ -27,6 +27,9 @@ private:
 	// 플레이어 점프 여부
 	bool JumpState{};
 
+	// 플레이어 땅 위에 있음 여부
+	bool LandState{true };
+
 	// 플레이어 방아쇠 당김 여부
 	bool TriggerState{};
 

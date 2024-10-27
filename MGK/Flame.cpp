@@ -6,7 +6,7 @@ Flame::Flame(GLfloat X, GLfloat Y, GLfloat RotationValue) {
 	Rotation = RotationValue;
 }
 
-// 완전히 투명해지면 스스로 삭제한다
+// 0.03초가 지나면 스스로 삭제한다
 void Flame::UpdateFunc(float FT) {
 	timer.Update(FT);
 	if(timer.MiliSec(2) >= 0.03)

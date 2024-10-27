@@ -20,6 +20,7 @@ void Player::InputKey(int State, unsigned char NormalKey, int SpecialKey) {
 			if (!JumpState) {
 				pUtil.SetGravityAcc(6.0);
 				JumpState = true;
+				LandState = false;
 			}
 			break;
 		}
@@ -40,6 +41,8 @@ void Player::InputMouse(int State) {
 	case LEFT_BUTTON_UP: TriggerState = false; break;
 	}
 }
+
+
 
 Player::Player(std::string Name) {
 	// 물리엔진의 중력과 바닥 위치 지정
@@ -96,8 +99,12 @@ void Player::UpdateFunc(float FT) {
 
 	// 플레이어 점프 업데이트
 	pUtil.UpdateFalling(Position.y, FT);
-	if (!pUtil.GetFallingState())
+	if (!pUtil.GetFallingState() && !LandState) {
+		// 카메라에 착지하는 효과를 부여한다.
+		cameraCon.Push(0.2);
 		JumpState = false;
+		LandState = true;
+	}
 
 	UpdateGun();
 

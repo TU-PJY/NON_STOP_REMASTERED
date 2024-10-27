@@ -158,6 +158,6 @@ public:
 		line.SetColor(1.0, 0.0, 0.0);
 		line.Draw(PositionX, -1.0 + 0.1, PositionX + 0.7 * ( (float)CurrentHP / 100.0 ), -1.0 + 0.1, 0.08);
 
-		text.Render(ASP(-1.0) + 0.07, -1.0 + 0.075, 0.1, 1.0, L"%d", CurrentHP);
+		text.Render(ASP(-1.0) + 0.06, -1.0 + 0.075, 0.1, 1.0, L"%d", CurrentHP);
 	}
 };

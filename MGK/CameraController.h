@@ -10,13 +10,16 @@ public:
 	glm::vec2 Position{};
 	glm::vec2 Shake{};
 	glm::vec2 ShakeValue{};
+	GLfloat PushValue{};
 	GLfloat Rotation{};
 
 	TimerUtil timer;
 
 	void Update(float FT);
 	void ShakeCamera(float FT);
+	void UpdatePush(float FT);
 	void AddShakeValue(GLfloat Value);
+	void Push(GLfloat Value);
 	void InitMatrix();
 	void CalcMatrix();
 	void Move(GLfloat X, GLfloat Y);

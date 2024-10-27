@@ -21,8 +21,8 @@ void CameraController::Update(float FT) {
 			Position.x = -7.5 + ASPECT;
 
 		ShakeCamera(FT);
+		UpdatePush(FT);
 	}
-
 	
 	CalcMatrix();
 }
@@ -45,9 +45,17 @@ void CameraController::ShakeCamera(float FT) {
 	EX::ClampValue(ShakeValue.y, 0.0, CLAMP_LESS);
 }
 
+void CameraController::UpdatePush(float FT) {
+	PushValue = Math::Lerp(PushValue, 0.0, 0.4, FT);
+}
+
 void CameraController::AddShakeValue(GLfloat Value) {
 	ShakeValue.x += Value;
 	ShakeValue.y += Value;
+}
+
+void CameraController::Push(GLfloat Value) {
+	PushValue = Value;
 }
 
 void CameraController::InitMatrix() {
@@ -57,7 +65,7 @@ void CameraController::InitMatrix() {
 
 void CameraController::CalcMatrix() {
 	InitMatrix();
-	Transform::Move(camera.TranslateMatrix, Position.x + Shake.x, Position.y + Shake.y);
+	Transform::Move(camera.TranslateMatrix, Position.x + Shake.x, Position.y + Shake.y - PushValue);
 	Transform::Rotate(camera.RotateMatrix, Rotation);
 }
 
