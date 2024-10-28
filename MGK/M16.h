@@ -2,15 +2,15 @@
 #include "GameObject.h"
 #include "Flame.h"
 
-class SCAR_H : public GameObject {
+class M16 : public GameObject {
 private:
 	// 격발 타이밍
-	GLfloat ShootTime{ 0.13 };
+	GLfloat ShootTime{ 0.08 };
 
 	// 현재 장탄수
-	int CurrentAmmo{ 25 };
+	int CurrentAmmo{ 30 };
 
-	// 최대 장탄수
+	// 최대 장탄 수
 	int MaxAmmo{ 30 };
 
 	// 재장전 시간
@@ -52,7 +52,7 @@ private:
 
 public:
 	// 총 이름 입력, 이름에 따라 발사 속도가 정해진다
-	SCAR_H() {
+	M16() {
 		// 크로스 헤어 포인터 얻기
 		CrosshairPtr = scene.Find("crosshair");
 
@@ -114,7 +114,7 @@ public:
 	void UpdateFunc(float FT) {
 		if (ShootingTimer.MiliSec(2) < ShootTime)
 			ShootingTimer.Update(FT);
-	
+
 		// 방아쇠를 당긴 상태에서는 일정 간격으로 격발된다.
 		if (CurrentAmmo != 0 && !ReloadState && TriggerState) {
 			if (ShootingTimer.MiliSec(2) >= ShootTime) {
@@ -125,18 +125,18 @@ public:
 				FlamePosition.y = Position.y + sin(glm::radians(Rotation)) * 0.35;
 
 				// 격발 시 사운드 출력과 함께 불꽃 오브젝트를 추가한다
-				PlaySound(SCAR_H_Shoot, ch, 0);
-				scene.AddObject(new Flame(FlamePosition.x, FlamePosition.y, Rotation ), "flame", LAYER_3);
+				PlaySound(M16_Shoot, ch, 0);
+				scene.AddObject(new Flame(FlamePosition.x, FlamePosition.y, Rotation), "flame", LAYER_3);
 
 				// 총 오브젝트에 반동을 준다.
 				RecoilPosition = 0.1;
 
 				// 크로스헤어에는 반동을 주고, 발사 상태를 부여한다.
-				CrosshairPtr->GiveRecoil(0.07);
+				CrosshairPtr->GiveRecoil(0.05);
 				CrosshairPtr->ShootGun();
 
 				// 카메라에는 흔들림 수치를 추가한다.
-				cameraCon.AddShakeValue(1.5);
+				cameraCon.AddShakeValue(0.8);
 
 				// 탄약을 소비하고, 현재 장탄수를 인디케이터로 전송한다.
 				--CurrentAmmo;
@@ -147,7 +147,7 @@ public:
 			}
 		}
 
-		RecoilPosition = Math::Lerp(RecoilPosition, 0.0, 15, FT);
+		RecoilPosition = Math::Lerp(RecoilPosition, 0.0, 30, FT);
 
 		// 제장전 상태일 경우 재장전 업데이트
 		if (ReloadState)
@@ -171,6 +171,6 @@ public:
 		}
 
 		Transform::Scale(ScaleMatrix, 0.36, 0.36);
-		Render(SCAR_H_Image);
+		Render(M16_Image);
 	}
 };

@@ -196,7 +196,9 @@
     <ClInclude Include="Flame.h" />
     <ClInclude Include="FontUtil.h" />
     <ClInclude Include="EngineHeader.h" />
+    <ClInclude Include="M16.h" />
     <ClInclude Include="MonsterGenerator.h" />
+    <ClInclude Include="MP44.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Regular.h" />
     <ClInclude Include="SCAR_H.h" />
@@ -230,7 +232,6 @@
     <ClInclude Include="UiUtil.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="GunClassTemplate.txt" />
     <Text Include="ModeTemplate.txt" />
   </ItemGroup>
   <ItemGroup>

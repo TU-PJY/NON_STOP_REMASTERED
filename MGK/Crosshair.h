@@ -53,6 +53,10 @@ public:
 				// 플레이어의 총에 따라 대미지가 다르게 부여된다.
 				if (PlayerGunName == "SCAR_H")
 					It->second->GiveDamage(25);
+				else if(PlayerGunName == "M16")
+					It->second->GiveDamage(18);
+				else if(PlayerGunName == "MP44")
+					It->second->GiveDamage(35);
 			}
 		}
 	}

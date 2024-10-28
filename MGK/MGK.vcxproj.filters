@@ -443,12 +443,15 @@
     <ClInclude Include="UIProps.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ UI ]</Filter>
     </ClInclude>
+    <ClInclude Include="M16.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Gun ]</Filter>
+    </ClInclude>
+    <ClInclude Include="MP44.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Gun ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ModeTemplate.txt">
-      <Filter>[7]___________[ Template ]</Filter>
-    </Text>
-    <Text Include="GunClassTemplate.txt">
       <Filter>[7]___________[ Template ]</Filter>
     </Text>
   </ItemGroup>

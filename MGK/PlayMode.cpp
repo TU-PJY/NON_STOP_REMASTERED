@@ -19,18 +19,24 @@ void PlayMode::Start() {
 	// playmode에 필요한 리소스들을 로드한다.
 	// 이미지
 	imageUtil.Import(BackGroundImage, "res//BackGround_wide.png", IMAGE_TYPE_NEAREST);
-	imageUtil.Import(SCAR_H_Image, "res//SCAR_H_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(PlayerImage, "res//commando_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(FlameImage, "res//flame_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(RegularMonsterImage, "res//monster_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(IndicatorBackImage, "res//indicator_back.png", IMAGE_TYPE_NEAREST);
 
+	imageUtil.Import(SCAR_H_Image, "res//SCAR_H_right.png", IMAGE_TYPE_NEAREST);
+	imageUtil.Import(M16_Image, "res//m16_right.png", IMAGE_TYPE_NEAREST);
+	imageUtil.Import(MP44_Image, "res//mp44_right.png", IMAGE_TYPE_NEAREST);
+
 	// 사운드
 	soundUtil.Import(SCAR_H_Shoot, "res//sounds//scar_shoot.ogg", FMOD_DEFAULT);
+	soundUtil.Import(M16_Shoot, "res//sounds//m16_shoot.ogg", FMOD_DEFAULT);
+	soundUtil.Import(MP44_Shoot, "res//sounds//mp44.wav", FMOD_DEFAULT);
 	soundUtil.Import(AR_Reload, "res//sounds//ar_reload.ogg", FMOD_DEFAULT);
+	
 
 	// 개발 시에는 여기다가 플레이어 총 이름을 정의하나, 나중에 메인 화면 모드에서 정의하도록 할 예정이다
-	PlayerGunName = "SCAR_H";
+	PlayerGunName = "M16";
 
 	// playmode에 필요한 오브젝트들을 scene에 추가한다.
 	// UI 오브젝트 및 무형 오브젝트

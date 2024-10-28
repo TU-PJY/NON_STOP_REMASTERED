@@ -9,7 +9,7 @@ private:
 
 	// 몬스터 생성 타이밍
 	// 초기값 1.0
-	GLfloat GenTime{1.0};
+	GLfloat GenTime{3.0};
 
 public:
 	void UpdateFunc(float FT) {

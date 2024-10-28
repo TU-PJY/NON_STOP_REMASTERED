@@ -4,6 +4,8 @@
 #include "Scene.h"
 
 #include "SCAR_H.h"
+#include "M16.h"
+#include "MP44.h"
 
 void Player::InputKey(int State, unsigned char NormalKey, int SpecialKey) {
 	switch (State) {
@@ -78,6 +80,10 @@ void Player::AddGunObject() {
 	// 자기가 가진 총 이름에 따라 다른 총이 scene에 추가된다.
 	if (GunName == "SCAR_H")
 		scene.AddObject(new SCAR_H, GunName.c_str(), LAYER_3);
+	else if(GunName == "M16")
+		scene.AddObject(new M16, GunName.c_str(), LAYER_3);
+	else if (GunName == "MP44")
+		scene.AddObject(new MP44, GunName.c_str(), LAYER_3);
 
 	GunPtr = scene.Find(GunName.c_str());
 }

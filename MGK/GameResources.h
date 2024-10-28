@@ -9,8 +9,8 @@ extern Image RegularMonsterImage;
 extern Image IndicatorBackImage;
 
 // 총 이미지들
-extern Image SCAR_H_Image;
+extern Image SCAR_H_Image, M16_Image, MP44_Image;
 
 // PlayMode에 필요한 사운드들
-extern Sound SCAR_H_Shoot;
+extern Sound SCAR_H_Shoot, M16_Shoot, MP44_Shoot;
 extern Sound AR_Reload;

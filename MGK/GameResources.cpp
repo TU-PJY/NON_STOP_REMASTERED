@@ -10,8 +10,8 @@ Image RegularMonsterImage;
 Image IndicatorBackImage;
 
 // 총 이미지들
-Image SCAR_H_Image;
+Image SCAR_H_Image, M16_Image, MP44_Image;
 
 // PlayMode에 필요한 사운드들
-Sound SCAR_H_Shoot;
+Sound SCAR_H_Shoot, M16_Shoot, MP44_Shoot;
 Sound AR_Reload;
