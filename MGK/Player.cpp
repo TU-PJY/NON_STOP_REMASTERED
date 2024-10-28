@@ -70,7 +70,7 @@ Player::Player(std::string Name) {
 	pUtil.SetGravity(14);
 	pUtil.SetFloorHeight(-0.5);
 
-	GunName = Name;
+	GunType = Name;
 
 	// 체력 인디케이터 오브젝트 포인터 얻기
 	IndHPPtr = scene.Find("indhp");
@@ -79,17 +79,20 @@ Player::Player(std::string Name) {
 
 void Player::AddGunObject() {
 	// 자기가 가진 총 이름에 따라 다른 총이 scene에 추가된다.
-	if (GunName == "SCAR_H")
-		scene.AddObject(new SCAR_H, GunName.c_str(), LAYER_3);
-	else if(GunName == "M16")
-		scene.AddObject(new M16, GunName.c_str(), LAYER_3);
-	else if (GunName == "MP44")
-		scene.AddObject(new MP44, GunName.c_str(), LAYER_3);
-	else if (GunName == "MG42")
-		scene.AddObject(new MG42, GunName.c_str(), LAYER_3);
+	if (GunType == "SCAR_H")
+		scene.AddObject(new SCAR_H, GunType.c_str(), LAYER_3);
+
+	else if(GunType == "M16")
+		scene.AddObject(new M16, GunType.c_str(), LAYER_3);
+
+	else if (GunType == "MP44")
+		scene.AddObject(new MP44, GunType.c_str(), LAYER_3);
+
+	else if (GunType == "MG42")
+		scene.AddObject(new MG42, GunType.c_str(), LAYER_3);
 
 	// 총 포인터 연결
-	GunPtr = scene.Find(GunName.c_str());
+	GunPtr = scene.Find(GunType.c_str());
 }
 
 void Player::UpdateGun() {
@@ -180,16 +183,8 @@ void Player::RenderFunc() {
 	Transform::Scale(ScaleMatrix, 0.3, 0.3);
 
 	// 왼쪽을 바라보는 경우 수평방향으로 이미지 반전
-	if (LookDir == LOOK_LEFT) {
-		if (JumpState)
-			Transform::Rotate(RotateMatrix, 20.0);
+	if (LookDir == LOOK_LEFT)
 		Flip(FLIP_H);
-	}
-
-	else if (LookDir == LOOK_RIGHT) {
-		if (JumpState)
-			Transform::Rotate(RotateMatrix, -20.0);
-	}
 
 	// 렌더링에 필요한 데이터들을 쉐이더로 전달 후 최종 렌더링
 	Render(PlayerImage);

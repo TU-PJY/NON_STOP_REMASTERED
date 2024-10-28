@@ -34,7 +34,7 @@ private:
 	bool TriggerState{};
 
 	// 플레이어가 들고있는 총 이름
-	std::string GunName{};
+	std::string GunType{};
 
 	// 플레이어가 들고있는 총 오브젝트 포인터
 	GameObject* GunPtr{};
