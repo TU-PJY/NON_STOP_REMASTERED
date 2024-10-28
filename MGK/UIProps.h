@@ -91,6 +91,10 @@ public:
 
 		if(PlayerGunName == "SCAR_H")
 			Render(SCAR_H_Image);
+		else if (PlayerGunName == "M16")
+			Render(M16_Image);
+		else if (PlayerGunName == "MP44")
+			Render(MP44_Image);
 
 		// 재장전 진행도 막대 표시
 		if (ReloadState) {
