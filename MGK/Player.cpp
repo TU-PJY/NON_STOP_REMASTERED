@@ -6,6 +6,7 @@
 #include "SCAR_H.h"
 #include "M16.h"
 #include "MP44.h"
+#include "MG42.h"
 
 void Player::InputKey(int State, unsigned char NormalKey, int SpecialKey) {
 	switch (State) {
@@ -84,7 +85,10 @@ void Player::AddGunObject() {
 		scene.AddObject(new M16, GunName.c_str(), LAYER_3);
 	else if (GunName == "MP44")
 		scene.AddObject(new MP44, GunName.c_str(), LAYER_3);
+	else if (GunName == "MG42")
+		scene.AddObject(new MG42, GunName.c_str(), LAYER_3);
 
+	// 총 포인터 연결
 	GunPtr = scene.Find(GunName.c_str());
 }
 

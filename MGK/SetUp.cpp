@@ -22,7 +22,7 @@ float DestFPS;
 int FPSLimit;
 bool FullscreenState;
 
-std::string PlayerGunName;
+std::string PlayerGunType;
 
 GLfloat ASPECT;
 ViewportRect WindowRect;

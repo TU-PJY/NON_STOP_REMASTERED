@@ -51,20 +51,25 @@ public:
 			if (It->second->GetAABB().CheckCollisionPoint(TargetPoint.x, TargetPoint.y)) {
 
 				// 플레이어의 총에 따라 대미지가 다르게 부여된다.
-				if (PlayerGunName == "SCAR_H")
+				if (PlayerGunType == "SCAR_H")
 					It->second->GiveDamage(25);
-				else if(PlayerGunName == "M16")
+
+				else if(PlayerGunType == "M16")
 					It->second->GiveDamage(18);
-				else if(PlayerGunName == "MP44")
+
+				else if(PlayerGunType == "MP44")
 					It->second->GiveDamage(35);
+
+				else if (PlayerGunType == "MG42")
+					It->second->GiveDamage(10);
 			}
 		}
 	}
 
 	void UpdateFunc(float FT) {
 		// 크로스 헤어가 표시되는 위치 지정
-		Position.x = mouse.x;
-		Position.y = mouse.y;
+		Position.x = mouse.x + cameraCon.Shake.x;
+		Position.y = mouse.y + cameraCon.Shake.y - cameraCon.PushValue;
 
 		// 월드 상의 크로스헤어 위치 지정
 		RealPosition.x = mouse.x - cameraCon.Position.x;

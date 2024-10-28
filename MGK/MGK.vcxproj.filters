@@ -449,6 +449,9 @@
     <ClInclude Include="MP44.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Gun ]</Filter>
     </ClInclude>
+    <ClInclude Include="MG42.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Gun ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ModeTemplate.txt">

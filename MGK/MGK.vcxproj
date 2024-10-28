@@ -197,6 +197,7 @@
     <ClInclude Include="FontUtil.h" />
     <ClInclude Include="EngineHeader.h" />
     <ClInclude Include="M16.h" />
+    <ClInclude Include="MG42.h" />
     <ClInclude Include="MonsterGenerator.h" />
     <ClInclude Include="MP44.h" />
     <ClInclude Include="Player.h" />

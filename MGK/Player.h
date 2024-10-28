@@ -58,7 +58,7 @@ private:
 
 	// È¸ÄÛ ÄğÅ¸ÀÓ
 	TimerUtil HealTimer;
-	GLfloat HealCoolTime{ 1.0 };
+	GLfloat HealCoolTime{ 0.5 };
 
 public:
 	Player(std::string Name);

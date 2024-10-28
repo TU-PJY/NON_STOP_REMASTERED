@@ -89,12 +89,10 @@ public:
 		Transform::Move(TranslateMatrix, ASP(1.0) - 0.6, -1.0 + 0.13);
 		Transform::Scale(ScaleMatrix, 0.3, 0.3);
 
-		if(PlayerGunName == "SCAR_H")
-			Render(SCAR_H_Image);
-		else if (PlayerGunName == "M16")
-			Render(M16_Image);
-		else if (PlayerGunName == "MP44")
-			Render(MP44_Image);
+		if(PlayerGunType == "SCAR_H") Render(SCAR_H_Image);
+		else if (PlayerGunType == "M16") Render(M16_Image);
+		else if (PlayerGunType == "MP44") Render(MP44_Image);
+		else if(PlayerGunType == "MG42") Render(MG42_Image);
 
 		// 재장전 진행도 막대 표시
 		if (ReloadState) {

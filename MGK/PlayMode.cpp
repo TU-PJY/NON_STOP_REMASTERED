@@ -27,16 +27,19 @@ void PlayMode::Start() {
 	imageUtil.Import(SCAR_H_Image, "res//SCAR_H_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(M16_Image, "res//m16_right.png", IMAGE_TYPE_NEAREST);
 	imageUtil.Import(MP44_Image, "res//mp44_right.png", IMAGE_TYPE_NEAREST);
+	imageUtil.Import(MG42_Image, "res//mg42_left.png", IMAGE_TYPE_NEAREST);
 
 	// 사운드
 	soundUtil.Import(SCAR_H_Shoot, "res//sounds//scar_shoot.ogg", FMOD_DEFAULT);
 	soundUtil.Import(M16_Shoot, "res//sounds//m16_shoot.ogg", FMOD_DEFAULT);
 	soundUtil.Import(MP44_Shoot, "res//sounds//mp44.wav", FMOD_DEFAULT);
+	soundUtil.Import(MG42_Shoot, "res//sounds//mg42.wav", FMOD_DEFAULT);
+
 	soundUtil.Import(AR_Reload, "res//sounds//ar_reload.ogg", FMOD_DEFAULT);
-	
+	soundUtil.Import(LMG_Reload, "res//sounds//lmg_reload.ogg", FMOD_DEFAULT);
 
 	// 개발 시에는 여기다가 플레이어 총 이름을 정의하나, 나중에 메인 화면 모드에서 정의하도록 할 예정이다
-	PlayerGunName = "M16";
+	PlayerGunType = "MG42";
 
 	// playmode에 필요한 오브젝트들을 scene에 추가한다.
 	// UI 오브젝트 및 무형 오브젝트
@@ -48,7 +51,7 @@ void PlayMode::Start() {
 
 	// 일반 오브젝트
 	scene.AddObject(new BackGround, "background", LAYER_1);
-	scene.AddObject(new Player(PlayerGunName), "player", LAYER_3);
+	scene.AddObject(new Player(PlayerGunType), "player", LAYER_3);
 
 	scene.RegisterController(Controller, MODE_TYPE_DEFAULT);
 	scene.RegisterDestructor(Destructor);

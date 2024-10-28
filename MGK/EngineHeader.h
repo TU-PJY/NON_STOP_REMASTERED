@@ -136,4 +136,4 @@ namespace Framework {
 	void LoadShader();
 }
 
-extern std::string PlayerGunName;
+extern std::string PlayerGunType;
