@@ -363,5 +363,9 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# FMOD files
-!GL2D/FMOD/**
+# Not ignored directory
+!MGK/FMOD/**
+!MGK/MGKResource/**
+!MGK/OpenGL/**
+!MGK/cryptopp/**
+!MGK/res

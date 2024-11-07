@@ -1109,9 +1109,9 @@ public:
 
 /// \brief Interface for hash functions and data processing part of MACs
 /// \details HashTransformation objects are stateful. They are created in an initial state,
-///  change state as InputFrameTime() is called, and return to the initial
+///  change state as Update() is called, and return to the initial
 ///  state when Final() is called. This interface allows a large message to
-///  be hashed in pieces by calling InputFrameTime() on each piece followed by
+///  be hashed in pieces by calling Update() on each piece followed by
 ///  calling Final().
 /// \sa HashFilter(), HashVerificationFilter()
 class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE HashTransformation : public Algorithm
@@ -1185,7 +1185,7 @@ public:
 	/// \param digest a pointer to the buffer to receive the hash
 	/// \param input the additional input as a buffer
 	/// \param length the size of the buffer, in bytes
-	/// \details Use this if your input is in one piece and you don't want to call InputFrameTime()
+	/// \details Use this if your input is in one piece and you don't want to call Update()
 	///  and Final() separately
 	/// \details CalculateDigest() restarts the hash for the next message.
 	/// \pre <tt>COUNTOF(digest) == DigestSize()</tt> or <tt>COUNTOF(digest) == HASH::DIGESTSIZE</tt> ensures
@@ -1211,7 +1211,7 @@ public:
 	/// \param length the size of the buffer, in bytes
 	/// \return \p true if the existing hash matches the computed hash, \p false otherwise
 	/// \throw InvalidArgument() if the existing hash's size exceeds DigestSize()
-	/// \details Use this if your input is in one piece and you don't want to call InputFrameTime()
+	/// \details Use this if your input is in one piece and you don't want to call Update()
 	///  and Verify() separately
 	/// \details VerifyDigest() performs a bitwise compare on the buffers using VerifyBufsEqual(),
 	///  which is a constant time comparison function.
@@ -1235,7 +1235,7 @@ public:
 	/// \param digestSize the length of the truncated hash, in bytes
 	/// \param input the additional input as a buffer
 	/// \param length the size of the buffer, in bytes
-	/// \details Use this if your input is in one piece and you don't want to call InputFrameTime()
+	/// \details Use this if your input is in one piece and you don't want to call Update()
 	///  and CalculateDigest() separately.
 	/// \details CalculateTruncatedDigest() restarts the hash for the next message.
 	/// \pre <tt>digestSize <= DigestSize()</tt> or <tt>digestSize <= HASH::DIGESTSIZE</tt> ensures
@@ -1264,7 +1264,7 @@ public:
 	/// \param length the size of the buffer, in bytes
 	/// \return \p true if the existing hash matches the computed hash, \p false otherwise
 	/// \throw InvalidArgument() if digestLength exceeds DigestSize()
-	/// \details Use this if your input is in one piece and you don't want to call InputFrameTime()
+	/// \details Use this if your input is in one piece and you don't want to call Update()
 	///  and TruncatedVerify() separately.
 	/// \details VerifyTruncatedDigest() is a truncated version of VerifyDigest(). It can operate
 	///  on a buffer smaller than DigestSize(). However, digestLength cannot exceed DigestSize().
@@ -1441,7 +1441,7 @@ class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE RandomNumberGenerator : public Algorithm
 public:
 	virtual ~RandomNumberGenerator() {}
 
-	/// \brief InputFrameTime RNG state with additional unpredictable values
+	/// \brief Update RNG state with additional unpredictable values
 	/// \param input the entropy to add to the generator
 	/// \param length the size of the input buffer
 	/// \throw NotImplemented
@@ -2860,7 +2860,7 @@ public:
 };
 
 /// \brief Interface for accumulating messages to be signed or verified
-/// \details Only InputFrameTime() should be called from the PK_MessageAccumulator() class. No other functions
+/// \details Only Update() should be called from the PK_MessageAccumulator() class. No other functions
 ///  inherited from HashTransformation, like DigestSize() and TruncatedFinal(), should be called.
 class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE PK_MessageAccumulator : public HashTransformation
 {
