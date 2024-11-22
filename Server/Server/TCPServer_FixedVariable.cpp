@@ -1,6 +1,8 @@
 #include "TCP_Header.h" // 에러 메시지 함수 및 TCP 서버에 필요한 헤더 포함
 #include "Packet.h"
-#include "LockFreeQueue.h"
+//#include "LockFreeQueue.h"
+#include <queue>
+#include <print>
 
 // 클라이언트 정보
 struct ClientInfo {
@@ -17,7 +19,7 @@ typedef struct {
 } ClientPacketInfo;
 
 std::vector<ClientInfo*> ConnectedClients; // 연결된 클라이언트 목록
-LockFreeQueue<ClientPacketInfo> ClientPacketQueue; // 클라이언트 패킷 처리 큐, 락 프리 큐이므로 임계구역 사용 안해도 됨
+std::queue<ClientPacketInfo> ClientPacketQueue; // 클라이언트 패킷 처리 큐, 락 프리 큐이므로 임계구역 사용 안해도 됨
 CRITICAL_SECTION ThreadSection; // 임계구역
 
 ////////////////////////////////////////////////////////////////
@@ -69,7 +71,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             SC_LobbyPacket->ReadyState = CS_LobbyPacket.ReadyState;
 
             // 큐에 클라이언트 클라이언트로 보낼 패킷 정보 추가
-            ClientPacketQueue.enqueue({ RecievePacketType, SC_LobbyPacket, ThisClient });
+            EnterCriticalSection(&ThreadSection);
+            ClientPacketQueue.push({ RecievePacketType, SC_LobbyPacket, ThisClient });
+            LeaveCriticalSection(&ThreadSection);
             break;
         }
     }
@@ -93,14 +97,16 @@ DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
     int ReturnValue{};
 
     while (true) {
+        EnterCriticalSection(&ThreadSection);
         // 큐가 비어있지 않으면 큐에 있는 원소를 하나씩 꺼낸다.
-        while (!ClientPacketQueue.dequeue(PacketInfo)) {
+        while (!ClientPacketQueue.empty()) {
+            PacketInfo = ClientPacketQueue.front();
+            ClientPacketQueue.pop();
 
             // 패킷타입에 따라 다른 패킷을 클라이언트에 전송한다.
             // 자신의 클라이언트를 제외한 나머지 클라이언트에 전송한다.
             switch (PacketInfo.PacketType) {
             case PACKET_TYPE_LOBBY:
-                EnterCriticalSection(&ThreadSection);
                 for(auto const& Other : ConnectedClients) {
                     if (Other != PacketInfo.Client) {
                         ReturnValue = send(Other->ClientSocket, (char*)&PacketInfo.PacketType, sizeof(uint8_t), 0);
@@ -112,13 +118,13 @@ DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
                             continue;
                     }
                 }
-                LeaveCriticalSection(&ThreadSection);
 
                 // 가리키는 패킷 구조체 객체 삭제
                 delete PacketInfo.PacketPtr;
                 break;
             }
         }
+        LeaveCriticalSection(&ThreadSection);
     }
 
     return 0;
