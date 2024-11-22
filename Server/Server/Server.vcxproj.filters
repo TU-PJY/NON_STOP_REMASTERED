@@ -49,5 +49,8 @@
     <ClInclude Include="QueueThread.h">
       <Filter>[2]___________[ Server ]</Filter>
     </ClInclude>
+    <ClInclude Include="Container.h">
+      <Filter>[1]___________[ System ]</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 #include "TCP_Header.h"
 #include "ClientThread.h"
 #include "Packet.h"
-
+#include "Container.h"
 
 // 클라이언트 스레드
 DWORD WINAPI ClientThread(LPVOID lpParam) {
@@ -10,9 +10,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
     // 받은 패킷 타입
     uint8_t RecievePacketType{};
-
-    // 다른 클라이언트로 보낼 패킷 타입
-    uint8_t SendPacketType{};
 
     /////////////// 클라이언트 소켓 및 주소
     SOCKET ClientSocket{}; // 클라이언트 소켓
@@ -24,35 +21,38 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     ClientAddr = ThisClient->ClientAddr;
     inet_ntop(AF_INET, &ClientAddr.sin_addr, ThisClient->Addr, sizeof(ThisClient->Addr));
 
-    // 클라이언트 패킷 처리 구조체
-    ClientPacketInfo PacketInfo{};
+    ClientPacketInfo C_PacketInfo{};
+    CS_LOBBY_PACKET CS_LobbyPacket{};
 
     while (ConnectState) {
         // 클라이언트로부터 패킷 타입을 먼저 받는다
         ReturnValue = recv(ClientSocket, (char*)&RecievePacketType, sizeof(uint8_t), 0);
         if (ReturnValue == SOCKET_ERROR)
-            ConnectState = false;
+            break;
 
         // 받은 패킷 타입에 따라 다른 패킷 타입을 받는다
         switch (RecievePacketType) {
         case PACKET_TYPE_LOBBY:
-            SC_LOBBY_PACKET* SC_LobbyPacket = new SC_LOBBY_PACKET;
-            CS_LOBBY_PACKET CS_LobbyPacket{};
-
+            // 받기 전 구조체 초기화
             // CS_LobbyPacket 받기
+            memset(&CS_LobbyPacket, 0, sizeof(CS_LobbyPacket));
             ReturnValue = recv(ClientSocket, (char*)&CS_LobbyPacket, sizeof(CS_LOBBY_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR) {
                 ConnectState = false;
-                delete SC_LobbyPacket;
+                break;
             }
 
+            // 정보 저장 전 구조체 초기화
             // 플레이어 태그, 플레이어 총 타입, 플레이어 준비상태 데이터 복사
-            strncpy((char*)SC_LobbyPacket->PlayerTag, (const char*)CS_LobbyPacket.PlayerTag, sizeof(CS_LobbyPacket.PlayerTag));
-            strncpy((char*)SC_LobbyPacket->GunType, (const char*)CS_LobbyPacket.GunType, sizeof(CS_LobbyPacket.GunType));
-            SC_LobbyPacket->ReadyState = CS_LobbyPacket.ReadyState;
+            memset(&C_PacketInfo, 0, sizeof(C_PacketInfo));
+            strcpy(C_PacketInfo.SC_LobbyPacket.PlayerTag, CS_LobbyPacket.PlayerTag);
+            strcpy(C_PacketInfo.SC_LobbyPacket.GunType, CS_LobbyPacket.GunType);
+            C_PacketInfo.SC_LobbyPacket.ReadyState = CS_LobbyPacket.ReadyState;
+            C_PacketInfo.PacketType = RecievePacketType;
+            C_PacketInfo.Client = ThisClient;
 
             // 큐에 클라이언트 클라이언트로 보낼 패킷 정보 추가
-            ClientPacketQueue.push({ RecievePacketType, static_cast<void*>(SC_LobbyPacket), ThisClient });
+            ClientPacketQueue.push(C_PacketInfo);
             break;
         }
     }

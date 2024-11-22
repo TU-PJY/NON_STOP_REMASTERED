@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClInclude Include="ClientThread.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="Container.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="QueueThread.h" />
     <ClInclude Include="TCP_Header.h" />

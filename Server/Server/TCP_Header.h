@@ -22,17 +22,6 @@ typedef struct {
     char Addr[INET_ADDRSTRLEN];  // 클라이언트 ip 주소 문자열
 } ClientInfo;
 
-// 큐에서 처리하는 서버 -> 클라이언트 구조체
-typedef struct {
-    uint8_t PacketType;  // 패킷 타입
-    void* PacketPtr;  // 클라이언트로 전송할 패킷을 가리키는 포인터
-    ClientInfo* Client; // 클라이언트 정보
-} ClientPacketInfo;
-
-extern std::vector<ClientInfo*> ConnectedClients; // 연결된 클라이언트 목록
-extern boost::lockfree::queue<ClientPacketInfo> ClientPacketQueue; // 클라이언트 패킷 처리 큐, 락 프리 큐이므로 임계구역 사용 안해도 됨
-extern CRITICAL_SECTION ThreadSection; // 임계구역
-
 // 소켓 함수 오류 출력 후 종료
 void err_quit(const char* msg);
 
