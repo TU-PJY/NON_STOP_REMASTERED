@@ -25,12 +25,14 @@ DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
                             continue;
                     }
                 }
-                LeaveCriticalSection(&ThreadSection);
 
-                // 가리키는 패킷 구조체 객체 삭제
-                delete PacketInfo.PacketPtr;
+                LeaveCriticalSection(&ThreadSection);
                 break;
             }
+
+             // 가리키는 패킷 구조체 객체 삭제
+             delete PacketInfo.PacketPtr;
+             PacketInfo.PacketPtr = nullptr;
         }
     }
 

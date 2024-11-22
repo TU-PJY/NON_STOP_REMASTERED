@@ -71,7 +71,8 @@ int main(int argc, char* argv[]) {
                 CloseHandle(Thread);
         }
     }
-
+    
+    // 烙拌备开 昏力
     DeleteCriticalSection(&ThreadSection);
 
     // 家南 摧扁

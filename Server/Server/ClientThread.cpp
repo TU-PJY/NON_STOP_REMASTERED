@@ -50,7 +50,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             SC_LobbyPacket->ReadyState = CS_LobbyPacket.ReadyState;
 
             // 큐에 클라이언트 클라이언트로 보낼 패킷 정보 추가
-            ClientPacketQueue.push({ RecievePacketType, SC_LobbyPacket, ThisClient });
+            ClientPacketQueue.push({ RecievePacketType, static_cast<void*>(SC_LobbyPacket), ThisClient });
             break;
         }
     }
