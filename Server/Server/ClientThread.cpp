@@ -41,8 +41,10 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
             // CS_LobbyPacket 받기
             ReturnValue = recv(ClientSocket, (char*)&CS_LobbyPacket, sizeof(CS_LOBBY_PACKET), 0);
-            if (ReturnValue == SOCKET_ERROR)
+            if (ReturnValue == SOCKET_ERROR) {
                 ConnectState = false;
+                delete SC_LobbyPacket;
+            }
 
             // 플레이어 태그, 플레이어 총 타입, 플레이어 준비상태 데이터 복사
             strncpy((char*)SC_LobbyPacket->PlayerTag, (const char*)CS_LobbyPacket.PlayerTag, sizeof(CS_LobbyPacket.PlayerTag));
