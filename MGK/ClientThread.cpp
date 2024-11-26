@@ -80,22 +80,19 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             switch (RecievePacketType) {
                 // 타 클라이언트 정보 패킷
             case PACKET_TYPE_LOBBY:
-            {
                 SC_LOBBY_PACKET SC_LobbyPacket{};
                 ReturnValue = recv(ClientSocket, (char*)&SC_LobbyPacket, sizeof(SC_LOBBY_PACKET), 0);
                 if (ReturnValue == SOCKET_ERROR)
                     Disconnect();
-                std::string Tag = SC_LobbyPacket.PlayerTag;
 
                 // 접속한 플레이어들의 정보를 최신화 한다.
                 EnterCriticalSection(&ThreadSection);
-                auto It = std::find_if(begin(ConnectedPlayer), end(ConnectedPlayer), [&](const OtherClient& Other) {return Other.PlayerTag == Tag; });
+                auto It = std::find_if(begin(ConnectedPlayer), end(ConnectedPlayer), [&](const OtherClient& Other) {return Other.PlayerTag == SC_LobbyPacket.PlayerTag; });
                 if (It != end(ConnectedPlayer)) {
                     It->GunType = SC_LobbyPacket.GunType;
                     It->ReadyState = SC_LobbyPacket.ReadyState;
                 }
                 LeaveCriticalSection(&ThreadSection);
-            }
             break;
 
             // 로비 플레이어 추가 패킷
