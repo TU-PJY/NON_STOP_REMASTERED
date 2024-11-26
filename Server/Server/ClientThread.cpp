@@ -57,7 +57,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
         case PACKET_TYPE_PLAYER_ADD:
             memset(&C_PacketInfo, 0, sizeof(C_PacketInfo));
+            strcpy(C_PacketInfo.SC_LobbyPacket.PlayerTag, CS_LobbyPacket.PlayerTag);
             C_PacketInfo.PacketType = RecievePacketType;
+            C_PacketInfo.Client = ThisClient;
             ClientPacketQueue.push(C_PacketInfo);
             break;
         }
