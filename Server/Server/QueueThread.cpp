@@ -35,7 +35,12 @@ DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
             case PACKET_TYPE_LOBBY:
                 SendToOther((char*)&Q_PacketInfo.PacketType, (char*)&Q_PacketInfo.SC_LobbyPacket, sizeof(SC_LOBBY_PACKET));
                 break;
+
+            case PACKET_TYPE_PLAYER_ADD:
+                SendToOther((char*)&Q_PacketInfo.PacketType, (char*)&Q_PacketInfo.SC_LobbyPacket, sizeof(SC_LOBBY_PACKET));
+                break;
             }
+
         }
     }
 

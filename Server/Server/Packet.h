@@ -3,8 +3,12 @@
 
 // 패킷 타입 열거형 모음, 반드시 서버와 클라가 동일한 것을 써야함
 enum PacketTypeEnum {
-	PACKET_TYPE_NONE,
-	PACKET_TYPE_LOBBY
+	PACKET_TYPE_NONE, // 타입 없음
+	PACKET_TYPE_LOBBY, // 로비 패킷
+	PACKET_TYPE_LOBBY_PLAYER_ADD, // 로비 플레이어 추가 패킷
+	PACKET_TYPE_LOBBY_PLAYER_DELETE, // 로비 플레이어 제거 패킷
+	PACKET_TYPE_PLAYER_ADD, // 플레이어 추가 패킷
+	PACKET_TYPE_PLAYER_DELETE, // 플레이어 제거 패킷
 };
 
 ////////////////////////// 패킷 구조체 모음
@@ -23,6 +27,11 @@ typedef struct {
 	char GunType[20];      // 무기 타입
 	bool ReadyState;       // 준비 상태
 }SC_LOBBY_PACKET;
+
+// 패킷 타입만 보낼때 쓰는 더미 패킷
+typedef struct {
+	char c{};
+}SC_DUMMY;
 #pragma pack(pop)
 
 // 큐에서 처리하는 서버 -> 클라이언트 구조체
@@ -33,4 +42,5 @@ typedef struct {
 	// 패킷 종류 추가 시 여기에도 추가해야 함
 	// 패킷 타입에 따라 하나의 구조체 데이터만 선택해 전송함
 	SC_LOBBY_PACKET SC_LobbyPacket;
+	SC_DUMMY SC_Dummy;
 } ClientPacketInfo;
