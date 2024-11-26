@@ -143,6 +143,7 @@
     <ClCompile Include="AnimationUtil.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="CameraUtil.cpp" />
+    <ClCompile Include="ClientThread.cpp" />
     <ClCompile Include="ClippingUtil.cpp" />
     <ClCompile Include="CollisionUtil.cpp" />
     <ClCompile Include="DataList.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="CameraUtil.h" />
+    <ClInclude Include="ClientThread.h" />
     <ClInclude Include="ClippingUtil.h" />
     <ClInclude Include="CollisionUtil.h" />
     <ClInclude Include="Crosshair.h" />

@@ -54,7 +54,15 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             // 큐에 클라이언트 클라이언트로 보낼 패킷 정보 추가
             ClientPacketQueue.push(C_PacketInfo);
             break;
+
+        case PACKET_TYPE_PLAYER_ADD:
+            memset(&C_PacketInfo, 0, sizeof(C_PacketInfo));
+            C_PacketInfo.PacketType = RecievePacketType;
+            ClientPacketQueue.push(C_PacketInfo);
+            break;
         }
+
+
     }
 
     // 접속 종료 시 접속한 클라이언트 목록에서 제거 후 소켓 닫기

@@ -139,7 +139,3 @@ namespace Framework {
 	void SetupWindow();
 	void LoadShader();
 }
-
-// 전역 변수 여기에 선언
-// 클라이언트 총 타입
-extern std::string PlayerGunType;

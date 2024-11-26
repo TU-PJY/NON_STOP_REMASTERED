@@ -22,8 +22,6 @@ float DestFPS;
 int FPSLimit;
 bool FullscreenState;
 
-std::string PlayerGunType;
-
 GLfloat ASPECT;
 ViewportRect WindowRect;
 glm::vec3 BackColor;

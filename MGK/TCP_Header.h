@@ -11,8 +11,11 @@
 #include <string.h>
 #include <string>
 #include <vector>
+#include <set>
 #include <print>
 #include "Config.h"
+
+#define SERVER_PORT 9000
 
 // 클라이언트 정보
 typedef struct {
@@ -29,3 +32,20 @@ void err_display(const char* msg);
 
 // 소켓 함수 오류 출력
 void err_display(int errcode);
+
+extern char* SERVER_IP;  // 클라이언트 주소
+extern CRITICAL_SECTION ThreadSection;
+
+typedef struct {
+    std::string PlayerTag;
+    std::string GunType;
+    bool ReadyState;
+}OtherClient;
+extern std::vector<OtherClient> ConnectedPlayer;
+extern int NumPlayerConnected;
+
+// 플레이어 전역 변수 여기에 선언
+extern bool ConnectState;
+extern std::string PlayerGunType;
+extern std::string PlayerTag;
+extern bool PlayerReadyState;
