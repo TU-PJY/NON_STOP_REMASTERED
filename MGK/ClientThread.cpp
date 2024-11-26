@@ -91,7 +91,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                 EnterCriticalSection(&ThreadSection);
                 auto It = std::find_if(begin(ConnectedPlayer), end(ConnectedPlayer), [&](const OtherClient& Other) {return Other.PlayerTag == Tag; });
                 if (It != end(ConnectedPlayer)) {
-                    It->PlayerTag = Tag;
                     It->GunType = SC_LobbyPacket.GunType;
                     It->ReadyState = SC_LobbyPacket.ReadyState;
                 }
