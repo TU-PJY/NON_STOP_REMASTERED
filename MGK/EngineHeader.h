@@ -1,6 +1,8 @@
 #pragma once
 #pragma warning(disable: 4244) 
 #pragma warning(disable: 4305) 
+#define _CRT_SECURE_NO_WARNINGS
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #include "Setting.h"
 #include "glew.h"
 #include "freeglut.h"
@@ -11,6 +13,8 @@
 #include "fmod.hpp"
 #include "fmod_errors.h"
 #include <iostream>
+#include "TCP_Header.h"
+#include "Packet.h"
 
 extern float DestFPS;
 extern int FPSLimit;
@@ -136,4 +140,6 @@ namespace Framework {
 	void LoadShader();
 }
 
+// 전역 변수 여기에 선언
+// 클라이언트 총 타입
 extern std::string PlayerGunType;

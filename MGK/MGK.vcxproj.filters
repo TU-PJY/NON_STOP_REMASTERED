@@ -181,6 +181,15 @@
     <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ UI ]">
       <UniqueIdentifier>{d311ac09-7ef1-4434-a603-c254fef3f600}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[1]___________[ GameMode ]\[ LobbyMode ]">
+      <UniqueIdentifier>{2ec5c561-84bd-42dd-a879-7c9b7851d8b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]___________[ Object ]\[1][ Main Object ]\[ LobbyMode Object ]">
+      <UniqueIdentifier>{ca565b97-ddb4-406d-b466-4f8d5349cc51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[8]___________[ TCP/IP ]">
+      <UniqueIdentifier>{e866c242-fcea-4274-b61e-2decd9b4ecff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayMode.cpp">
@@ -305,6 +314,12 @@
     </ClCompile>
     <ClCompile Include="Flame.cpp">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Prop ]\[ Flame ]</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyMode.cpp">
+      <Filter>[1]___________[ GameMode ]\[ LobbyMode ]</Filter>
+    </ClCompile>
+    <ClCompile Include="TCP_Func.cpp">
+      <Filter>[8]___________[ TCP/IP ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -451,6 +466,18 @@
     </ClInclude>
     <ClInclude Include="MG42.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[ Gun ]</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyMode.h">
+      <Filter>[1]___________[ GameMode ]\[ LobbyMode ]</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInfo.h">
+      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ LobbyMode Object ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet.h">
+      <Filter>[8]___________[ TCP/IP ]</Filter>
+    </ClInclude>
+    <ClInclude Include="TCP_Header.h">
+      <Filter>[8]___________[ TCP/IP ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
