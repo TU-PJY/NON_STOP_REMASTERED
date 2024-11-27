@@ -75,6 +75,11 @@ void TextUtil::Render(GLfloat X, GLfloat Y, GLfloat Size, GLfloat TransparencyVa
 	if (Format == NULL)
 		return;
 
+	for (const auto& ch : Text) {
+		if (!CheckGlyphCache(ch))
+			LoadGlyph(ch);
+	}
+
 	unsigned char CharIndex{};
 	GLfloat CurrentPositionX = 0.0f;
 	GLfloat Length{};
@@ -103,11 +108,6 @@ void TextUtil::Render(GLfloat X, GLfloat Y, GLfloat Size, GLfloat TransparencyVa
 
 		camera.SetCamera(RenderType);
 		PrepareRender();
-
-		for (const auto& ch : Text) {
-			if (!CheckGlyphCache(ch))
-				LoadGlyph(ch);
-		}
 
 		glPushAttrib(GL_LIST_BIT);
 		glListBase(FontBase);

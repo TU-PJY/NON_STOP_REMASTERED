@@ -43,7 +43,7 @@ CRITICAL_SECTION ThreadSection;
 // 연결된 플레이어들의 닉네임 및 아이디
 // 접속한 순서대로 1, 2가 부여된다
 int NumPlayerConnected;
-std::vector<OtherClient> ConnectedPlayer;
+std::vector<OTHER_CLIENT> ConnectedPlayer;
 
 bool ConnectState;
 std::string PlayerGunType;

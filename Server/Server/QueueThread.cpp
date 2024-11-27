@@ -30,17 +30,13 @@ void SendToOther(const char* PacketType, const char* Packet, int Size) {
 DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
     while (true) {
         // 큐가 비어있지 않으면 큐에 있는 원소를 하나씩 꺼낸다.
-        while (!ClientPacketQueue.pop(Q_PacketInfo)) {
+        while (!ClientPacketQueue.empty()) {
+            ClientPacketQueue.pop(Q_PacketInfo);
             switch (Q_PacketInfo.PacketType) {
             case PACKET_TYPE_LOBBY:
                 SendToOther((char*)&Q_PacketInfo.PacketType, (char*)&Q_PacketInfo.SC_LobbyPacket, sizeof(SC_LOBBY_PACKET));
                 break;
-
-            case PACKET_TYPE_PLAYER_ADD:
-                SendToOther((char*)&Q_PacketInfo.PacketType, (char*)&Q_PacketInfo.SC_LobbyPacket, sizeof(SC_LOBBY_PACKET));
-                break;
             }
-
         }
     }
 

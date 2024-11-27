@@ -33,9 +33,8 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         // 받은 패킷 타입에 따라 다른 패킷 타입을 받는다
         switch (RecievePacketType) {
         case PACKET_TYPE_LOBBY:
-            // 받기 전 구조체 초기화
             // CS_LobbyPacket 받기
-            memset(&CS_LobbyPacket, 0, sizeof(CS_LobbyPacket));
+            memset(&CS_LobbyPacket, 0, sizeof(CS_LOBBY_PACKET));
             ReturnValue = recv(ClientSocket, (char*)&CS_LobbyPacket, sizeof(CS_LOBBY_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR) {
                 ConnectState = false;
@@ -44,7 +43,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
             // 정보 저장 전 구조체 초기화
             // 플레이어 태그, 플레이어 총 타입, 플레이어 준비상태 데이터 복사
-            memset(&C_PacketInfo, 0, sizeof(C_PacketInfo));
+            memset(&C_PacketInfo, 0, sizeof(ClientPacketInfo));
             strcpy(C_PacketInfo.SC_LobbyPacket.PlayerTag, CS_LobbyPacket.PlayerTag);
             strcpy(C_PacketInfo.SC_LobbyPacket.GunType, CS_LobbyPacket.GunType);
             C_PacketInfo.SC_LobbyPacket.ReadyState = CS_LobbyPacket.ReadyState;
@@ -54,17 +53,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             // 큐에 클라이언트 클라이언트로 보낼 패킷 정보 추가
             ClientPacketQueue.push(C_PacketInfo);
             break;
-
-        case PACKET_TYPE_PLAYER_ADD:
-            memset(&C_PacketInfo, 0, sizeof(C_PacketInfo));
-            strcpy(C_PacketInfo.SC_LobbyPacket.PlayerTag, CS_LobbyPacket.PlayerTag);
-            C_PacketInfo.PacketType = RecievePacketType;
-            C_PacketInfo.Client = ThisClient;
-            ClientPacketQueue.push(C_PacketInfo);
-            break;
         }
-
-
     }
 
     // 접속 종료 시 접속한 클라이언트 목록에서 제거 후 소켓 닫기

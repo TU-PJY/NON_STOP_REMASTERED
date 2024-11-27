@@ -40,8 +40,8 @@ typedef struct {
     std::string PlayerTag;
     std::string GunType;
     bool ReadyState;
-}OtherClient;
-extern std::vector<OtherClient> ConnectedPlayer;
+}OTHER_CLIENT;
+extern std::vector<OTHER_CLIENT> ConnectedPlayer;
 extern int NumPlayerConnected;
 
 // 플레이어 전역 변수 여기에 선언

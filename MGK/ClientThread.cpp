@@ -39,84 +39,78 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     ConnectState = true;
     LeaveCriticalSection(&ThreadSection);
 
+    SC_LOBBY_PACKET SC_LobbyPacket{};
     CS_LOBBY_PACKET CS_LobbyPacket{};
-
-    // 서버 접속 시 서버에 접속 신호를 보낸다.
-    int SendPacketType = PACKET_TYPE_PLAYER_ADD;
-    ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
-    if (ReturnValue == SOCKET_ERROR)
-        Disconnect();
+    OTHER_CLIENT OtherClient{};
 
     while (ConnectState) {
-        // 패킷을 받는다.
-        ReturnValue = recv(ClientSocket, (char*)&RecievePacketType, sizeof(uint8_t), 0);
-        if (ReturnValue == SOCKET_ERROR) 
-            Disconnect();
+        // 패킷 타입을 보낸다.
+        int SendPacketType = PACKET_TYPE_LOBBY;
+        ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
+        if (ReturnValue == SOCKET_ERROR)
+            err_quit("send() PACKET_TYPE_LOBBY");
 
+        // 클라이언트 자신의 상태를 패킷에 복사
+        memset(&CS_LobbyPacket, 0, sizeof(CS_LOBBY_PACKET));
         EnterCriticalSection(&ThreadSection);
-        std::string CurrentMode = scene.Mode();
+        strcpy(CS_LobbyPacket.PlayerTag, PlayerTag.c_str());
+        strcpy(CS_LobbyPacket.GunType, PlayerGunType.c_str());
+        CS_LobbyPacket.ReadyState = PlayerReadyState;
         LeaveCriticalSection(&ThreadSection);
 
-        // 로비모드
-        if (CurrentMode == "LobbyMode") {
-            // 패킷 타입을 보낸다.
-            int SendPacketType = PACKET_TYPE_LOBBY;
-            ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
-            if (ReturnValue == SOCKET_ERROR) 
-                Disconnect();
+        //  패킷 보내기
+        ReturnValue = send(ClientSocket, (char*)&CS_LobbyPacket, sizeof(CS_LOBBY_PACKET), 0);
+        if (ReturnValue == SOCKET_ERROR)
+            err_quit("send() CS_LOBBY_PACKET");
 
-            // 클라이언트 자신의 상태를 패킷에 복사
-            memset(&CS_LobbyPacket, 0, sizeof(CS_LOBBY_PACKET));
-            strcpy(CS_LobbyPacket.PlayerTag, PlayerTag.c_str());
-            strcpy(CS_LobbyPacket.GunType, PlayerGunType.c_str());
-            CS_LobbyPacket.ReadyState = PlayerReadyState;
+        // 패킷 타입 받기
+        ReturnValue = recv(ClientSocket, (char*)&RecievePacketType, sizeof(uint8_t), 0);
+        if (ReturnValue == SOCKET_ERROR)
+            err_quit("recv() PakcetType");
 
-            //  패킷 보내기
-            ReturnValue = send(ClientSocket, (char*)&CS_LobbyPacket, sizeof(CS_LOBBY_PACKET), 0);
-            if (ReturnValue == SOCKET_ERROR) 
-                Disconnect();
+        // 받은 패킷 처리
+        switch (RecievePacketType) {
+            // 타 클라이언트 정보 패킷
+        case PACKET_TYPE_LOBBY:
+        {
+            memset(&SC_LobbyPacket, 0, sizeof(SC_LOBBY_PACKET));
+            ReturnValue = recv(ClientSocket, (char*)&SC_LobbyPacket, sizeof(SC_LOBBY_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR)
+                err_quit("recv() SC_LOBBY_PACKET");
 
-            // 받은 패킷 처리
-            switch (RecievePacketType) {
-                // 타 클라이언트 정보 패킷
-            case PACKET_TYPE_LOBBY:
-                SC_LOBBY_PACKET SC_LobbyPacket{};
-                ReturnValue = recv(ClientSocket, (char*)&SC_LobbyPacket, sizeof(SC_LOBBY_PACKET), 0);
-                if (ReturnValue == SOCKET_ERROR)
-                    Disconnect();
+            bool clientFound = false;
 
-                // 접속한 플레이어들의 정보를 최신화 한다.
-                EnterCriticalSection(&ThreadSection);
-                auto It = std::find_if(begin(ConnectedPlayer), end(ConnectedPlayer), [&](const OtherClient& Other) {return Other.PlayerTag == SC_LobbyPacket.PlayerTag; });
-                if (It != end(ConnectedPlayer)) {
-                    It->GunType = SC_LobbyPacket.GunType;
-                    It->ReadyState = SC_LobbyPacket.ReadyState;
+            EnterCriticalSection(&ThreadSection);
+            if (ConnectedPlayer.size() < 3) {
+                for (auto& Other : ConnectedPlayer) {
+                    if (Other.PlayerTag == std::string(SC_LobbyPacket.PlayerTag)) {
+                        Other.PlayerTag = std::string(SC_LobbyPacket.PlayerTag);
+                        Other.GunType = std::string(SC_LobbyPacket.GunType);
+                        Other.ReadyState = SC_LobbyPacket.ReadyState;
+                        clientFound = true;
+                        break;
+                    }
                 }
-                LeaveCriticalSection(&ThreadSection);
-            break;
 
-            // 로비 플레이어 추가 패킷
-            case PACKET_TYPE_PLAYER_ADD:
-                SC_LOBBY_PACKET SC_LobbyPacket{};
-                ReturnValue = recv(ClientSocket, (char*)&SC_LobbyPacket, sizeof(SC_LOBBY_PACKET), 0);
-                if (ReturnValue == SOCKET_ERROR)
-                    Disconnect();
-
-                OtherClient Other{};
-                Other.PlayerTag = SC_LobbyPacket.PlayerTag;
-
-                // 접속한 플레이어 리스트에 새 구조체를 추가한다.
-                EnterCriticalSection(&ThreadSection);
-                ConnectedPlayer.push_back(Other);
-                ++NumPlayerConnected;
-                LeaveCriticalSection(&ThreadSection);
-                break;
+                if (!clientFound) {
+                    OTHER_CLIENT newClient;
+                    newClient.PlayerTag = std::string(SC_LobbyPacket.PlayerTag);
+                    newClient.GunType = std::string(SC_LobbyPacket.GunType);
+                    newClient.ReadyState = SC_LobbyPacket.ReadyState;
+                    ConnectedPlayer.push_back(newClient);
+                }
             }
+            LeaveCriticalSection(&ThreadSection);
         }
+            break;
+        }
+
     }
 
     closesocket(ClientSocket);
     WSACleanup();
     DeleteCriticalSection(&ThreadSection);
+
+    std::cout << "Thread end\n";
     return 0;
 }
