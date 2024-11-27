@@ -41,7 +41,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
     SC_LOBBY_PACKET SC_LobbyPacket{};
     CS_LOBBY_PACKET CS_LobbyPacket{};
-    OTHER_CLIENT OtherClient{};
 
     while (ConnectState) {
         // 패킷 타입을 보낸다.
@@ -51,7 +50,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             err_quit("send() PACKET_TYPE_LOBBY");
 
         // 클라이언트 자신의 상태를 패킷에 복사
-        memset(&CS_LobbyPacket, 0, sizeof(CS_LOBBY_PACKET));
+        CS_LOBBY_PACKET CS_LobbyPacket{};
         EnterCriticalSection(&ThreadSection);
         strcpy(CS_LobbyPacket.PlayerTag, PlayerTag.c_str());
         strcpy(CS_LobbyPacket.GunType, PlayerGunType.c_str());
@@ -73,38 +72,38 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             // 타 클라이언트 정보 패킷
         case PACKET_TYPE_LOBBY:
         {
-            memset(&SC_LobbyPacket, 0, sizeof(SC_LOBBY_PACKET));
+            SC_LOBBY_PACKET SC_LobbyPacket{};
             ReturnValue = recv(ClientSocket, (char*)&SC_LobbyPacket, sizeof(SC_LOBBY_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
                 err_quit("recv() SC_LOBBY_PACKET");
 
-            bool clientFound = false;
-
             EnterCriticalSection(&ThreadSection);
-            if (ConnectedPlayer.size() < 3) {
-                for (auto& Other : ConnectedPlayer) {
-                    if (Other.PlayerTag == std::string(SC_LobbyPacket.PlayerTag)) {
-                        Other.PlayerTag = std::string(SC_LobbyPacket.PlayerTag);
-                        Other.GunType = std::string(SC_LobbyPacket.GunType);
-                        Other.ReadyState = SC_LobbyPacket.ReadyState;
-                        clientFound = true;
-                        break;
-                    }
-                }
 
-                if (!clientFound) {
-                    OTHER_CLIENT newClient;
-                    newClient.PlayerTag = std::string(SC_LobbyPacket.PlayerTag);
-                    newClient.GunType = std::string(SC_LobbyPacket.GunType);
-                    newClient.ReadyState = SC_LobbyPacket.ReadyState;
-                    ConnectedPlayer.push_back(newClient);
-                }
+            // 클라이언트가 이미 목록에 있는지 확인
+            auto it = std::find_if(ConnectedPlayer.begin(), ConnectedPlayer.end(),
+                [&](const OTHER_CLIENT& client) {
+                    return client.PlayerTag == std::string(SC_LobbyPacket.PlayerTag);
+                });
+
+            if (it != ConnectedPlayer.end()) {
+                // 기존 클라이언트 정보 업데이트
+                it->GunType = std::string(SC_LobbyPacket.GunType);
+                it->ReadyState = SC_LobbyPacket.ReadyState;
             }
+            else {
+                // 새로운 클라이언트 추가
+                OTHER_CLIENT newClient{};
+                newClient.PlayerTag = std::string(SC_LobbyPacket.PlayerTag);
+                newClient.GunType = std::string(SC_LobbyPacket.GunType);
+                newClient.ReadyState = SC_LobbyPacket.ReadyState;
+                ConnectedPlayer.push_back(newClient);
+            }
+
             LeaveCriticalSection(&ThreadSection);
         }
             break;
         }
-
+            
     }
 
     closesocket(ClientSocket);

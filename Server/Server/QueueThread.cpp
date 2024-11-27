@@ -10,9 +10,11 @@ ClientPacketInfo Q_PacketInfo; // 다른 클라이언트로 보낼 패킷 정보
 // 자신의 클라이언트를 제외한 나머지 클라이언트에 전송한다.
 void SendToOther(const char* PacketType, const char* Packet, int Size) {
     int ReturnValue{};
-
     EnterCriticalSection(&ThreadSection);
-    for (auto const& Other : ConnectedClients) {
+    auto& Local = ConnectedClients;
+    LeaveCriticalSection(&ThreadSection);
+
+    for (auto const& Other : Local) {
         if (Other != Q_PacketInfo.Client) {
             ReturnValue = send(Other->ClientSocket, PacketType, sizeof(uint8_t), 0);
             if (ReturnValue == SOCKET_ERROR)
@@ -23,7 +25,6 @@ void SendToOther(const char* PacketType, const char* Packet, int Size) {
                 continue;
         }
     }
-    LeaveCriticalSection(&ThreadSection);
 }
 
 // 서버 -> 클라이언트 큐 스레드
