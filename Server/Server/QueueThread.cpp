@@ -15,6 +15,7 @@ void SendToOther(ClientInfo* Info, const char* PacketType, const char* Packet, i
     for (auto const& Other : Local) {
         if (Other != Info) {
             ReturnValue = send(Other->ClientSocket, PacketType, sizeof(uint8_t), 0);
+            //std::println("Send {}: {} to {}", PacketType, Info->ID, Other->ID);
             if (ReturnValue == SOCKET_ERROR)
                 continue;
 
@@ -34,8 +35,12 @@ DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
             ClientPacketQueue.pop(Q_PacketInfo);
 
             switch (Q_PacketInfo.PacketType) {
-            case PACKET_TYPE_LOBBY:
+            case PACKET_TYPE_ENTER:
                 SendToOther(Q_PacketInfo.Client, (char*)&Q_PacketInfo.PacketType, (char*)&Q_PacketInfo.SC_LobbyPacket, sizeof(SC_LOBBY_PACKET));
+                break;
+
+            case PACKET_TYPE_MOVE:
+                SendToOther(Q_PacketInfo.Client, (char*)&Q_PacketInfo.PacketType, (char*)&Q_PacketInfo.SC_MovePacket, sizeof(SC_PLAYER_MOVE_PACKET));
                 break;
             }
         }

@@ -20,6 +20,7 @@ typedef struct {
     SOCKET ClientSocket;
     struct sockaddr_in ClientAddr;
     char Addr[INET_ADDRSTRLEN];  // 클라이언트 ip 주소 문자열
+    int ID;
 } ClientInfo;
 
 // 소켓 함수 오류 출력 후 종료

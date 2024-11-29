@@ -45,6 +45,8 @@ int main(int argc, char* argv[]) {
     else
         CloseHandle(Thread);
 
+    int ID = 0;
+
     while (true) {
         if (ConnectedClients.size() < MAX_CLIENT) {
             // accept()
@@ -56,7 +58,10 @@ int main(int argc, char* argv[]) {
             }
 
             // 클라이언트가 접속하면 클라이언트의 소켓과 주소를 스레드 파라미터로 전달
-            ClientInfo* Client = new ClientInfo{ ClientSocket, ClientAddr, NULL };
+            ClientInfo* Client = new ClientInfo;
+            Client->ClientSocket = ClientSocket;
+            Client->ClientAddr = ClientAddr;
+            Client->ID = ID;
 
             // 연결된 클라이언트 목록에 추가
             ConnectedClients.push_back(Client);
@@ -68,8 +73,10 @@ int main(int argc, char* argv[]) {
                 delete Client;
                 closesocket(ClientSocket);
             }
-            else
+            else {
+                ++ID;
                 CloseHandle(Thread);
+            }
         }
     }
     

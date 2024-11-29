@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "ClientThread.h"
+#include "PlayMode.h"
 
 // 로비 정보 객체(임시 테스트용)
 
@@ -58,6 +59,7 @@ public:
 					if (Thread) {
 						CloseHandle(Thread);
 						ConnectState = true;
+						scene.SwitchMode(PlayMode::Start);
 					}
 				}
 				break;

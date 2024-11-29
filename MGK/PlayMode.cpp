@@ -43,7 +43,7 @@ void PlayMode::Start() {
 
 	// playmode에 필요한 오브젝트들을 scene에 추가한다.
 	// UI 오브젝트 및 무형 오브젝트
-	scene.AddObject(new MonsterGenerator, "monster_generator", LAYER_1);
+	//scene.AddObject(new MonsterGenerator, "monster_generator", LAYER_1);
 	scene.AddObject(new IndBack, "indback", LAYER_5);
 	scene.AddObject(new IndAmmo, "indammo", LAYER_5);
 	scene.AddObject(new IndHP, "indhp", LAYER_5);

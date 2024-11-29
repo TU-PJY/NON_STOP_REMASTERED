@@ -27,12 +27,13 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     while (ConnectState) {
         // 클라이언트로부터 패킷 타입을 먼저 받는다
         ReturnValue = recv(ClientSocket, (char*)&RecievePacketType, sizeof(uint8_t), 0);
+        std::println("RECV {}:", RecievePacketType);
         if (ReturnValue == SOCKET_ERROR)
             break;
 
         // 받은 패킷 타입에 따라 다른 패킷 타입을 받는다
         switch (RecievePacketType) {
-        case PACKET_TYPE_LOBBY:
+        case PACKET_TYPE_ENTER:
             // CS_LobbyPacket 받기
             memset(&CS_LobbyPacket, 0, sizeof(CS_LOBBY_PACKET));
             ReturnValue = recv(ClientSocket, (char*)&CS_LobbyPacket, sizeof(CS_LOBBY_PACKET), 0);
@@ -53,6 +54,28 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             // 큐에 클라이언트 클라이언트로 보낼 패킷 정보 추가
             ClientPacketQueue.push(C_PacketInfo);
             break;
+
+        case PACKET_TYPE_MOVE:
+        {
+            CS_PLAYER_MOVE_PACKET CS_MovePacket{};
+            ClientPacketInfo C_PacketInfo{};
+            ReturnValue = recv(ClientSocket, (char*)&CS_MovePacket, sizeof(CS_PLAYER_MOVE_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR) {
+                ConnectState = false;
+                break;
+            }
+
+            strcpy(C_PacketInfo.SC_MovePacket.PlayerTag, CS_MovePacket.PlayerTag);
+            C_PacketInfo.SC_MovePacket.x = CS_MovePacket.x;
+            C_PacketInfo.SC_MovePacket.y = CS_MovePacket.y;
+            C_PacketInfo.PacketType = RecievePacketType;
+            C_PacketInfo.Client = ThisClient;
+
+            std::println("Tag: {}, X: {}, Y : {}", CS_MovePacket.PlayerTag, CS_MovePacket.x, CS_MovePacket.y);
+
+            ClientPacketQueue.push(C_PacketInfo);
+        }
+        break;
         }
     }
 
