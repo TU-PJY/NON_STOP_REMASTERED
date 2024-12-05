@@ -49,6 +49,14 @@ AABB Player::GetAABB() {
 	return aabb;
 }
 
+int Player::GetLookDir() {
+	return LookDir;
+}
+
+GLfloat Player::GetGunRotation() {
+	return GunRotation;
+}
+
 
 void Player::GiveDamage(int Damage) {
 	if (HurtEnableState) {
@@ -103,7 +111,8 @@ void Player::UpdateGun() {
 	if (GunPtr) {
 		GunPtr->InputPosition(Position);
 		GunPtr->InputLookDir(LookDir);
-		GunPtr->InputRotation(Math::CalcDegree(Position.x, Position.y, mouse.x - cameraCon.Position.x, mouse.y));
+		GunRotation = Math::CalcDegree(Position.x, Position.y, mouse.x - cameraCon.Position.x, mouse.y);
+		GunPtr->InputRotation(GunRotation);
 		GunPtr->InputTriggerState(TriggerState);
 	}
 }

@@ -108,8 +108,12 @@ public:
 	virtual void InputCurrentHP(int Value) {}
 
 	virtual void SetPosition(glm::vec2 Value) {}
+	virtual void SetLookDir(int Dir) {}
+	virtual void SetGunRotation(GLfloat Rotation) {}
 	virtual void SetGunType(std::string Type) {}
 	virtual void SetPlayerTag(std::string Str) {}
+	virtual int GetLookDir() { return{}; }
+	virtual GLfloat GetGunRotation() { return{}; }
 
 private:
 	void PrepareRender(); 

@@ -77,17 +77,23 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                 err_quit("recv() PakcetType");
 
             CS_PLAYER_MOVE_PACKET CSMovePack{};
-            glm::vec2 RecvPosition{};
+            glm::vec2 SendPosition{};
+            int SendLookDir{};
+            GLfloat SendGunRotation{};
 
             EnterCriticalSection(&ThreadSection);
             if (auto Player = scene.Find("player"); Player) {
                 strcpy(CSMovePack.PlayerTag, PlayerTag.c_str());
-                RecvPosition = Player->GetPosition();
+                SendPosition = Player->GetPosition();
+                SendLookDir = Player->GetLookDir();
+                SendGunRotation = Player->GetGunRotation();
             }
             LeaveCriticalSection(&ThreadSection);
 
-            CSMovePack.x = RecvPosition.x;
-            CSMovePack.y = RecvPosition.y;
+            CSMovePack.x = SendPosition.x;
+            CSMovePack.y = SendPosition.y;
+            CSMovePack.gun_rotation = SendGunRotation;
+            CSMovePack.look_dir = SendLookDir;
 
             ReturnValue = send(ClientSocket, (char*)&CSMovePack, sizeof(CS_PLAYER_MOVE_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
@@ -125,10 +131,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                 if (auto Other = scene.Find(SCInfoPack.PlayerTag); Other) {
                     Other->SetPlayerTag(SCInfoPack.PlayerTag);
                     Other->SetGunType(SCInfoPack.GunType);
-                    Other->SetPosition(glm::vec2(0.0, 0.0));
-
-                    std::cout << SCInfoPack.PlayerTag << std::endl;
-
                 }
             }
 
@@ -159,9 +161,12 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
             CS_PLAYER_MOVE_PACKET CSMovePack{};
 
+            // 타 클라이언트 플레이어 업데이트
             EnterCriticalSection(&ThreadSection);
             if (auto Other = scene.Find(SCMovePack.PlayerTag); Other) {
                 Other->SetPosition(glm::vec2(SCMovePack.x, SCMovePack.y));
+                Other->SetLookDir(SCMovePack.look_dir);
+                Other->SetGunRotation(SCMovePack.gun_rotation);
             }
             LeaveCriticalSection(&ThreadSection);
         }

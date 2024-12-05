@@ -61,10 +61,10 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             strcpy(InputPackData.SCMovePack.PlayerTag, CSMovePack.PlayerTag);
             InputPackData.SCMovePack.x = CSMovePack.x;
             InputPackData.SCMovePack.y = CSMovePack.y;
+            InputPackData.SCMovePack.gun_rotation = CSMovePack.gun_rotation;
+            InputPackData.SCMovePack.look_dir = CSMovePack.look_dir;
             InputPackData.PacketType = RecvPackType;
             InputPackData.Client = ThisClient;
-
-           // std::println("Tag: {}, X: {}, Y : {}", CSMovePack.PlayerTag, CSMovePack.x, CSMovePack.y);
 
             ClientPacketQueue.push(InputPackData);
         }

@@ -18,6 +18,9 @@ private:
 	// 플레이어 이동 방향
 	int LookDir{};
 
+	// 총 회전 방향
+	GLfloat GunRotation{};
+
 	// 플레이어 이동 여부
 	bool MoveLeft{}, MoveRight{};
 
@@ -45,7 +48,6 @@ private:
 	// AABB
 	AABB aabb;
 
-
 	// 체력
 	int HP{ 100 };
 
@@ -62,6 +64,10 @@ private:
 
 public:
 	Player(std::string Name);
+
+	int GetLookDir();
+
+	GLfloat GetGunRotation();
 
 	// 키 입력 컨트롤러
 	void InputKey(int State, unsigned char NormalKey, int SpecialKey);
