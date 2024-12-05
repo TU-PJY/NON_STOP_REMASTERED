@@ -38,9 +38,6 @@ void PlayMode::Start() {
 	soundUtil.Import(AR_Reload, "res//sounds//ar_reload.ogg", FMOD_DEFAULT);
 	soundUtil.Import(LMG_Reload, "res//sounds//lmg_reload.ogg", FMOD_DEFAULT);
 
-	// 개발 시에는 여기다가 플레이어 총 이름을 정의하나, 나중에 메인 화면 모드에서 정의하도록 할 예정이다
-	PlayerGunType = "MG42";
-
 	// playmode에 필요한 오브젝트들을 scene에 추가한다.
 	// UI 오브젝트 및 무형 오브젝트
 	//scene.AddObject(new MonsterGenerator, "monster_generator", LAYER_1);
