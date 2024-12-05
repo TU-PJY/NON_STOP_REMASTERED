@@ -30,9 +30,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         if (ReturnValue == SOCKET_ERROR)
             break;
 
-
-
-
         // 플레이어 입장
         if (RecvPackType == PACKET_TYPE_ENTER) {
             CS_INFO_PACKET CSInfoPack{};
