@@ -59,6 +59,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         {
             CS_PLAYER_MOVE_PACKET CS_MovePacket{};
             ClientPacketInfo C_PacketInfo{};
+
             ReturnValue = recv(ClientSocket, (char*)&CS_MovePacket, sizeof(CS_PLAYER_MOVE_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR) {
                 ConnectState = false;

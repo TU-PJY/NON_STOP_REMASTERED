@@ -107,6 +107,10 @@ public:
 	virtual void InputReloadProgress(GLfloat CurrentProgress, GLfloat EntireProgress) {}
 	virtual void InputCurrentHP(int Value) {}
 
+	virtual void SetPosition(glm::vec2 Value) {}
+	virtual void SetGunType(std::string Type) {}
+	virtual void SetPlayerTag(std::string Str) {}
+
 private:
 	void PrepareRender(); 
 	glm::vec4 ViewportPosition();
