@@ -31,16 +31,16 @@ DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
     while (true) {
         // 큐가 비어있지 않으면 큐에 있는 원소를 하나씩 꺼낸다.
         while (!ClientPacketQueue.empty()) {
-            ClientPacketInfo Q_PacketInfo{};
-            ClientPacketQueue.pop(Q_PacketInfo);
+            InputPacketInfo InputPackInfo{};
+            ClientPacketQueue.pop(InputPackInfo);
 
-            switch (Q_PacketInfo.PacketType) {
+            switch (InputPackInfo.PacketType) {
             case PACKET_TYPE_ENTER:
-                SendToOther(Q_PacketInfo.Client, (char*)&Q_PacketInfo.PacketType, (char*)&Q_PacketInfo.SC_LobbyPacket, sizeof(SC_LOBBY_PACKET));
+                SendToOther(InputPackInfo.Client, (char*)&InputPackInfo.PacketType, (char*)&InputPackInfo.SCInfoPack, sizeof(SC_INFO_PACKET));
                 break;
 
             case PACKET_TYPE_MOVE:
-                SendToOther(Q_PacketInfo.Client, (char*)&Q_PacketInfo.PacketType, (char*)&Q_PacketInfo.SC_MovePacket, sizeof(SC_PLAYER_MOVE_PACKET));
+                SendToOther(InputPackInfo.Client, (char*)&InputPackInfo.PacketType, (char*)&InputPackInfo.SCMovePack, sizeof(SC_PLAYER_MOVE_PACKET));
                 break;
             }
         }

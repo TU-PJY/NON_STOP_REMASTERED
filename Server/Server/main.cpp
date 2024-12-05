@@ -46,9 +46,10 @@ int main(int argc, char* argv[]) {
         CloseHandle(Thread);
 
     int ID = 0;
+    int NumConnected = 0;
 
     while (true) {
-        if (ConnectedClients.size() < MAX_CLIENT) {
+        if (NumConnected < MAX_CLIENT) {
             // accept()
             AddrLength = sizeof(ClientAddr);
             ClientSocket = accept(ListenSocket, (struct sockaddr*)&ClientAddr, &AddrLength);
@@ -56,6 +57,9 @@ int main(int argc, char* argv[]) {
                 err_display("accept()");
                 break;
             }
+
+            // 접속 수 증가
+            ++NumConnected;
 
             // 클라이언트가 접속하면 클라이언트의 소켓과 주소를 스레드 파라미터로 전달
             ClientInfo* Client = new ClientInfo;
@@ -74,7 +78,6 @@ int main(int argc, char* argv[]) {
                 closesocket(ClientSocket);
             }
             else {
-                ++ID;
                 CloseHandle(Thread);
             }
         }

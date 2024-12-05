@@ -6,8 +6,6 @@ enum PacketTypeEnum {
 	PACKET_TYPE_NONE, // 타입 없음
 	PACKET_TYPE_ENTER, // 로비 패킷
 	PACKET_TYPE_MOVE,
-	PACKET_TYPE_PLAYER_ADD, // 플레이어 추가 패킷
-	PACKET_TYPE_PLAYER_DELETE, // 플레이어 제거 패킷
 };
 
 ////////////////////////// 패킷 구조체 모음
@@ -17,15 +15,13 @@ enum PacketTypeEnum {
 typedef struct {
 	char PlayerTag[20];    // 플레이어 이름
 	char GunType[20];      // 무기 타입
-	bool ReadyState;       // 준비 상태
-}CS_LOBBY_PACKET;
+}CS_INFO_PACKET;
 
 // 로비 (서버 -> 클라)
 typedef struct {
 	char PlayerTag[20];    // 플레이어 이름
 	char GunType[20];      // 무기 타입
-	bool ReadyState;       // 준비 상태
-}SC_LOBBY_PACKET;
+}SC_INFO_PACKET;
 
 typedef struct { // 플레이어 이동
 	char PlayerTag[20];   // 닉네임
@@ -50,6 +46,6 @@ typedef struct {
 
 	// 패킷 종류 추가 시 여기에도 추가해야 함
 	// 패킷 타입에 따라 하나의 구조체 데이터만 선택해 전송함
-	SC_LOBBY_PACKET SC_LobbyPacket;
-	SC_PLAYER_MOVE_PACKET SC_MovePacket;
-} ClientPacketInfo;
+	SC_INFO_PACKET SCInfoPack;
+	SC_PLAYER_MOVE_PACKET SCMovePack;
+} InputPacketInfo;
