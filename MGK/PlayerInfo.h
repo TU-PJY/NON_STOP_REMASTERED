@@ -87,21 +87,21 @@ public:
 			Text.Render(ASP(-0.8), 0.8, 0.3, 1.0, L"Connected");
 
 			// 다른 플레이어들 상태 표시
-			GLfloat HeightOffset{-0.15};
-			int PlayerNum = 1;
-			for (auto& Other : ConnectedPlayer) {
-				GLfloat Height = 0.25 + HeightOffset;
-				Text.Render(ASP(-0.5), Height, 0.1, 1.0, L"Player %d: %ls", PlayerNum, ToWstr(Other.PlayerTag).c_str());
-				Text.Render(ASP(-0.5), Height - 0.1, 0.1, 1.0, L"Weapon: %ls", ToWstr(Other.GunType).c_str());
+			//GLfloat HeightOffset{-0.15};
+			//int PlayerNum = 1;
+			//for (auto& Other : ConnectedPlayer) {
+			//	GLfloat Height = 0.25 + HeightOffset;
+			//	Text.Render(ASP(-0.5), Height, 0.1, 1.0, L"Player %d: %ls", PlayerNum, ToWstr(Other.PlayerTag).c_str());
+			//	Text.Render(ASP(-0.5), Height - 0.1, 0.1, 1.0, L"Weapon: %ls", ToWstr(Other.GunType).c_str());
 
-				if (Other.ReadyState)
-					Text.Render(ASP(-0.5), Height - 0.2, 0.1, 1.0, L"Ready");
-				else
-					Text.Render(ASP(-0.5), Height - 0.2, 0.1, 1.0, L"Not Ready");
+			//	/*if (Other.ReadyState)
+			//		Text.Render(ASP(-0.5), Height - 0.2, 0.1, 1.0, L"Ready");
+			//	else
+			//		Text.Render(ASP(-0.5), Height - 0.2, 0.1, 1.0, L"Not Ready");*/
 
-				HeightOffset -= 0.5;
-				++PlayerNum;
-			}
+			//	HeightOffset -= 0.5;
+			//	++PlayerNum;
+			//}
 		}
 
 		// 연결이 안되어 있다면 연결이 안되어 있음을 표시

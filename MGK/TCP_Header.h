@@ -38,8 +38,6 @@ extern CRITICAL_SECTION ThreadSection;
 
 typedef struct {
     std::string PlayerTag;
-    std::string GunType;
-    bool ReadyState;
 }OTHER_CLIENT;
 extern std::vector<OTHER_CLIENT> ConnectedPlayer;
 extern int NumPlayerConnected;

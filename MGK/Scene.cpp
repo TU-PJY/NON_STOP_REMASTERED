@@ -182,7 +182,7 @@ void Scene::DeleteObject(const char* Tag, int DeleteRange) {
 	}
 }
 
-GameObject* Scene::Find(const char* Tag) {
+GameObject* Scene::Find(std::string Tag) {
 	auto It = ObjectIndex.find(Tag);
 	if (It != end(ObjectIndex) && !It->second->DeleteCommand)
 		return It->second;

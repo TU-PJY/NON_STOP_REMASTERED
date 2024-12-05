@@ -3,6 +3,8 @@
 #include "QueueThread.h"
 #include "Container.h"
 
+int NumConnected;
+
 int main(int argc, char* argv[]) {
     int ReturnValue{};
 
@@ -46,7 +48,7 @@ int main(int argc, char* argv[]) {
         CloseHandle(Thread);
 
     int ID = 0;
-    int NumConnected = 0;
+    NumConnected = 0;
 
     while (true) {
         if (NumConnected < MAX_CLIENT) {

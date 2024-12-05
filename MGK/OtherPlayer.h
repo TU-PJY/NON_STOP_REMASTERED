@@ -20,7 +20,7 @@ public:
 	std::string Tag{};
 
 	void UpdateFunc(float FT) {
-
+		//std::cout << ObjectTag << std::endl;
 	}
 
 	void RenderFunc() {

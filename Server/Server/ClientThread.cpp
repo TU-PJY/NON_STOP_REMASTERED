@@ -9,7 +9,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     int ReturnValue{};
 
     // 받은 패킷 타입
-    uint8_t RecievePacketType{};
+    uint8_t RecvPackType{};
 
     /////////////// 클라이언트 소켓 및 주소
     SOCKET ClientSocket{}; // 클라이언트 소켓
@@ -21,70 +21,64 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     ClientAddr = ThisClient->ClientAddr;
     inet_ntop(AF_INET, &ClientAddr.sin_addr, ThisClient->Addr, sizeof(ThisClient->Addr));
 
-    ClientPacketInfo C_PacketInfo{};
-    CS_LOBBY_PACKET CS_LobbyPacket{};
+
 
     while (ConnectState) {
         // 클라이언트로부터 패킷 타입을 먼저 받는다
-        ReturnValue = recv(ClientSocket, (char*)&RecievePacketType, sizeof(uint8_t), 0);
-        std::println("RECV {}:", RecievePacketType);
+        ReturnValue = recv(ClientSocket, (char*)&RecvPackType, sizeof(uint8_t), 0);
+        std::println("RECV {}:", RecvPackType);
         if (ReturnValue == SOCKET_ERROR)
             break;
 
-        // 받은 패킷 타입에 따라 다른 패킷 타입을 받는다
-        switch (RecievePacketType) {
-        case PACKET_TYPE_ENTER:
-            // CS_LobbyPacket 받기
-            memset(&CS_LobbyPacket, 0, sizeof(CS_LOBBY_PACKET));
-            ReturnValue = recv(ClientSocket, (char*)&CS_LobbyPacket, sizeof(CS_LOBBY_PACKET), 0);
-            if (ReturnValue == SOCKET_ERROR) {
+
+
+
+        // 플레이어 입장
+        if (RecvPackType == PACKET_TYPE_ENTER) {
+            CS_INFO_PACKET CSInfoPack{};
+            ReturnValue = recv(ClientSocket, (char*)&CSInfoPack, sizeof(CS_INFO_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR) 
                 ConnectState = false;
-                break;
-            }
 
-            // 정보 저장 전 구조체 초기화
-            // 플레이어 태그, 플레이어 총 타입, 플레이어 준비상태 데이터 복사
-            memset(&C_PacketInfo, 0, sizeof(ClientPacketInfo));
-            strcpy(C_PacketInfo.SC_LobbyPacket.PlayerTag, CS_LobbyPacket.PlayerTag);
-            strcpy(C_PacketInfo.SC_LobbyPacket.GunType, CS_LobbyPacket.GunType);
-            C_PacketInfo.SC_LobbyPacket.ReadyState = CS_LobbyPacket.ReadyState;
-            C_PacketInfo.PacketType = RecievePacketType;
-            C_PacketInfo.Client = ThisClient;
+            InputPacketInfo InputPackData{};
+            strcpy(InputPackData.SCInfoPack.PlayerTag, CSInfoPack.PlayerTag);
+            strcpy(InputPackData.SCInfoPack.GunType, CSInfoPack.GunType);
+            InputPackData.PacketType = RecvPackType;
+            InputPackData.Client = ThisClient;
 
-            // 큐에 클라이언트 클라이언트로 보낼 패킷 정보 추가
-            ClientPacketQueue.push(C_PacketInfo);
-            break;
-
-        case PACKET_TYPE_MOVE:
-        {
-            CS_PLAYER_MOVE_PACKET CS_MovePacket{};
-            ClientPacketInfo C_PacketInfo{};
-
-            ReturnValue = recv(ClientSocket, (char*)&CS_MovePacket, sizeof(CS_PLAYER_MOVE_PACKET), 0);
-            if (ReturnValue == SOCKET_ERROR) {
-                ConnectState = false;
-                break;
-            }
-
-            strcpy(C_PacketInfo.SC_MovePacket.PlayerTag, CS_MovePacket.PlayerTag);
-            C_PacketInfo.SC_MovePacket.x = CS_MovePacket.x;
-            C_PacketInfo.SC_MovePacket.y = CS_MovePacket.y;
-            C_PacketInfo.PacketType = RecievePacketType;
-            C_PacketInfo.Client = ThisClient;
-
-            std::println("Tag: {}, X: {}, Y : {}", CS_MovePacket.PlayerTag, CS_MovePacket.x, CS_MovePacket.y);
-
-            ClientPacketQueue.push(C_PacketInfo);
+            ClientPacketQueue.push(InputPackData);
         }
-        break;
+
+        // 플레이어 움직임
+        else if (RecvPackType == PACKET_TYPE_MOVE) {
+            CS_PLAYER_MOVE_PACKET CSMovePack{};
+
+            ReturnValue = recv(ClientSocket, (char*)&CSMovePack, sizeof(CS_PLAYER_MOVE_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR) 
+                ConnectState = false;
+
+            InputPacketInfo InputPackData{};
+            strcpy(InputPackData.SCMovePack.PlayerTag, CSMovePack.PlayerTag);
+            InputPackData.SCMovePack.x = CSMovePack.x;
+            InputPackData.SCMovePack.y = CSMovePack.y;
+            InputPackData.PacketType = RecvPackType;
+            InputPackData.Client = ThisClient;
+
+           // std::println("Tag: {}, X: {}, Y : {}", CSMovePack.PlayerTag, CSMovePack.x, CSMovePack.y);
+
+            ClientPacketQueue.push(InputPackData);
         }
     }
+
+
+
 
     // 접속 종료 시 접속한 클라이언트 목록에서 제거 후 소켓 닫기
     EnterCriticalSection(&ThreadSection);
     auto It = std::find(ConnectedClients.begin(), ConnectedClients.end(), ThisClient);
     if (It != ConnectedClients.end())
         ConnectedClients.erase(It);
+    if(NumConnected > 1) --NumConnected;
     LeaveCriticalSection(&ThreadSection);
 
     delete ThisClient;

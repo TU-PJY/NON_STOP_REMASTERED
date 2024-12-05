@@ -35,7 +35,7 @@ public:
 	GLfloat TransparencyValue{ 1.0f };
 	GLfloat BlurValue{};
 
-	const char* ObjectTag{};
+	std::string ObjectTag{};
 	int ObjectLayer{};
 
 	bool SwapCommand{};
