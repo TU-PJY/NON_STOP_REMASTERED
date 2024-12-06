@@ -58,8 +58,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             strcpy(InputPackData.SCMovePack.PlayerTag, CSMovePack.PlayerTag);
             InputPackData.SCMovePack.x = CSMovePack.x;
             InputPackData.SCMovePack.y = CSMovePack.y;
-            InputPackData.SCMovePack.gun_rotation = CSMovePack.gun_rotation;
-            InputPackData.SCMovePack.look_dir = CSMovePack.look_dir;
+            InputPackData.SCMovePack.LookDir = CSMovePack.LookDir;
+            InputPackData.SCMovePack.GunRotation = CSMovePack.GunRotation;
+            InputPackData.SCMovePack.RecoilPosition = CSMovePack.RecoilPosition;
             InputPackData.PacketType = RecvPackType;
             InputPackData.Client = ThisClient;
 

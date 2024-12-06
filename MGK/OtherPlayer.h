@@ -13,6 +13,7 @@ public:
 	std::string GunType{};
 	std::string Tag{};
 	GLfloat GunRotation{};
+	GLfloat RecoilPosition{};
 	bool LookDir{};
 
 	TextUtil Text{};
@@ -45,6 +46,10 @@ public:
 
 	GLfloat GetGunRotation() { 
 		return GunRotation;
+	}
+
+	void SetRecoilPosition(GLfloat Value) {
+		RecoilPosition = Value;
 	}
 
 	std::wstring ToWstr(const std::string& str) {
@@ -93,13 +98,13 @@ public:
 			// 왼쪽 방향
 			if (LookDir == 0) {
 				Transform::Rotate(TranslateMatrix, GunRotation + 180.0);
-				Transform::Move(TranslateMatrix, -0.15, 0.0);
+				Transform::Move(TranslateMatrix, -0.15 + RecoilPosition, 0.0);
 				Flip(FLIP_H);
 			}
 			// 오른쪽 방향
 			else if (LookDir == 1) {
 				Transform::Rotate(TranslateMatrix, GunRotation);
-				Transform::Move(TranslateMatrix, 0.15, 0.0);
+				Transform::Move(TranslateMatrix, 0.15 - RecoilPosition, 0.0);
 			}
 
 			Transform::Scale(ScaleMatrix, 0.36, 0.36);
@@ -118,13 +123,13 @@ public:
 			// 왼쪽 방향
 			if (LookDir == 0) {
 				Transform::Rotate(TranslateMatrix, GunRotation + 180.0);
-				Transform::Move(TranslateMatrix, -0.22, 0.0);
+				Transform::Move(TranslateMatrix, -0.22 + RecoilPosition, 0.0);
 				Flip(FLIP_H);
 			}
 			// 오른쪽 방향
 			else if (LookDir == 1) {
 				Transform::Rotate(TranslateMatrix, GunRotation);
-				Transform::Move(TranslateMatrix, 0.22, 0.0);
+				Transform::Move(TranslateMatrix, 0.22 - RecoilPosition, 0.0);
 			}
 
 			Transform::Scale(ScaleMatrix, 0.5, 0.45);

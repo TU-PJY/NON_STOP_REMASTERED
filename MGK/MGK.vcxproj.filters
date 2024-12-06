@@ -324,9 +324,6 @@
     <ClCompile Include="ClientThread.cpp">
       <Filter>[8]___________[ TCP/IP ]</Filter>
     </ClCompile>
-    <ClCompile Include="OtherPlayer.cpp">
-      <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[Player]</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayMode.h">

@@ -114,6 +114,8 @@ public:
 	virtual void SetPlayerTag(std::string Str) {}
 	virtual int GetLookDir() { return{}; }
 	virtual GLfloat GetGunRotation() { return{}; }
+	virtual GLfloat GetRecoilPosition() { return{}; }
+	virtual void SetRecoilPosition(GLfloat Value) {}
 
 private:
 	void PrepareRender(); 

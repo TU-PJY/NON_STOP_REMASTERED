@@ -61,6 +61,10 @@ public:
 		IndPtr->InputCurrentAmmo(CurrentAmmo);
 	}
 
+	GLfloat GetRecoilPosition() {
+		return RecoilPosition;
+	}
+
 	// 위치 입력, 플레이어의 위치를 입력받는다
 	void InputPosition(glm::vec2 PositionValue) {
 		Position = PositionValue;

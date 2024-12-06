@@ -42,6 +42,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     ConnectState = true;
     LeaveCriticalSection(&ThreadSection);
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
     SC_INFO_PACKET SCInfoPack{};
 
     // 패킷 타입을 보낸다.
@@ -63,6 +66,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     if (ReturnValue == SOCKET_ERROR)
         err_quit("send() CS_LOBBY_PACKET");
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
     while (ConnectState) {
         EnterCriticalSection(&ThreadSection);
         std::string LocalModeName = scene.Mode();
@@ -80,6 +86,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             glm::vec2 SendPosition{};
             int SendLookDir{};
             GLfloat SendGunRotation{};
+            GLfloat SendRecoilPosition{};
 
             EnterCriticalSection(&ThreadSection);
             if (auto Player = scene.Find("player"); Player) {
@@ -87,24 +94,32 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                 SendPosition = Player->GetPosition();
                 SendLookDir = Player->GetLookDir();
                 SendGunRotation = Player->GetGunRotation();
+                SendRecoilPosition = Player->GetRecoilPosition();
             }
             LeaveCriticalSection(&ThreadSection);
 
             CSMovePack.x = SendPosition.x;
             CSMovePack.y = SendPosition.y;
-            CSMovePack.gun_rotation = SendGunRotation;
-            CSMovePack.look_dir = SendLookDir;
+            CSMovePack.LookDir = SendLookDir;
+            CSMovePack.GunRotation = SendGunRotation;
+            CSMovePack.RecoilPosition = SendRecoilPosition;
 
             ReturnValue = send(ClientSocket, (char*)&CSMovePack, sizeof(CS_PLAYER_MOVE_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
                 err_quit("send() CS_LOBBY_PACKET");
         }
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
         // 패킷 타입 받기
         ReturnValue = recv(ClientSocket, (char*)&RecvPackType, sizeof(uint8_t), 0);
        // std::cout << "Recv Packet:" << RecvPackType << "\n";
         if (ReturnValue == SOCKET_ERROR)
             err_quit("recv() PakcetType");
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
         // 플레이어 입장
         if (RecvPackType == PACKET_TYPE_ENTER) {
@@ -136,7 +151,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
            LeaveCriticalSection(&ThreadSection);
 
-
             // 플레이어가 서버에 접속할 경우 타 클라이언트에게 자신이 있음을 알림
             int SendPacketType = PACKET_TYPE_ENTER;
             ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
@@ -152,6 +166,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                 err_quit("send() CS_LOBBY_PACKET");
         }
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
         // 플레이어 움직임
         else if (PACKET_TYPE_MOVE) {
             SC_PLAYER_MOVE_PACKET SCMovePack{};
@@ -165,12 +182,16 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             EnterCriticalSection(&ThreadSection);
             if (auto Other = scene.Find(SCMovePack.PlayerTag); Other) {
                 Other->SetPosition(glm::vec2(SCMovePack.x, SCMovePack.y));
-                Other->SetLookDir(SCMovePack.look_dir);
-                Other->SetGunRotation(SCMovePack.gun_rotation);
+                Other->SetLookDir(SCMovePack.LookDir);
+                Other->SetGunRotation(SCMovePack.GunRotation);
+                Other->SetRecoilPosition(SCMovePack.RecoilPosition);
             }
             LeaveCriticalSection(&ThreadSection);
         }
     }
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
     closesocket(ClientSocket);
     WSACleanup();

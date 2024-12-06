@@ -57,6 +57,12 @@ GLfloat Player::GetGunRotation() {
 	return GunRotation;
 }
 
+GLfloat Player::GetRecoilPosition() {
+	if (GunPtr)
+		return GunPtr->GetRecoilPosition();
+	return 0.0;
+}
+
 
 void Player::GiveDamage(int Damage) {
 	if (HurtEnableState) {
