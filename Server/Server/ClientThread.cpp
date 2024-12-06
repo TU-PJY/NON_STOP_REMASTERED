@@ -2,7 +2,6 @@
 #include "ClientThread.h"
 #include "Packet.h"
 #include "Container.h"
-
 // 클라이언트 스레드
 DWORD WINAPI ClientThread(LPVOID lpParam) {
     bool ConnectState = true; // 연결 상태, false가 될 시 스레드 즉시 종료
@@ -20,8 +19,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     ClientSocket = ThisClient->ClientSocket;
     ClientAddr = ThisClient->ClientAddr;
     inet_ntop(AF_INET, &ClientAddr.sin_addr, ThisClient->Addr, sizeof(ThisClient->Addr));
-
-
 
     while (ConnectState) {
         // 클라이언트로부터 패킷 타입을 먼저 받는다
@@ -47,20 +44,21 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         }
 
         // 플레이어 움직임
-        else if (RecvPackType == PACKET_TYPE_MOVE) {
-            CS_PLAYER_MOVE_PACKET CSMovePack{};
+        else if (RecvPackType == PACKET_TYPE_PLAYER) {
+            CS_PLAYER_PACKET CSPlayerPack{};
 
-            ReturnValue = recv(ClientSocket, (char*)&CSMovePack, sizeof(CS_PLAYER_MOVE_PACKET), 0);
+            ReturnValue = recv(ClientSocket, (char*)&CSPlayerPack, sizeof(CS_PLAYER_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR) 
                 ConnectState = false;
 
             InputPacketInfo InputPackData{};
-            strcpy(InputPackData.SCMovePack.PlayerTag, CSMovePack.PlayerTag);
-            InputPackData.SCMovePack.x = CSMovePack.x;
-            InputPackData.SCMovePack.y = CSMovePack.y;
-            InputPackData.SCMovePack.LookDir = CSMovePack.LookDir;
-            InputPackData.SCMovePack.GunRotation = CSMovePack.GunRotation;
-            InputPackData.SCMovePack.RecoilPosition = CSMovePack.RecoilPosition;
+            strcpy(InputPackData.SCPlayerPack.PlayerTag, CSPlayerPack.PlayerTag);
+            InputPackData.SCPlayerPack.x = CSPlayerPack.x;
+            InputPackData.SCPlayerPack.y = CSPlayerPack.y;
+            InputPackData.SCPlayerPack.LookDir = CSPlayerPack.LookDir;
+            InputPackData.SCPlayerPack.GunRotation = CSPlayerPack.GunRotation;
+            InputPackData.SCPlayerPack.RecoilPosition = CSPlayerPack.RecoilPosition;
+            InputPackData.SCPlayerPack.HP = CSPlayerPack.HP;
             InputPackData.PacketType = RecvPackType;
             InputPackData.Client = ThisClient;
 

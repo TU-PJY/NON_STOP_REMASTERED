@@ -118,6 +118,8 @@ public:
 	virtual void SetRecoilPosition(GLfloat Value) {}
 	virtual bool GetShootState() { return{}; }
 	virtual void SetShootState(bool Value) {  }
+	virtual int GetHP() { return{}; }
+	virtual void SetHP(int Value) { }
 
 private:
 	void PrepareRender(); 

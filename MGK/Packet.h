@@ -6,9 +6,7 @@
 enum PacketTypeEnum {
 	PACKET_TYPE_NONE, // 타입 없음
 	PACKET_TYPE_ENTER, // 로비 패킷
-	PACKET_TYPE_MOVE, // 플레이어 움직임
-	PACKET_TYPE_PLAYER_ADD, // 플레이어 추가 패킷
-	PACKET_TYPE_PLAYER_DELETE, // 플레이어 제거 패킷
+	PACKET_TYPE_PLAYER, // 플레이어 움직임
 };
 
 ////////////////////////// 패킷 구조체 모음
@@ -18,7 +16,7 @@ enum PacketTypeEnum {
 typedef struct {
 	char PlayerTag[20];    // 플레이어 이름
 	char GunType[20];      // 무기 타입
-}CS_LOBBY_PACKET;
+}CS_INFO_PACKET;
 
 // 로비 (서버 -> 클라)
 typedef struct {
@@ -32,7 +30,8 @@ typedef struct { // 플레이어 이동
 	int LookDir;                // 방향 (0: 왼쪽, 1: 오른쪽)
 	float GunRotation;          // 무기 회전 값
 	float RecoilPosition; // 무기 반동 위치
-}CS_PLAYER_MOVE_PACKET;
+	int HP; // 플레이어 체력
+}CS_PLAYER_PACKET;
 
 typedef struct { // 플레이어 이동
 	char PlayerTag[20];  // 닉네임
@@ -40,7 +39,8 @@ typedef struct { // 플레이어 이동
 	int LookDir;              // 방향 (0: 왼쪽, 1: 오른쪽)
 	float GunRotation;        // 무기 회전 값
 	float RecoilPosition; // 무기 반동 위치
-}SC_PLAYER_MOVE_PACKET;
+	int HP; // 플레이어 체력
+}SC_PLAYER_PACKET;
 
 
 #pragma pack(pop)

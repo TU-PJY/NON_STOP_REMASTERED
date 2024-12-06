@@ -5,7 +5,7 @@
 enum PacketTypeEnum {
 	PACKET_TYPE_NONE, // 타입 없음
 	PACKET_TYPE_ENTER, // 로비 패킷
-	PACKET_TYPE_MOVE,
+	PACKET_TYPE_PLAYER,
 };
 
 ////////////////////////// 패킷 구조체 모음
@@ -29,7 +29,8 @@ typedef struct { // 플레이어 이동
 	int LookDir;                // 방향 (0: 왼쪽, 1: 오른쪽)
 	float GunRotation;          // 무기 회전 값
 	float RecoilPosition; // 무기 반동 위치
-} CS_PLAYER_MOVE_PACKET;
+	int HP; // 플레이어 체력
+} CS_PLAYER_PACKET;
 
 typedef struct { // 플레이어 이동
 	char PlayerTag[20];  // 닉네임
@@ -37,7 +38,8 @@ typedef struct { // 플레이어 이동
 	int LookDir;              // 방향 (0: 왼쪽, 1: 오른쪽)
 	float GunRotation;        // 무기 회전 값
 	float RecoilPosition; // 무기 반동 위치
-}SC_PLAYER_MOVE_PACKET;
+	int HP; // 플레이어 체력
+}SC_PLAYER_PACKET;
 
 #pragma pack(pop)
 
@@ -49,5 +51,5 @@ typedef struct {
 	// 패킷 종류 추가 시 여기에도 추가해야 함
 	// 패킷 타입에 따라 하나의 구조체 데이터만 선택해 전송함
 	SC_INFO_PACKET SCInfoPack;
-	SC_PLAYER_MOVE_PACKET SCMovePack;
+	SC_PLAYER_PACKET SCPlayerPack;
 } InputPacketInfo;

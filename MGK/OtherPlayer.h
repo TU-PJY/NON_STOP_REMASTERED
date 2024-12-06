@@ -18,16 +18,18 @@ public:
 	GLfloat GunRotation{};
 	GLfloat PrevGunRotation{};
 
+	int HP{};
+
 	GLfloat RecoilPosition{};
 	int LookDir{};
 	bool AddFlame{};
 
-
+	bool TextInit{};
 	TextUtil Text{};
 
-	bool TextInit{};
-
 	TimerUtil KickTimer{}; // 30초간 어떠한 변화도 없을 시 퇴장당하는 타이머
+
+	LineBrush Line{}; // 체력 막대 그리기용
 
 	int Ref{};
 
@@ -63,6 +65,10 @@ public:
 		RecoilPosition = Value;
 	}
 
+	void SetHP(int Value) {
+		HP = Value;
+	}
+
 	std::wstring ToWstr(const std::string& str) {
 		int SizeNeed = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
 		std::wstring Wstr(SizeNeed, 0);
@@ -75,7 +81,7 @@ public:
 		if (!TextInit) {
 			Text.Init(L"맑은 고딕", FW_BOLD);
 			Text.SetAlign(ALIGN_MIDDLE);
-			Text.SetColor(0.0, 0.0, 0.0);
+			Text.SetColor(1.0, 1.0, 1.0);
 			Text.SetRenderType(RENDER_TYPE_DEFAULT);
 			TextInit = true;
 		}
@@ -127,8 +133,6 @@ public:
 	}
 
 	void RenderFunc() {
-
-		// 행렬 초기화, 렌더링 전 반드시 실행해야한다.
 		InitMatrix();
 
 		// 플레이어 위치 값만큼 이동
@@ -192,7 +196,15 @@ public:
 			Render(MG42_Image);
 		}
 
+		// 플레이어 체력 표시
+		Line.SetColor(0.0, 0.0, 0.0);
+		Line.Draw(Position.x - 0.15 - 0.025, Position.y + 0.2, Position.x + 0.15 + 0.025, Position.y + 0.2, 0.05, 1.0);
+		Line.SetColor(1.0, 0.0, 0.0);
+		Line.Draw(Position.x - 0.145 - 0.025, Position.y + 0.2, Position.x - 0.145 + (0.29 + 0.025) * ((float)HP / 100.0), Position.y + 0.2, 0.03, 1.0);
+
 		// 플레이어 닉네임 표시
-		Text.Render(Position.x, Position.y + 0.2, 0.1, 1.0, L"%ls", ToWstr(PlayerTag));
+		Line.SetColor(0.0, 0.0, 0.0);
+		Line.Draw(Position.x - 0.15, Position.y + 0.27, Position.x + 0.15, Position.y + 0.27, 0.1, 0.3);
+		Text.Render(Position.x, Position.y + 0.25, 0.1, 1.0, L"%ls", ToWstr(PlayerTag));
 	}
 };

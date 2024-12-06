@@ -13,6 +13,7 @@
 #include <vector>
 #include <set>
 #include <print>
+#include <map>
 #include "Config.h"
 
 #define SERVER_PORT 9000
@@ -36,10 +37,7 @@ void err_display(int errcode);
 extern char* SERVER_IP;  // 클라이언트 주소
 extern CRITICAL_SECTION ThreadSection;
 
-typedef struct {
-    std::string PlayerTag;
-}OTHER_CLIENT;
-extern std::vector<OTHER_CLIENT> ConnectedPlayer;
+extern std::vector<std::string> ConnectedPlayer;
 extern int NumPlayerConnected;
 
 // 플레이어 전역 변수 여기에 선언

@@ -40,10 +40,8 @@ void err_display(int errcode) {
 char* SERVER_IP = (char*)"127.0.0.1";  // 클라이언트 주소
 CRITICAL_SECTION ThreadSection;
 
-// 연결된 플레이어들의 닉네임 및 아이디
-// 접속한 순서대로 1, 2가 부여된다
-int NumPlayerConnected;
-std::vector<OTHER_CLIENT> ConnectedPlayer;
+// 연결된 플레이어들의 닉네임
+std::vector<std::string> ConnectedPlayer;
 
 bool ConnectState;
 std::string PlayerGunType;

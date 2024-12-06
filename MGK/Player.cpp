@@ -70,6 +70,10 @@ GLfloat Player::GetRecoilPosition() {
 	return 0.0;
 }
 
+int Player::GetHP() {
+	return HP;
+}
+
 void Player::GiveDamage(int Damage) {
 	if (HurtEnableState) {
 		HP -= Damage;

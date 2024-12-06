@@ -75,6 +75,8 @@ public:
 
 	GLfloat GetRecoilPosition();
 
+	int GetHP();
+
 	// 키 입력 컨트롤러
 	void InputKey(int State, unsigned char NormalKey, int SpecialKey);
 
