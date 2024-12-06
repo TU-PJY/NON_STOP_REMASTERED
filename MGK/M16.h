@@ -50,6 +50,9 @@ private:
 	// 재장전 여부
 	bool ReloadState{};
 
+	// 발사 여부
+	bool ShootState{};
+
 public:
 	// 총 이름 입력, 이름에 따라 발사 속도가 정해진다
 	M16() {
@@ -116,12 +119,15 @@ public:
 	}
 
 	void UpdateFunc(float FT) {
-		if (ShootingTimer.MiliSec(2) < ShootTime)
+		if (ShootingTimer.MiliSec(2) < ShootTime) {
 			ShootingTimer.Update(FT);
+			ShootState = false;
+		}
 
 		// 방아쇠를 당긴 상태에서는 일정 간격으로 격발된다.
 		if (CurrentAmmo != 0 && !ReloadState && TriggerState) {
 			if (ShootingTimer.MiliSec(2) >= ShootTime) {
+				ShootState = true;
 
 				// 불꽃 오브젝트의 위치가 총구 앞에 위치하도록 계산
 				glm::vec2 FlamePosition{};

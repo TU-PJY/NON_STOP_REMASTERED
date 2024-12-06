@@ -13,9 +13,9 @@ public:
 		Text.Init(L"¸¼Àº °íµñ", FW_NORMAL);
 		Text.SetColor(1.0, 1.0, 1.0);
 
-		PlayerTag = "";
-		PlayerGunType = "";
-		PlayerReadyState = false;
+	//	PlayerTag = "";
+		//PlayerGunType = "";
+	//	PlayerReadyState = false;
 	}
 
 	std::wstring ToWstr(const std::string& str) {

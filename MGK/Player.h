@@ -62,6 +62,10 @@ private:
 	TimerUtil HealTimer;
 	GLfloat HealCoolTime{ 0.5 };
 
+	TimerUtil KickTimer{};
+	glm::vec2 PrevPosition{};
+	GLfloat PrevGunRotation{};
+
 public:
 	Player(std::string Name);
 

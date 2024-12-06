@@ -116,6 +116,8 @@ public:
 	virtual GLfloat GetGunRotation() { return{}; }
 	virtual GLfloat GetRecoilPosition() { return{}; }
 	virtual void SetRecoilPosition(GLfloat Value) {}
+	virtual bool GetShootState() { return{}; }
+	virtual void SetShootState(bool Value) {  }
 
 private:
 	void PrepareRender(); 

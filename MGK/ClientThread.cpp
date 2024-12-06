@@ -71,8 +71,13 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
     while (ConnectState) {
         EnterCriticalSection(&ThreadSection);
+        bool LocalConnectState = ConnectState;
         std::string LocalModeName = scene.Mode();
         LeaveCriticalSection(&ThreadSection);
+
+        // 연결 상태 해제 시 서버 스레드 종료
+        if (!LocalConnectState)
+            break;
 
         // 플레이 모드 패킷 타입 전송
         if (LocalModeName == "PlayMode") {
@@ -87,6 +92,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             int SendLookDir{};
             GLfloat SendGunRotation{};
             GLfloat SendRecoilPosition{};
+            bool SendShootState{};
 
             EnterCriticalSection(&ThreadSection);
             if (auto Player = scene.Find("player"); Player) {
@@ -95,6 +101,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                 SendLookDir = Player->GetLookDir();
                 SendGunRotation = Player->GetGunRotation();
                 SendRecoilPosition = Player->GetRecoilPosition();
+
             }
             LeaveCriticalSection(&ThreadSection);
 
@@ -114,7 +121,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
         // 패킷 타입 받기
         ReturnValue = recv(ClientSocket, (char*)&RecvPackType, sizeof(uint8_t), 0);
-       // std::cout << "Recv Packet:" << RecvPackType << "\n";
         if (ReturnValue == SOCKET_ERROR)
             err_quit("recv() PakcetType");
 

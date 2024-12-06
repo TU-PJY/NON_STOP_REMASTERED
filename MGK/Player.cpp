@@ -8,6 +8,8 @@
 #include "MP44.h"
 #include "MG42.h"
 
+#include "LobbyMode.h"
+
 void Player::InputKey(int State, unsigned char NormalKey, int SpecialKey) {
 	switch (State) {
 	case NORMAL_KEY_DOWN:
@@ -40,8 +42,13 @@ void Player::InputKey(int State, unsigned char NormalKey, int SpecialKey) {
 
 void Player::InputMouse(int State) {
 	switch (State) { // 좌클릭 시 격발, 좌클릭 해제 시 격발 해제
-	case LEFT_BUTTON_DOWN: TriggerState = true; break;
-	case LEFT_BUTTON_UP: TriggerState = false; break;
+	case LEFT_BUTTON_DOWN: 
+		TriggerState = true; 
+		break;
+
+	case LEFT_BUTTON_UP: 
+		TriggerState = false; 
+		break;
 	}
 }
 
@@ -62,7 +69,6 @@ GLfloat Player::GetRecoilPosition() {
 		return GunPtr->GetRecoilPosition();
 	return 0.0;
 }
-
 
 void Player::GiveDamage(int Damage) {
 	if (HurtEnableState) {
@@ -146,6 +152,8 @@ void Player::UpdateHeal(float FT) {
 }
 
 void Player::UpdateFunc(float FT) {
+	KickTimer.Update(FT);
+
 	// 움직임 여부에 따라 이동 방향이 달라진다.
 	// 범위 밖을 나가지 않도록 한다.
 	if (MoveRight) {
@@ -185,6 +193,26 @@ void Player::UpdateFunc(float FT) {
 
 	// AABB 업데이트
 	aabb.Update(Position.x, Position.y, 0.25, 0.3);
+
+	if (PrevPosition != Position) {
+		PrevPosition = Position;
+		KickTimer.Reset();
+	}
+
+	if (PrevGunRotation != GunRotation) {
+		PrevGunRotation = GunRotation;
+		KickTimer.Reset();
+	}
+
+	if (TriggerState)
+		KickTimer.Reset();
+
+	// 30초간 아무런 조작도 없을 시 서버에서 퇴장당한다.
+	if (KickTimer.Sec() >= 30) {
+		// ConnectState를 비활성화 하면 서버 스레드에서 작업을 중지한다.
+		ConnectState = false;
+		scene.SwitchMode(LobbyMode::Start);
+	}
 }
 
 void Player::RenderFunc() {

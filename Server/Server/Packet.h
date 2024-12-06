@@ -29,7 +29,7 @@ typedef struct { // 플레이어 이동
 	int LookDir;                // 방향 (0: 왼쪽, 1: 오른쪽)
 	float GunRotation;          // 무기 회전 값
 	float RecoilPosition; // 무기 반동 위치
-}CS_PLAYER_MOVE_PACKET;
+} CS_PLAYER_MOVE_PACKET;
 
 typedef struct { // 플레이어 이동
 	char PlayerTag[20];  // 닉네임

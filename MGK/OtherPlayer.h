@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "TextUtil.h"
+#include "Flame.h"
 
 enum EnumLookDir {
 	LOOK_LEFT,
@@ -10,15 +11,25 @@ enum EnumLookDir {
 class OtherPlayer : public GameObject {
 public:
 	glm::vec2 Position{};
+	glm::vec2 PrevPosition{};
+
 	std::string GunType{};
 	std::string Tag{};
 	GLfloat GunRotation{};
+	GLfloat PrevGunRotation{};
+
 	GLfloat RecoilPosition{};
-	bool LookDir{};
+	int LookDir{};
+	bool AddFlame{};
+
 
 	TextUtil Text{};
 
 	bool TextInit{};
+
+	TimerUtil KickTimer{}; // 30초간 어떠한 변화도 없을 시 퇴장당하는 타이머
+
+	int Ref{};
 
 	void SetPosition(glm::vec2 Value) {
 		Position = Value;
@@ -67,6 +78,51 @@ public:
 			Text.SetColor(0.0, 0.0, 0.0);
 			Text.SetRenderType(RENDER_TYPE_DEFAULT);
 			TextInit = true;
+		}
+
+		// 반동이 감지되면 총구화염을 추가한다.
+		if (RecoilPosition > 0.03) {
+			KickTimer.Reset();
+
+			if (!AddFlame) {
+				glm::vec2 FlamePosition{};
+				if (GunType != "MG42") {
+					FlamePosition.x = Position.x + cos(glm::radians(GunRotation)) * 0.35;
+					FlamePosition.y = Position.y + sin(glm::radians(GunRotation)) * 0.35;
+
+					// 격발 시 사운드 출력과 함께 불꽃 오브젝트를 추가한다
+					scene.AddObject(new Flame(FlamePosition.x, FlamePosition.y, GunRotation), "flame", LAYER_3);
+				}
+
+				else {
+					FlamePosition.x = Position.x + cos(glm::radians(GunRotation)) * 0.5;
+					FlamePosition.y = Position.y + sin(glm::radians(GunRotation)) * 0.5;
+
+					// 격발 시 사운드 출력과 함께 불꽃 오브젝트를 추가한다
+					scene.AddObject(new Flame(FlamePosition.x, FlamePosition.y, GunRotation), "flame", LAYER_3);
+				}
+				AddFlame = true;
+			}
+		}
+
+		else
+			AddFlame = false;
+
+		// 30초간 아무런 변화가 없을 시 플레이어가 없는 것으로 간주하고 scene에서 삭제한다.
+		KickTimer.Update(FT);
+
+		if (KickTimer.Sec() >= 30)
+			scene.DeleteObject(this);
+
+		// 조작이 감지되면 타이머가 초기화 된다.
+		if (PrevPosition != Position) {
+			PrevPosition = Position;
+			KickTimer.Reset();
+		}
+
+		if (PrevGunRotation != GunRotation) {
+			PrevGunRotation = GunRotation;
+			KickTimer.Reset();
 		}
 	}
 
