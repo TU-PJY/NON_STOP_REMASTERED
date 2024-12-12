@@ -21,20 +21,18 @@ DWORD WINAPI MonsterThread(LPVOID lpParam) {
     while (true) {
         EnterCriticalSection(&ThreadSection);
         int LocalConnectedPlayer = ConnectedClients.size();
+        auto& LocalNameList = NameList;
         LeaveCriticalSection(&ThreadSection);
 
         if (LocalConnectedPlayer > 1) {
             GenTimer += DeltaTime;
 
             if (GenTimer >= GenInterval) {
+                std::cout << "VectorSize: " << LocalNameList.size() << std::endl;
                 std::uniform_int_distribution IndexUID{ 0, LocalConnectedPlayer - 1 };
 
                 int RandomDir = uid(rd);
                 int RandomIndex = IndexUID(rd);
-
-                EnterCriticalSection(&ThreadSection);
-                auto LocalNameList = NameList;
-                LeaveCriticalSection(&ThreadSection);
 
                 std::string TrackTag = LocalNameList[RandomIndex];
 

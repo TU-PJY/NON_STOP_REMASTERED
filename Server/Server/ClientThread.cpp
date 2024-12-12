@@ -58,20 +58,17 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
             // 접속한 플레이어의 닉네임을 추가한다.
             EnterCriticalSection(&ThreadSection);
-            for (auto It = begin(NameList); It != end(NameList); ++It) {
-                if (*It == (std::string)CSInfoPack.PlayerTag) {
-                    Duplicated = true;
-                    break;
-                }
-                if (It == end(NameList)) {
-                    Duplicated = false;
-                    NameList.push_back((std::string)CSInfoPack.PlayerTag);
-                }
+            auto It = std::find(begin(NameList), end(NameList), (std::string)CSInfoPack.PlayerTag);
+            if (It != end(NameList))
+                Duplicated = true;
+            else {
+                NameList.push_back((std::string)CSInfoPack.PlayerTag);
+                Duplicated = false;
             }
             LeaveCriticalSection(&ThreadSection);
 
-            if(!Duplicated)
-                ClientPacketQueue.push(InputPackData);
+            //if(!Duplicated)
+            ClientPacketQueue.push(InputPackData);
         }
 
         // 플레이어 움직임
@@ -119,9 +116,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     if (It != ConnectedClients.end())
         ConnectedClients.erase(It);
 
-    auto It2 = std::find(begin(NameList), end(NameList), ThisTag);
+  /*  auto It2 = std::find(begin(NameList), end(NameList), ThisTag);
     if (It2 != end(NameList))
-        NameList.erase(It2);
+        NameList.erase(It2);*/
 
     if(NumConnected > 1) --NumConnected;
     LeaveCriticalSection(&ThreadSection);

@@ -128,7 +128,7 @@ public:
 			AddFlame = false;
 
 		// 30초간 아무런 변화가 없을 시 플레이어가 없는 것으로 간주하고 scene에서 삭제한다.
-		KickTimer.Update(FT);
+		//KickTimer.Update(FT);
 
 		if (KickTimer.Sec() >= 30) {
 			auto It = std::find(begin(ConnectedPlayer), end(ConnectedPlayer), Tag);

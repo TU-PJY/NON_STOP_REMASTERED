@@ -87,48 +87,40 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         if (!LocalConnectState)
             break;
 
-        //now = std::chrono::steady_clock::now();
+        int SendPacketType = PACKET_TYPE_PLAYER;
+        ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
+        if (ReturnValue == SOCKET_ERROR)
+            err_quit("recv() PakcetType");
 
-        // 플레이 모드 패킷 타입 전송
-        // 움직임 패킷 전송
-        //if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastSendTime).count() > 33) {
-            int SendPacketType = PACKET_TYPE_PLAYER;
-            ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
-            if (ReturnValue == SOCKET_ERROR)
-                err_quit("recv() PakcetType");
+        CS_PLAYER_PACKET CSPlayerPack{};
+        glm::vec2 SendPosition{};
+        int SendLookDir{};
+        GLfloat SendGunRotation{};
+        GLfloat SendRecoilPosition{};
+        int SendHP{};
 
-            CS_PLAYER_PACKET CSPlayerPack{};
-            glm::vec2 SendPosition{};
-            int SendLookDir{};
-            GLfloat SendGunRotation{};
-            GLfloat SendRecoilPosition{};
-            int SendHP{};
+        // 자신의 정보를 타 클라이언트에 전달한다
+        EnterCriticalSection(&ThreadSection);
+        if (auto Player = scene.Find("player"); Player) {
+            strcpy(CSPlayerPack.PlayerTag, PlayerTag.c_str());
+            SendPosition = Player->GetPosition();
+            SendLookDir = Player->GetLookDir();
+            SendGunRotation = Player->GetGunRotation();
+            SendRecoilPosition = Player->GetRecoilPosition();
+            SendHP = Player->GetHP();
+        }
+        LeaveCriticalSection(&ThreadSection);
 
-            // 자신의 정보를 타 클라이언트에 전달한다
-            EnterCriticalSection(&ThreadSection);
-            if (auto Player = scene.Find("player"); Player) {
-                strcpy(CSPlayerPack.PlayerTag, PlayerTag.c_str());
-                SendPosition = Player->GetPosition();
-                SendLookDir = Player->GetLookDir();
-                SendGunRotation = Player->GetGunRotation();
-                SendRecoilPosition = Player->GetRecoilPosition();
-                SendHP = Player->GetHP();
-            }
-            LeaveCriticalSection(&ThreadSection);
+        CSPlayerPack.x = SendPosition.x;
+        CSPlayerPack.y = SendPosition.y;
+        CSPlayerPack.LookDir = SendLookDir;
+        CSPlayerPack.GunRotation = SendGunRotation;
+        CSPlayerPack.RecoilPosition = SendRecoilPosition;
+        CSPlayerPack.HP = SendHP;
 
-            CSPlayerPack.x = SendPosition.x;
-            CSPlayerPack.y = SendPosition.y;
-            CSPlayerPack.LookDir = SendLookDir;
-            CSPlayerPack.GunRotation = SendGunRotation;
-            CSPlayerPack.RecoilPosition = SendRecoilPosition;
-            CSPlayerPack.HP = SendHP;
-
-            ReturnValue = send(ClientSocket, (char*)&CSPlayerPack, sizeof(CS_PLAYER_PACKET), 0);
-            if (ReturnValue == SOCKET_ERROR)
-                err_quit("send() CS_PLAYER_PACKET");
-
-           // lastSendTime = now;
-     //   }
+        ReturnValue = send(ClientSocket, (char*)&CSPlayerPack, sizeof(CS_PLAYER_PACKET), 0);
+        if (ReturnValue == SOCKET_ERROR)
+            err_quit("send() CS_PLAYER_PACKET");
 
 
             // 몬스터 삭제 동기화
