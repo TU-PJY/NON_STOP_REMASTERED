@@ -151,15 +151,19 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
         // 플레이어 입장
         if (RecvPackType == PACKET_TYPE_ENTER) {
+            std::cout << "RECV ENTER" << std::endl;
+
             SC_INFO_PACKET SCInfoPack{};
             ReturnValue = recv(ClientSocket, (char*)&SCInfoPack, sizeof(SC_INFO_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
                 err_quit("recv() SC_INFO_PACKET");
 
+            bool Duplicated{};
+
             EnterCriticalSection(&ThreadSection);
             // 중복되는 닉네임이 없을 경우 새로운 플레이어 추가
             auto It = std::find(begin(ConnectedPlayer), end(ConnectedPlayer), std::string(SCInfoPack.PlayerTag));
-            if(It == ConnectedPlayer.end()) {
+            if (It == ConnectedPlayer.end()) {
                 // 새로운 닉네임 리스트 추가
                 ConnectedPlayer.push_back(std::string(SCInfoPack.PlayerTag));
 
@@ -169,24 +173,30 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                     Other->SetPlayerTag(SCInfoPack.PlayerTag);
                     Other->SetGunType(SCInfoPack.GunType);
                 }
+
+                Duplicated = false;
             }
+            else
+                Duplicated = true;
             LeaveCriticalSection(&ThreadSection);
 
-            // 타 클라이언트가 서버에 접속할 경우 타 클라이언트에게 자신이 있음을 알림
-            int SendPacketType = PACKET_TYPE_ENTER;
-            ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
-            if (ReturnValue == SOCKET_ERROR)
-                err_quit("send() SendPacketType");
+            if (!Duplicated) {
+                // 타 클라이언트가 서버에 접속할 경우 타 클라이언트에게 자신이 있음을 알림
+                int SendPacketType = PACKET_TYPE_ENTER;
+                ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("send() SendPacketType");
 
-            CS_INFO_PACKET CSInfoPack{};
-            EnterCriticalSection(&ThreadSection);
-            strcpy(CSInfoPack.PlayerTag, PlayerTag.c_str());
-            strcpy(CSInfoPack.GunType, PlayerGunType.c_str());
-            LeaveCriticalSection(&ThreadSection);
+                CS_INFO_PACKET CSInfoPack{};
+                EnterCriticalSection(&ThreadSection);
+                strcpy(CSInfoPack.PlayerTag, PlayerTag.c_str());
+                strcpy(CSInfoPack.GunType, PlayerGunType.c_str());
+                LeaveCriticalSection(&ThreadSection);
 
-            ReturnValue = send(ClientSocket, (char*)&CSInfoPack, sizeof(CS_INFO_PACKET), 0);
-            if (ReturnValue == SOCKET_ERROR)
-                err_quit("send() CS_INFO_PACKET");
+                ReturnValue = send(ClientSocket, (char*)&CSInfoPack, sizeof(CS_INFO_PACKET), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("send() CS_INFO_PACKET");
+            }
         }
 
 //////////////////////////////////////////////////////////////////////

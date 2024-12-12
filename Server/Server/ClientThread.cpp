@@ -47,14 +47,24 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
             std::cout << "Added Tag: " << CSInfoPack.PlayerTag << std::endl;
 
+            bool Duplicated{};
+
             // 접속한 플레이어의 닉네임을 추가한다.
             EnterCriticalSection(&ThreadSection);
-            auto It = std::find(begin(NameList), end(NameList), (std::string)CSInfoPack.PlayerTag);
-            if (It == end(NameList)) 
-                NameList.emplace_back((std::string)CSInfoPack.PlayerTag);
+            for (auto It = begin(NameList); It != end(NameList); ++It) {
+                if (*It == (std::string)CSInfoPack.PlayerTag) {
+                    Duplicated = true;
+                    break;
+                }
+                if (It == end(NameList)) {
+                    NameList.emplace_back((std::string)CSInfoPack.PlayerTag);
+                    Duplicated = false;
+                }
+            }
             LeaveCriticalSection(&ThreadSection);
 
-            ClientPacketQueue.push(InputPackData);
+            if(!Duplicated)
+                ClientPacketQueue.push(InputPackData);
         }
 
         // 플레이어 움직임
