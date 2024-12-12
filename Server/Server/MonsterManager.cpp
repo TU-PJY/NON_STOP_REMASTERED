@@ -8,10 +8,11 @@
 std::random_device rd;
 std::uniform_int_distribution uid {0, 1};
 
+
 std::vector<int> MonsterIDList;
 
 float GenTimer;
-float GenInterval = 1.0;
+float GenInterval = 2.0;
 float DeltaTime;
 
 int MonsterID = 1;
@@ -21,14 +22,6 @@ DWORD WINAPI MonsterThread(LPVOID lpParam) {
     auto previousTime = std::chrono::high_resolution_clock::now();
 
     while (true) {
-        // 현재 시간 측정
-        auto currentTime = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<float> deltaTime = currentTime - previousTime;
-        previousTime = currentTime; // 이전 시간을 갱신
-
-        // DeltaTime 값
-        float DeltaTime = deltaTime.count(); // DeltaTime을 초 단위로 변환
-
         EnterCriticalSection(&ThreadSection);
         int LocalConnectedPlayer = ConnectedClients.size();
         LeaveCriticalSection(&ThreadSection);
@@ -37,23 +30,41 @@ DWORD WINAPI MonsterThread(LPVOID lpParam) {
             GenTimer += DeltaTime;
 
             if (GenTimer >= GenInterval) {
+                std::uniform_int_distribution IndexUID{ 0, LocalConnectedPlayer - 1 };
 
                 int RandomDir = uid(rd);
+                int RandomIndex = IndexUID(rd);
+
+                EnterCriticalSection(&ThreadSection);
+                auto LocalNameList = NameList;
+                LeaveCriticalSection(&ThreadSection);
+
+                std::string TrackTag = LocalNameList[RandomIndex];
 
                 InputPacketInfo InputPackInfo{};
                 InputPackInfo.PacketType = PACKET_TYPE_MONSTER_ADD;
                 InputPackInfo.SCMonsterAddPack.AddDir = RandomDir;
                 InputPackInfo.SCMonsterAddPack.ID = MonsterID;
+                strcpy(InputPackInfo.SCMonsterAddPack.TrackTag, TrackTag.c_str());
 
                 ClientPacketQueue.push(InputPackInfo);
 
                 MonsterIDList.emplace_back(MonsterID);
+
                 ++MonsterID;
 
                 std::cout << "Added Monster ID: " << MonsterID << " Dir: " << RandomDir << std::endl;
                 GenTimer = 0.0;
             }
         }
+
+        // 현재 시간 측정
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<float> deltaTime = currentTime - previousTime;
+        previousTime = currentTime; // 이전 시간을 갱신
+
+        // DeltaTime 값
+        DeltaTime = deltaTime.count(); // DeltaTime을 초 단위로 변환
     }
 
     return 0;

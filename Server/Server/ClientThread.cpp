@@ -2,6 +2,8 @@
 #include "ClientThread.h"
 #include "Packet.h"
 #include "Container.h"
+#include <algorithm>
+
 // 클라이언트 스레드
 DWORD WINAPI ClientThread(LPVOID lpParam) {
     bool ConnectState = true; // 연결 상태, false가 될 시 스레드 즉시 종료
@@ -14,6 +16,8 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     SOCKET ClientSocket{}; // 클라이언트 소켓
     struct sockaddr_in ClientAddr {};  // 클라이언트 ip 주소
 
+    std::string ThisTag{}; // 닉네임
+
     // 접속한 클라 정보 받기
     ClientInfo* ThisClient = (ClientInfo*)lpParam;
     ClientSocket = ThisClient->ClientSocket;
@@ -23,7 +27,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     while (ConnectState) {
         // 클라이언트로부터 패킷 타입을 먼저 받는다
         ReturnValue = recv(ClientSocket, (char*)&RecvPackType, sizeof(uint8_t), 0);
-        std::println("RECV {}:", RecvPackType);
+     //   std::println("RECV {}:", RecvPackType);
         if (ReturnValue == SOCKET_ERROR)
             break;
 
@@ -41,6 +45,13 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             InputPackData.Client = ThisClient;
 
             ClientPacketQueue.push(InputPackData);
+
+            // 접속한 플레이어의 닉네임을 추가한다.
+            EnterCriticalSection(&ThreadSection);
+            auto It = std::find(begin(NameList), end(NameList), (std::string)CSInfoPack.PlayerTag);
+            if (It == end(NameList))
+                NameList.emplace_back((std::string)CSInfoPack.PlayerTag);
+            LeaveCriticalSection(&ThreadSection);
         }
 
         // 플레이어 움직임
@@ -83,13 +94,16 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     }
 
 
-
-
     // 접속 종료 시 접속한 클라이언트 목록에서 제거 후 소켓 닫기
     EnterCriticalSection(&ThreadSection);
     auto It = std::find(ConnectedClients.begin(), ConnectedClients.end(), ThisClient);
     if (It != ConnectedClients.end())
         ConnectedClients.erase(It);
+
+    auto It2 = std::find(begin(NameList), end(NameList), ThisTag);
+    if (It2 != end(NameList))
+        NameList.erase(It2);
+
     if(NumConnected > 1) --NumConnected;
     LeaveCriticalSection(&ThreadSection);
 

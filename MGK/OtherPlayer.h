@@ -31,6 +31,8 @@ public:
 
 	LineBrush Line{}; // 체력 막대 그리기용
 
+	AABB aabb;
+
 	int Ref{};
 
 	void SetPosition(glm::vec2 Value) {
@@ -69,6 +71,14 @@ public:
 		HP = Value;
 	}
 
+	glm::vec2 GetPosition() {
+		return Position;
+	}
+
+	AABB GetAABB() {
+		return aabb;
+	}
+
 	std::wstring ToWstr(const std::string& str) {
 		int SizeNeed = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
 		std::wstring Wstr(SizeNeed, 0);
@@ -85,6 +95,9 @@ public:
 			Text.SetRenderType(RENDER_TYPE_DEFAULT);
 			TextInit = true;
 		}
+
+		// AABB 업데이트
+		aabb.Update(Position.x, Position.y, 0.25, 0.3);
 
 		// 반동이 감지되면 총구화염을 추가한다.
 		if (RecoilPosition > 0.03) {
@@ -117,9 +130,9 @@ public:
 		// 30초간 아무런 변화가 없을 시 플레이어가 없는 것으로 간주하고 scene에서 삭제한다.
 		KickTimer.Update(FT);
 
-		if (KickTimer.Sec() >= 30)
+		if (KickTimer.Sec() >= 30) 
 			scene.DeleteObject(this);
-
+		
 		// 조작이 감지되면 타이머가 초기화 된다.
 		if (PrevPosition != Position) {
 			PrevPosition = Position;
@@ -147,7 +160,7 @@ public:
 
 		// 렌더링에 필요한 데이터들을 쉐이더로 전달 후 최종 렌더링
 		Render(PlayerImage);
-		
+		aabb.Render();
 
 
 		// 타 플레이어 총 출력

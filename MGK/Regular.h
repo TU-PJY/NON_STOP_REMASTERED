@@ -28,6 +28,9 @@ private:
 	// 대미지 가하기 피드백
 	GLfloat FeedbackHeight{};
 
+	// 추적대상 닉네임
+	std::string TrackTag{};
+
 public:
 	AABB GetAABB() {
 		return aabb;
@@ -42,7 +45,7 @@ public:
 		return ID;
 	}
 
-	RegularMonster(int GenDir, int IDValue) {
+	RegularMonster(int GenDir, int IDValue, std::string TrackTagStr) {
 		if (GenDir == 0)
 			Position.x = -8.0;
 
@@ -52,6 +55,10 @@ public:
 		Position.y = -0.5;
 
 		ID = IDValue;
+
+		TrackTag = TrackTagStr;
+
+		std::cout << "Monster Track Tag: " << TrackTag << std::endl;
 	}
 
 	void UpdateFunc(float FT) {
@@ -62,7 +69,15 @@ public:
 			scene.DeleteObject(this);
 		}
 
-		if (auto player = scene.Find("player"); player) {
+		GameObject* player{};
+
+		if(TrackTag != PlayerTag)
+			player = scene.Find(TrackTag);
+
+		else if (TrackTag == PlayerTag)
+			player = scene.Find("player");
+
+		if (player) {
 			glm::vec2 PlayerPosition = player->GetPosition();
 
 			if (Position.x < PlayerPosition.x)
