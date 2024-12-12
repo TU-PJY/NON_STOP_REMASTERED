@@ -29,25 +29,27 @@ DWORD WINAPI MonsterThread(LPVOID lpParam) {
 		if (LocalConnectedPlayer > 0) {
 			//auto currentTime = std::chrono::high_resolution_clock::now();
 
-			GenTimer += 0.1;
+			//GenTimer += 0.1;
 
-			if (GenTimer >= GenInterval) {
-				std::cout << "Added Monster " << MonsterID << std::endl;
+			//if (GenTimer >= GenInterval) {
 
-				int RandomDir = uid(rd);
+			int RandomDir = uid(rd);
 
-				InputPacketInfo InputPackInfo{};
-				InputPackInfo.PacketType = PACKET_TYPE_MONSTER_ADD;
-				InputPackInfo.SCMonsterAddPack.AddDir = RandomDir;
-				InputPackInfo.SCMonsterAddPack.ID = MonsterID;
+			InputPacketInfo InputPackInfo{};
+			InputPackInfo.PacketType = PACKET_TYPE_MONSTER_ADD;
+			InputPackInfo.SCMonsterAddPack.AddDir = RandomDir;
+			InputPackInfo.SCMonsterAddPack.ID = MonsterID;
 
-				ClientPacketQueue.push(InputPackInfo);
+			ClientPacketQueue.push(InputPackInfo);
 
-				MonsterIDList.emplace_back(MonsterID);
-				++MonsterID;
+			MonsterIDList.emplace_back(MonsterID);
+			++MonsterID;
 
-				GenTimer = 0.0;
-			}
+
+			std::cout << "Added Monster ID:" << MonsterID << "Dir: " << RandomDir <<  std::endl;
+
+			Sleep(500);
+			//}
 
 			//deltaTime = currentTime - previousTime;
 			//previousTime = currentTime;

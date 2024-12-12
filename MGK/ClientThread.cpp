@@ -173,7 +173,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 //////////////////////////////////////////////////////////////////////
 
         // 플레이어 움직임
-        else if (PACKET_TYPE_PLAYER) {
+        if (RecvPackType == PACKET_TYPE_PLAYER) {
             SC_PLAYER_PACKET SCPlayerPack{};
             ReturnValue = recv(ClientSocket, (char*)&SCPlayerPack, sizeof(SC_PLAYER_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
@@ -194,9 +194,13 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         }
 
         // 몬스터 추가
-        else if (RecvPackType == PACKET_TYPE_MONSTER_ADD) {
+        if (RecvPackType == PACKET_TYPE_MONSTER_ADD) {
             SC_MONSTER_ADD_PACKET SCMonsterAddPack{};
             ReturnValue = recv(ClientSocket, (char*)&SCMonsterAddPack, sizeof(SC_MONSTER_ADD_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR)
+                err_quit("recv() SC_LOBBY_PACKET");
+
+            std::cout << "Dir: " << SCMonsterAddPack.AddDir << "ID: " << SCMonsterAddPack.ID << std::endl;
 
             // 몬스터 추가 패킷을 받으면 클라이언트에서 몬스터를 추가한다
             EnterCriticalSection(&ThreadSection);
