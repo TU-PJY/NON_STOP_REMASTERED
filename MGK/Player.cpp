@@ -156,6 +156,13 @@ void Player::UpdateHeal(float FT) {
 }
 
 void Player::UpdateFunc(float FT) {
+	// 죽으면 죽은 플레이어 리스트에 이름 추가 후 스스로 삭제
+	if (HP <= 0) {
+		DeletePlayerList.emplace_back(PlayerTag);
+		scene.DeleteObject(this);
+		scene.DeleteObject(GunPtr);
+	}
+
 	//KickTimer.Update(FT);
 
 	// 움직임 여부에 따라 이동 방향이 달라진다.

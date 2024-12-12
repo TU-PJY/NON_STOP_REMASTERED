@@ -18,7 +18,7 @@ public:
 	GLfloat GunRotation{};
 	GLfloat PrevGunRotation{};
 
-	int HP{};
+	int HP{100};
 
 	GLfloat RecoilPosition{};
 	int LookDir{};
@@ -95,6 +95,13 @@ public:
 			Text.SetRenderType(RENDER_TYPE_DEFAULT);
 			TextInit = true;
 		}
+		
+		// 죽은 플레이어 리스트에 자신의 이름 추가 후 스스로 삭제
+		if (HP <= 0) {
+			DeletePlayerList.emplace_back(Tag);
+			scene.DeleteObject(this);
+		}
+
 
 		// AABB 업데이트
 		aabb.Update(Position.x, Position.y, 0.25, 0.3);

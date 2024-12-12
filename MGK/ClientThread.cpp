@@ -178,6 +178,35 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             DeleteMonsterList.clear();
             LeaveCriticalSection(&ThreadSection);
         }
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+        // 플레이어 사망 동기화
+        EnterCriticalSection(&ThreadSection);
+        auto LocalDeletePlayerList = DeletePlayerList;
+        LeaveCriticalSection(&ThreadSection);
+
+        if (!LocalDeletePlayerList.empty()) {
+            int SendPacketType = PACKET_TYPE_PLAYER_DELETE;
+
+            for (const auto& L : LocalDeletePlayerList) {
+                ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("recv() SendPacketType");
+
+                CS_PLAYER_DELETE_PACKET CSPlayerDeletePack{};
+                strcpy(CSPlayerDeletePack.DeadPlayerTag, L.c_str());
+
+                ReturnValue = send(ClientSocket, (char*)&CSPlayerDeletePack, sizeof(CS_PLAYER_DELETE_PACKET), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("send() CS_MONSTER_DELETE_PACKET");
+            }
+
+            EnterCriticalSection(&ThreadSection);
+            DeletePlayerList.clear();
+            LeaveCriticalSection(&ThreadSection);
+        }
+
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
@@ -259,6 +288,27 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                 Other->SetGunRotation(SCPlayerPack.GunRotation);
                 Other->SetRecoilPosition(SCPlayerPack.RecoilPosition);
                 Other->SetHP(SCPlayerPack.HP);
+            }
+            LeaveCriticalSection(&ThreadSection);
+        }
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+        // 플레이어 사망 동기화
+        if (RecvPackType == PACKET_TYPE_PLAYER_DELETE) {
+            SC_PLAYER_DELETE_PACKET SCPlayerDeletePack{};
+            ReturnValue = recv(ClientSocket, (char*)&SCPlayerDeletePack, sizeof(SC_PLAYER_DELETE_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR)
+                err_quit("recv() SC_PLAYER_PACKET");
+
+            std::string DeadTag = (std::string)SCPlayerDeletePack.DeadPlayerTag;
+
+            // 사망처리된 플레이어의 닉네임을 가진 객체를 찾아 삭제한다.
+            EnterCriticalSection(&ThreadSection);
+            if (auto It = scene.Find(DeadTag); It) {
+                scene.DeleteObject(It);
+                auto Find = std::find(begin(ConnectedPlayer), end(ConnectedPlayer), DeadTag);
+                if (Find != end(ConnectedPlayer))
+                    ConnectedPlayer.erase(Find);
             }
             LeaveCriticalSection(&ThreadSection);
         }

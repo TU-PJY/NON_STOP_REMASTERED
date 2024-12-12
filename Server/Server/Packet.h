@@ -6,6 +6,7 @@ enum PacketTypeEnum {
 	PACKET_TYPE_NONE, // 타입 없음
 	PACKET_TYPE_ENTER, // 로비 패킷
 	PACKET_TYPE_PLAYER,
+	PACKET_TYPE_PLAYER_DELETE, // 플레이어 제거
 	PACKET_TYPE_MONSTER_ADD,
 	PACKET_TYPE_MONSTER_DAMAGE, // 몬스터에게 가한 대미지
 	PACKET_TYPE_MONSTER_DELETE
@@ -69,6 +70,14 @@ typedef struct { // 몬스터 대미지 (서버->클라)
 	int Damage;
 }SC_MONSTER_DAMAGE_PACKET;
 
+typedef struct {
+	char DeadPlayerTag[20];
+}CS_PLAYER_DELETE_PACKET;
+
+typedef struct {
+	char DeadPlayerTag[20];
+}SC_PLAYER_DELETE_PACKET;
+
 #pragma pack(pop)
 
 // 큐에서 처리하는 서버 -> 클라이언트 구조체
@@ -83,4 +92,5 @@ typedef struct {
 	SC_MONSTER_ADD_PACKET SCMonsterAddPack;
 	SC_MONSTER_DELETE_PACKET SCMonsterDeletePack;
 	SC_MONSTER_DAMAGE_PACKET SCMonsterDamagePack;
+	SC_PLAYER_DELETE_PACKET SCPlayerDeletePack;
 } InputPacketInfo;

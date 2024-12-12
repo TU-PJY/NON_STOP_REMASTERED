@@ -57,3 +57,6 @@ extern std::vector<int> DeleteMonsterList;
 
 // 대미지 입은 몬스터 리스트
 extern std::vector<DamageInfo> DamageMonsterList;
+
+// 죽은 플레이어 리스트
+extern std::vector<std::string> DeletePlayerList;

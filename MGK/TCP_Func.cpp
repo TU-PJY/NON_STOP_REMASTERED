@@ -51,3 +51,5 @@ bool PlayerReadyState;
 std::vector<int> DeleteMonsterList;
 
 std::vector<DamageInfo> DamageMonsterList;
+
+std::vector<std::string> DeletePlayerList;

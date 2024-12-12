@@ -78,6 +78,10 @@ DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
                 SendToOther(InputPackInfo.Client, (char*)&InputPackInfo.PacketType, (char*)&InputPackInfo.SCPlayerPack, sizeof(SC_PLAYER_PACKET));
                 break;
 
+            case PACKET_TYPE_PLAYER_DELETE:
+                SendToOther(InputPackInfo.Client, (char*)&InputPackInfo.PacketType, (char*)&InputPackInfo.SCPlayerDeletePack, sizeof(SC_PLAYER_DELETE_PACKET));
+                break;
+
             case PACKET_TYPE_MONSTER_ADD:
                 SendToOther(InputPackInfo.Client, (char*)&InputPackInfo.PacketType, (char*)&InputPackInfo.SCMonsterAddPack, sizeof(SC_MONSTER_ADD_PACKET));
                 break;

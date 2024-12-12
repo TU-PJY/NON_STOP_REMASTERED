@@ -100,6 +100,30 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         }
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
+        // 플레이어 사망 동기화
+        if (RecvPackType == PACKET_TYPE_PLAYER_DELETE) {
+            CS_PLAYER_DELETE_PACKET CSPlayerDeadPack{};
+
+            ReturnValue = recv(ClientSocket, (char*)&CSPlayerDeadPack, sizeof(CS_PLAYER_DELETE_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR)
+                ConnectState = false;
+
+            InputPacketInfo InputPackData{};
+            strcpy(InputPackData.SCPlayerDeletePack.DeadPlayerTag, CSPlayerDeadPack.DeadPlayerTag);
+            InputPackData.PacketType = RecvPackType;
+            InputPackData.Client = ThisClient;
+
+            EnterCriticalSection(&ThreadSection);
+            auto It = std::find(begin(NameList), end(NameList), (std::string)CSPlayerDeadPack.DeadPlayerTag);
+            if (It != end(NameList))
+                NameList.erase(It);
+            LeaveCriticalSection(&ThreadSection);
+
+            ClientPacketQueue.push(InputPackData);
+        }
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
         // 타 클라이언트에서 몬스터 타격 이벤트가 발생한 경우 나머지 클라에서도 해당 몬스터를 삭제하도록 한다
         if (RecvPackType == PACKET_TYPE_MONSTER_DAMAGE) {
             CS_MONSTER_DAMAGE_PACKET CSMonsterDamagePack{};
