@@ -7,7 +7,7 @@ enum PacketTypeEnum {
 	PACKET_TYPE_NONE, // 타입 없음
 	PACKET_TYPE_ENTER, // 로비 패킷
 	PACKET_TYPE_PLAYER, // 플레이어 움직임
-	PACKET_TYPE_MONATER_ADD // 몬스터 추가
+	PACKET_TYPE_MONSTER_ADD // 몬스터 추가
 };
 
 ////////////////////////// 패킷 구조체 모음

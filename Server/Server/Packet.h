@@ -6,7 +6,7 @@ enum PacketTypeEnum {
 	PACKET_TYPE_NONE, // 타입 없음
 	PACKET_TYPE_ENTER, // 로비 패킷
 	PACKET_TYPE_PLAYER,
-	PACKET_TYPE_MONATER_ADD
+	PACKET_TYPE_MONSTER_ADD
 };
 
 ////////////////////////// 패킷 구조체 모음

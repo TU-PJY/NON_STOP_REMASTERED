@@ -25,6 +25,23 @@ void SendToOther(ClientInfo* Info, const char* PacketType, const char* Packet, i
     }
 }
 
+void SendToAll(const char* PacketType, const char* Packet, int Size) {
+    int ReturnValue{};
+    EnterCriticalSection(&ThreadSection);
+    auto& Local = ConnectedClients;
+    LeaveCriticalSection(&ThreadSection);
+
+    for (auto const& Client : Local) {
+        ReturnValue = send(Client->ClientSocket, PacketType, sizeof(uint8_t), 0);
+        if (ReturnValue == SOCKET_ERROR)
+            continue;
+
+        ReturnValue = send(Client->ClientSocket, Packet, Size, 0);
+        if (ReturnValue == SOCKET_ERROR)
+            continue;
+    }
+}
+
 // 서버 -> 클라이언트 큐 스레드
 DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
     while (true) {
@@ -40,6 +57,10 @@ DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
 
             case PACKET_TYPE_PLAYER:
                 SendToOther(InputPackInfo.Client, (char*)&InputPackInfo.PacketType, (char*)&InputPackInfo.SCPlayerPack, sizeof(SC_PLAYER_PACKET));
+                break;
+
+            case PACKET_TYPE_MONSTER_ADD:
+                SendToAll((char*)&InputPackInfo.PacketType, (char*)&InputPackInfo.SCMonsterAddPack, sizeof(SC_MONSTER_ADD_PACKET));
                 break;
             }
         }

@@ -194,7 +194,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         }
 
         // 몬스터 추가
-        else if (RecvPackType == PACKET_TYPE_MONATER_ADD) {
+        else if (RecvPackType == PACKET_TYPE_MONSTER_ADD) {
             SC_MONSTER_ADD_PACKET SCMonsterAddPack{};
             ReturnValue = recv(ClientSocket, (char*)&SCMonsterAddPack, sizeof(SC_MONSTER_ADD_PACKET), 0);
 
