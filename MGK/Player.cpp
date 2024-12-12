@@ -28,6 +28,11 @@ void Player::InputKey(int State, unsigned char NormalKey, int SpecialKey) {
 				LandState = false;
 			}
 			break;
+
+		// 플레이어 사망 패킷 보낸 후 프로그램 종료
+		case NK_ESCAPE:
+			DeletePlayerList.emplace_back(PlayerTag);
+			scene.Exit();
 		}
 		break;
 

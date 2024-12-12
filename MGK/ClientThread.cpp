@@ -6,6 +6,8 @@
 #include "OtherPlayer.h"
 #include "Regular.h"
 
+#include "GameOverMode.h"
+
 #include <chrono>
 
 // 클라이언트 스레드
@@ -217,7 +219,16 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
+        // 게임 오버
+        if (RecvPackType == PACKET_TYPE_GAME_OVER) {
+            EnterCriticalSection(&ThreadSection);
+            scene.SwitchMode(GameOverMode::Start);
+            LeaveCriticalSection(&ThreadSection);
+            break;
+        }
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
         // 플레이어 입장
         if (RecvPackType == PACKET_TYPE_ENTER) {
             std::cout << "RECV ENTER" << std::endl;
@@ -270,7 +281,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
-
         // 플레이어 움직임
         if (RecvPackType == PACKET_TYPE_PLAYER) {
             SC_PLAYER_PACKET SCPlayerPack{};
@@ -306,6 +316,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             EnterCriticalSection(&ThreadSection);
             if (auto It = scene.Find(DeadTag); It) {
                 scene.DeleteObject(It);
+
                 auto Find = std::find(begin(ConnectedPlayer), end(ConnectedPlayer), DeadTag);
                 if (Find != end(ConnectedPlayer))
                     ConnectedPlayer.erase(Find);

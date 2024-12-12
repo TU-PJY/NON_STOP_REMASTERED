@@ -33,3 +33,5 @@ void err_display(const char* msg);
 void err_display(int errcode);
 
 extern int NumConnected;
+
+extern int NumDead;

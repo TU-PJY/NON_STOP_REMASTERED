@@ -34,6 +34,18 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     }
 
     while (ConnectState) {
+        EnterCriticalSection(&ThreadSection);
+        int LocalNumDead = NumDead;
+        LeaveCriticalSection(&ThreadSection);
+
+        if (LocalNumDead >= 2) {
+            int SendPacketType = PACKET_TYPE_GAME_OVER;
+            InputPacketInfo InputPackData{};
+            InputPackData.PacketType = PACKET_TYPE_GAME_OVER;
+
+            ClientPacketQueue.push(InputPackData);
+        }
+
         // 클라이언트로부터 패킷 타입을 먼저 받는다
         ReturnValue = recv(ClientSocket, (char*)&RecvPackType, sizeof(uint8_t), 0);
         if (ReturnValue == SOCKET_ERROR)
@@ -117,6 +129,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             auto It = std::find(begin(NameList), end(NameList), (std::string)CSPlayerDeadPack.DeadPlayerTag);
             if (It != end(NameList))
                 NameList.erase(It);
+
+            // 죽은 사람 수 증가
+            ++NumDead;
             LeaveCriticalSection(&ThreadSection);
 
             ClientPacketQueue.push(InputPackData);

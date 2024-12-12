@@ -94,6 +94,10 @@ DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
                 SendToOther(InputPackInfo.Client, (char*)&InputPackInfo.PacketType, (char*)&InputPackInfo.SCMonsterDeletePack, sizeof(SC_MONSTER_DELETE_PACKET));
                 break;
 
+            case PACKET_TYPE_GAME_OVER:
+                SendToAll((char*)&InputPackInfo.PacketType, (char*)&InputPackInfo.SCGameOverPack, sizeof(SC_GAME_OVER_PACKET));
+                break;
+
             }
         }
     }

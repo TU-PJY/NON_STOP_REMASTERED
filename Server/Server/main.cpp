@@ -5,6 +5,7 @@
 #include "Container.h"
 
 int NumConnected;
+int NumDead;
 
 int main(int argc, char* argv[]) {
     int ReturnValue{};

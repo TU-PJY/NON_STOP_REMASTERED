@@ -10,7 +10,8 @@ enum PacketTypeEnum {
 	PACKET_TYPE_PLAYER_DELETE, // 플레이어 제거
 	PACKET_TYPE_MONSTER_ADD, // 몬스터 추가
 	PACKET_TYPE_MONSTER_DAMAGE, // 몬스터에게 가한 대미지
-	PACKET_TYPE_MONSTER_DELETE // 몬스터 제거
+	PACKET_TYPE_MONSTER_DELETE, // 몬스터 제거
+	PACKET_TYPE_GAME_OVER
 };
 
 ////////////////////////// 패킷 구조체 모음
@@ -78,5 +79,10 @@ typedef struct {
 typedef struct {
 	char DeadPlayerTag[20];
 }SC_PLAYER_DELETE_PACKET;
+
+// 게임 오버 패킷
+typedef struct {
+	bool GameOver;
+}SC_GAME_OVER_PACKET;
 
 #pragma pack(pop)

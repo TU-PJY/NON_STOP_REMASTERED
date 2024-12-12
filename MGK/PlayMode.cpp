@@ -71,13 +71,13 @@ void PlayMode::Destructor() {
 
 void PlayMode::ProcessKeyboard(int State, unsigned char NormalKey, int SpecialKey) {
 	// 개발 시에는 활성화 해둠. 즉시 종료 역할
-	if (State == NORMAL_KEY_DOWN) {
-		switch (NormalKey) {
-		case NK_ESCAPE:
-			scene.Exit();
-			break;
-		}
-	}
+	//if (State == NORMAL_KEY_DOWN) {
+	//	switch (NormalKey) {
+	//	case NK_ESCAPE:
+	//		scene.Exit();
+	//		break;
+	//	}
+	//}
 
 	// 컨트롤러 입력이 필요한 객체에 컨트롤러를 연결한다.
 	// Start()에서 추가할 때 입력했던 오브젝트 태그로 오브젝트의 포인터를 찾는다.

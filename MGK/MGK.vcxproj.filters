@@ -190,6 +190,9 @@
     <Filter Include="[8]___________[ TCP/IP ]">
       <UniqueIdentifier>{e866c242-fcea-4274-b61e-2decd9b4ecff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[1]___________[ GameMode ]\[ GameOver Mode ]">
+      <UniqueIdentifier>{b55a133b-e66d-4894-8b5c-a8e3036c4fca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayMode.cpp">
@@ -323,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="ClientThread.cpp">
       <Filter>[8]___________[ TCP/IP ]</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverMode.cpp">
+      <Filter>[1]___________[ GameMode ]\[ GameOver Mode ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -487,6 +493,9 @@
     </ClInclude>
     <ClInclude Include="OtherPlayer.h">
       <Filter>[2]___________[ Object ]\[1][ Main Object ]\[ PlayMode Object ]\[Player]</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverMode.h">
+      <Filter>[1]___________[ GameMode ]\[ GameOver Mode ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
