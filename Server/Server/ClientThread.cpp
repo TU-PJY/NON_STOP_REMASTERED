@@ -17,8 +17,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     SOCKET ClientSocket{}; // 클라이언트 소켓
     struct sockaddr_in ClientAddr {};  // 클라이언트 ip 주소
 
-    std::string ThisTag{}; // 닉네임
-
     // 접속한 클라 정보 받기
     ClientInfo* ThisClient = (ClientInfo*)lpParam;
     ClientSocket = ThisClient->ClientSocket;
@@ -67,8 +65,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             InputPackData.PacketType = RecvPackType;
             InputPackData.Client = ThisClient;
 
-            std::cout << "Added Tag: " << CSInfoPack.PlayerTag << std::endl;
-
             bool Duplicated{};
 
             // 접속한 플레이어의 닉네임을 추가한다.
@@ -77,9 +73,11 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             if (It != end(NameList))
                 Duplicated = true;
             else {
+                std::cout << "[Server] Player Connected: " << CSInfoPack.PlayerTag << "| IP: " << ThisClient->Addr << std::endl;
                 NameList.push_back((std::string)CSInfoPack.PlayerTag);
                 Duplicated = false;
             }
+
             LeaveCriticalSection(&ThreadSection);
 
             //if(!Duplicated)
@@ -179,10 +177,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     auto It = std::find(ConnectedClients.begin(), ConnectedClients.end(), ThisClient);
     if (It != ConnectedClients.end())
         ConnectedClients.erase(It);
-
-  /*  auto It2 = std::find(begin(NameList), end(NameList), ThisTag);
-    if (It2 != end(NameList))
-        NameList.erase(It2);*/
 
     if(NumConnected > 1) --NumConnected;
     LeaveCriticalSection(&ThreadSection);
