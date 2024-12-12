@@ -140,6 +140,7 @@
     <ClInclude Include="ClientThread.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Container.h" />
+    <ClInclude Include="MonsterManager.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="QueueThread.h" />
     <ClInclude Include="TCP_Header.h" />
@@ -148,6 +149,7 @@
     <ClCompile Include="ClientThread.cpp" />
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MonsterManager.cpp" />
     <ClCompile Include="QueueThread.cpp" />
     <ClCompile Include="TCP_Func.cpp" />
   </ItemGroup>

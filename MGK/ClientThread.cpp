@@ -4,14 +4,13 @@
 #include "EngineHeader.h"
 
 #include "OtherPlayer.h"
+#include "Regular.h"
 
 void Disconnect() {
     EnterCriticalSection(&ThreadSection);
     ConnectState = false;
     LeaveCriticalSection(&ThreadSection);
 }
-
-std::set<std::string> DuplicatedTag;
 
 DWORD WINAPI ClientThread(LPVOID lpParam) {
     int ReturnValue{};
@@ -74,7 +73,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     while (ConnectState) {
         EnterCriticalSection(&ThreadSection);
         bool LocalConnectState = ConnectState;
-        std::string LocalModeName = scene.Mode();
         LeaveCriticalSection(&ThreadSection);
 
         // 연결 상태 해제 시 서버 스레드 종료
@@ -82,43 +80,42 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             break;
 
         // 플레이 모드 패킷 타입 전송
-        if (LocalModeName == "PlayMode") {
-            // 움직임 패킷 전송
-            int SendPacketType = PACKET_TYPE_PLAYER;
-            ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
-            if (ReturnValue == SOCKET_ERROR)
-                err_quit("recv() PakcetType");
+        // 움직임 패킷 전송
+        int SendPacketType = PACKET_TYPE_PLAYER;
+        ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
+        if (ReturnValue == SOCKET_ERROR)
+            err_quit("recv() PakcetType");
 
-            CS_PLAYER_PACKET CSPlayerPack{};
-            glm::vec2 SendPosition{};
-            int SendLookDir{};
-            GLfloat SendGunRotation{};
-            GLfloat SendRecoilPosition{};
-            int SendHP{};
+        CS_PLAYER_PACKET CSPlayerPack{};
+        glm::vec2 SendPosition{};
+        int SendLookDir{};
+        GLfloat SendGunRotation{};
+        GLfloat SendRecoilPosition{};
+        int SendHP{};
             
-            // 자신의 정보를 타 클라이언트에 전달한다
-            EnterCriticalSection(&ThreadSection);
-            if (auto Player = scene.Find("player"); Player) {
-                strcpy(CSPlayerPack.PlayerTag, PlayerTag.c_str());
-                SendPosition = Player->GetPosition();
-                SendLookDir = Player->GetLookDir();
-                SendGunRotation = Player->GetGunRotation();
-                SendRecoilPosition = Player->GetRecoilPosition();
-                SendHP = Player->GetHP();
-            }
-            LeaveCriticalSection(&ThreadSection);
-
-            CSPlayerPack.x = SendPosition.x;
-            CSPlayerPack.y = SendPosition.y;
-            CSPlayerPack.LookDir = SendLookDir;
-            CSPlayerPack.GunRotation = SendGunRotation;
-            CSPlayerPack.RecoilPosition = SendRecoilPosition;
-            CSPlayerPack.HP = SendHP;
-
-            ReturnValue = send(ClientSocket, (char*)&CSPlayerPack, sizeof(CS_PLAYER_PACKET), 0);
-            if (ReturnValue == SOCKET_ERROR)
-                err_quit("send() CS_LOBBY_PACKET");
+        // 자신의 정보를 타 클라이언트에 전달한다
+        EnterCriticalSection(&ThreadSection);
+        if (auto Player = scene.Find("player"); Player) {
+            strcpy(CSPlayerPack.PlayerTag, PlayerTag.c_str());
+            SendPosition = Player->GetPosition();
+            SendLookDir = Player->GetLookDir();
+            SendGunRotation = Player->GetGunRotation();
+            SendRecoilPosition = Player->GetRecoilPosition();
+            SendHP = Player->GetHP();
         }
+        LeaveCriticalSection(&ThreadSection);
+
+        CSPlayerPack.x = SendPosition.x;
+        CSPlayerPack.y = SendPosition.y;
+        CSPlayerPack.LookDir = SendLookDir;
+        CSPlayerPack.GunRotation = SendGunRotation;
+        CSPlayerPack.RecoilPosition = SendRecoilPosition;
+        CSPlayerPack.HP = SendHP;
+
+        ReturnValue = send(ClientSocket, (char*)&CSPlayerPack, sizeof(CS_PLAYER_PACKET), 0);
+        if (ReturnValue == SOCKET_ERROR)
+            err_quit("send() CS_LOBBY_PACKET");
+        
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -153,7 +150,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                     Other->SetPlayerTag(SCInfoPack.PlayerTag);
                     Other->SetGunType(SCInfoPack.GunType);
                 }
-            }
+           }
 
            LeaveCriticalSection(&ThreadSection);
 
@@ -193,6 +190,17 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                 Other->SetRecoilPosition(SCPlayerPack.RecoilPosition);
                 Other->SetHP(SCPlayerPack.HP);
             }
+            LeaveCriticalSection(&ThreadSection);
+        }
+
+        // 몬스터 추가
+        else if (RecvPackType == PACKET_TYPE_MONATER_ADD) {
+            SC_MONSTER_ADD_PACKET SCMonsterAddPack{};
+            ReturnValue = recv(ClientSocket, (char*)&SCMonsterAddPack, sizeof(SC_MONSTER_ADD_PACKET), 0);
+
+            // 몬스터 추가 패킷을 받으면 클라이언트에서 몬스터를 추가한다
+            EnterCriticalSection(&ThreadSection);
+            scene.AddObject(new RegularMonster(SCMonsterAddPack.AddDir, SCMonsterAddPack.ID), "regular", LAYER_2);
             LeaveCriticalSection(&ThreadSection);
         }
     }

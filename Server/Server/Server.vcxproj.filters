@@ -32,6 +32,9 @@
     <ClCompile Include="Container.cpp">
       <Filter>[1]___________[ System ]</Filter>
     </ClCompile>
+    <ClCompile Include="MonsterManager.cpp">
+      <Filter>[2]___________[ Server ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Packet.h">
@@ -51,6 +54,9 @@
     </ClInclude>
     <ClInclude Include="Container.h">
       <Filter>[1]___________[ System ]</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterManager.h">
+      <Filter>[2]___________[ Server ]</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

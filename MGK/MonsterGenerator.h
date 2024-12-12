@@ -17,7 +17,7 @@ public:
 
 		if (Timer.MiliSec(2) >= GenTime) {
 			int RandDir = Random::Gen(DIST_INT, 0, 1);
-			scene.AddObject(new RegularMonster(RandDir), "monster", LAYER_2);
+			//scene.AddObject(new RegularMonster(RandDir), "monster", LAYER_2);
 			Timer.Interpolate(GenTime);
 		}
 	}

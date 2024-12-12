@@ -9,6 +9,8 @@ class PlayerInfo : public GameObject {
 public:
 	TextUtil Text{};
 
+	bool InputNameState{};
+
 	PlayerInfo() {
 		Text.Init(L"맑은 고딕", FW_NORMAL);
 		Text.SetColor(1.0, 1.0, 1.0);
@@ -26,43 +28,56 @@ public:
 		return Wstr;
 	}
 
-	// 1, 2, 3, 4: 무기 선택
-	// z, x, c: 닉네임 변경
-	// 스페이스바: 준비 상태 변경
-	// 엔터: 접속
+
+	// 닉네임 입력 후 엔터
+	// 1, 2, 3, 4 선택 후 엔터
 	void InputKey(int State, unsigned char NormalKey, int SpecialKey) {
 		if (State == NORMAL_KEY_DOWN) {
-			switch (NormalKey) {
-			case '1':
-				PlayerGunType = "SCAR_H"; break;
-			case '2':
-				PlayerGunType = "M16"; break;
-			case '3':
-				PlayerGunType = "MP44"; break;
-			case '4':
-				PlayerGunType = "MG42"; break;
-
-			case 'z':
-				PlayerTag = "Player1"; break;
-			case 'x':
-				PlayerTag = "Player2"; break;
-			case 'c':
-				PlayerTag = "Player3"; break;
-
-			case NK_SPACE:
-				EX::SwitchBool(PlayerReadyState); 
-				break;
-
-			case NK_ENTER:
-				if (!ConnectState) {
-					HANDLE Thread = CreateThread(NULL, 0, ClientThread, NULL, 0, 0);
-					if (Thread) {
-						CloseHandle(Thread);
-						ConnectState = true;
-						scene.SwitchMode(PlayMode::Start);
-					}
+			// 닉네임 입력
+			if (!InputNameState) {
+				if (NormalKey == NK_BACKSPACE) {
+					if(PlayerTag.size() > 0)
+						PlayerTag.pop_back();
+					else
+						return;
 				}
-				break;
+
+				else if (NormalKey == NK_ENTER) {
+					InputNameState = true;
+					return;
+				}
+
+				else 
+					PlayerTag += NormalKey;
+			}
+
+			//  무기 선택
+			else {
+				switch (NormalKey) {
+				case '1':
+					PlayerGunType = "SCAR_H"; break;
+				case '2':
+					PlayerGunType = "M16"; break;
+				case '3':
+					PlayerGunType = "MP44"; break;
+				case '4':
+					PlayerGunType = "MG42"; break;
+
+				/*case NK_SPACE:
+					EX::SwitchBool(PlayerReadyState);
+					break;*/
+
+				case NK_ENTER:
+					if (!ConnectState) {
+						HANDLE Thread = CreateThread(NULL, 0, ClientThread, NULL, 0, 0);
+						if (Thread) {
+							CloseHandle(Thread);
+							ConnectState = true;
+							scene.SwitchMode(PlayMode::Start);
+						}
+					}
+					break;
+				}
 			}
 		}
 	}

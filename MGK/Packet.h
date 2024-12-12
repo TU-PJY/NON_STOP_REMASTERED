@@ -7,6 +7,7 @@ enum PacketTypeEnum {
 	PACKET_TYPE_NONE, // 타입 없음
 	PACKET_TYPE_ENTER, // 로비 패킷
 	PACKET_TYPE_PLAYER, // 플레이어 움직임
+	PACKET_TYPE_MONATER_ADD // 몬스터 추가
 };
 
 ////////////////////////// 패킷 구조체 모음
@@ -42,5 +43,9 @@ typedef struct { // 플레이어 이동
 	int HP; // 플레이어 체력
 }SC_PLAYER_PACKET;
 
+typedef struct { // 몬스터 추가 
+	int AddDir; // 추가되는 방향
+	int ID; // 아이디
+}SC_MONSTER_ADD_PACKET;
 
 #pragma pack(pop)

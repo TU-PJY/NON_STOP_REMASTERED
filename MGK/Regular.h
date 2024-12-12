@@ -10,6 +10,8 @@ private:
 	GLfloat Speed{ 1.0 };
 	AABB aabb;
 
+	int ID{};
+
 	// 대미지 쿨타임 타이머
 	TimerUtil DamageTimer;
 	GLfloat CoolTime{ 0.7 };
@@ -35,7 +37,7 @@ public:
 		RedColor = 1.0;
 	}
 
-	RegularMonster(int GenDir) {
+	RegularMonster(int GenDir, int IDValue) {
 		if (GenDir == 0)
 			Position.x = -8.0;
 
@@ -43,6 +45,8 @@ public:
 			Position.x = 8.0;
 
 		Position.y = -0.5;
+
+		ID = IDValue;
 	}
 
 	void UpdateFunc(float FT) {

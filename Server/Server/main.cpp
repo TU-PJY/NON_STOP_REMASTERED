@@ -1,6 +1,7 @@
 #include "TCP_Header.h" // 에러 메시지 함수 및 TCP 서버에 필요한 헤더 포함
 #include "ClientThread.h"
 #include "QueueThread.h"
+#include "MonsterManager.h"
 #include "Container.h"
 
 int NumConnected;
@@ -44,6 +45,13 @@ int main(int argc, char* argv[]) {
     HANDLE Thread = CreateThread(NULL, 0, ClientQueueThread, NULL, 0, NULL);
     if (!Thread)
         std::println("Failed to create queue thread.");
+    else
+        CloseHandle(Thread);
+
+    // 몬스터 추가 스레드 생성
+    HANDLE MThread = CreateThread(NULL, 0, MonsterThread, NULL, 0, NULL);
+    if (!MThread)
+        std::println("Failed to create monster thread.");
     else
         CloseHandle(Thread);
 
