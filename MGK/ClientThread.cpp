@@ -6,49 +6,7 @@
 #include "OtherPlayer.h"
 #include "Regular.h"
 
-// 몬스터 관리용 스래드
-DWORD WINAPI MonsterThread(LPVOID lpParam) {
-    SOCKET* ClientSocket = (SOCKET*)lpParam;
-    int ReturnValue;
-    
-    while (ConnectState) {
-        EnterCriticalSection(&ThreadSection);
-        bool LocalConnectState = ConnectState;
-        LeaveCriticalSection(&ThreadSection);
-
-        if (!LocalConnectState)
-            break;
-
-        /// 죽은 몬스터가 있을 경우 타 클라이언트에서 해당 몬스터를 삭제하도록 한다
-        EnterCriticalSection(&ThreadSection);
-        auto LocalDeleteMonsterList = DeleteMonsterList;
-        auto LocalSocket = ClientSocket;
-        LeaveCriticalSection(&ThreadSection);
-
-        if (!LocalDeleteMonsterList.empty()) {
-            for (auto const& D : LocalDeleteMonsterList) {
-                int SendPacketType = PACKET_TYPE_MONSTER_DELETE;
-                ReturnValue = send(*LocalSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
-                if (ReturnValue == SOCKET_ERROR)
-                    err_quit("recv() PakcetType");
-
-                CS_MONSTER_DELETE_PACKET CSMonsterDeletePack{};
-                CSMonsterDeletePack.ID = D;
-                ReturnValue = send(*LocalSocket, (char*)&CSMonsterDeletePack, sizeof(CS_MONSTER_DELETE_PACKET), 0);
-                if (ReturnValue == SOCKET_ERROR)
-                    err_quit("send() CS_MONSTER_DELETE_PACKET");
-            }
-
-            EnterCriticalSection(&ThreadSection);
-            DeleteMonsterList.clear();
-            LeaveCriticalSection(&ThreadSection);
-        }
-    }
-
-    return 0;
-}
-
-
+// 클라이언트 스레드
 DWORD WINAPI ClientThread(LPVOID lpParam) {
     int ReturnValue{};
     int RecvPackType{};
@@ -79,10 +37,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     EnterCriticalSection(&ThreadSection);
     ConnectState = true;
     LeaveCriticalSection(&ThreadSection);
-
-    HANDLE Thread = CreateThread(NULL, 0, MonsterThread, &ClientSocket, 0, NULL);
-    if (Thread)
-        CloseHandle(Thread);
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
