@@ -58,4 +58,15 @@ typedef struct { // 죽은 몬스터 아이디 (서버 -> 클라)
 	int ID;
 }SC_MONSTER_DELETE_PACKET;
 
+typedef struct { // 몬스터 대미지 (클라->서버)
+	int ID;
+	int Damage;
+}CS_MONSTER_DAMAGE_PACKET;
+
+typedef struct { // 몬스터 대미지 (서버->클라)
+	int ID;
+	int Damage;
+}SC_MONSTER_DAMAGE_PACKET;
+
+
 #pragma pack(pop)

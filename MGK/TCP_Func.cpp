@@ -37,7 +37,7 @@ void err_display(int errcode) {
     LocalFree(lpMsgBuf);
 }
 
-char* SERVER_IP = (char*)"127.0.0.1";  // 클라이언트 주소
+char SERVER_IP[20];  // 클라이언트 주소
 CRITICAL_SECTION ThreadSection;
 
 // 연결된 플레이어들의 닉네임

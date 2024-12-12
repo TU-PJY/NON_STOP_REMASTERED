@@ -156,7 +156,7 @@ void Player::UpdateHeal(float FT) {
 }
 
 void Player::UpdateFunc(float FT) {
-	KickTimer.Update(FT);
+	//KickTimer.Update(FT);
 
 	// 움직임 여부에 따라 이동 방향이 달라진다.
 	// 범위 밖을 나가지 않도록 한다.

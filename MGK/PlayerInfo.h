@@ -10,6 +10,8 @@ public:
 	TextUtil Text{};
 
 	bool InputNameState{};
+	bool InputIPState{true};
+	std::string ServerIP;
 
 	PlayerInfo() {
 		Text.Init(L"맑은 고딕", FW_NORMAL);
@@ -28,13 +30,33 @@ public:
 		return Wstr;
 	}
 
-
+	// 서버 주소 입력 후 엔터
 	// 닉네임 입력 후 엔터
 	// 1, 2, 3, 4 선택 후 엔터
+	// 127.0.0.1
 	void InputKey(int State, unsigned char NormalKey, int SpecialKey) {
 		if (State == NORMAL_KEY_DOWN) {
+			if (InputIPState) {
+				if (NormalKey == NK_BACKSPACE) {
+					if (ServerIP.size() > 0)
+						ServerIP.pop_back();
+					else
+						return;
+				}
+
+				else if (NormalKey == NK_ENTER) {
+					strcpy(SERVER_IP, ServerIP.c_str());
+					InputIPState = false;
+					InputNameState = true;
+					return;
+				}
+
+				else
+					ServerIP += NormalKey;
+			}
+
 			// 닉네임 입력
-			if (!InputNameState) {
+			if (InputNameState) {
 				if (NormalKey == NK_BACKSPACE) {
 					if(PlayerTag.size() > 0)
 						PlayerTag.pop_back();
@@ -43,7 +65,7 @@ public:
 				}
 
 				else if (NormalKey == NK_ENTER) {
-					InputNameState = true;
+					InputNameState = false;
 					return;
 				}
 
@@ -52,7 +74,7 @@ public:
 			}
 
 			//  무기 선택
-			else {
+			else if(!InputNameState && !InputIPState) {
 				switch (NormalKey) {
 				case '1':
 					PlayerGunType = "SCAR_H"; break;
@@ -63,9 +85,6 @@ public:
 				case '4':
 					PlayerGunType = "MG42"; break;
 
-				/*case NK_SPACE:
-					EX::SwitchBool(PlayerReadyState);
-					break;*/
 
 				case NK_ENTER:
 					if (!ConnectState) {
@@ -81,14 +100,11 @@ public:
 			}
 		}
 	}
-
-	void UpdateFunc() {
-		
-	}
 	
 	void RenderFunc() {
 		// 나의 상태 표시
-		Text.Render(ASP(-0.5), 0.6, 0.1, 1.0, L"My Tag: %ls", ToWstr(PlayerTag).c_str());
-		Text.Render(ASP(-0.5), 0.5, 0.1, 1.0, L"Weapon: %ls", ToWstr(PlayerGunType).c_str());
+		Text.Render(ASP(-0.5), 0.6, 0.1, 1.0, L"Server IP: %ls", ToWstr(ServerIP).c_str());
+		Text.Render(ASP(-0.5), 0.5, 0.1, 1.0, L"My Tag: %ls", ToWstr(PlayerTag).c_str());
+		Text.Render(ASP(-0.5), 0.4, 0.1, 1.0, L"Weapon: %ls", ToWstr(PlayerGunType).c_str());
 	}
 };

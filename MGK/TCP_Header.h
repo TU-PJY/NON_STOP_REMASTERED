@@ -34,7 +34,7 @@ void err_display(const char* msg);
 // 소켓 함수 오류 출력
 void err_display(int errcode);
 
-extern char* SERVER_IP;  // 클라이언트 주소
+extern char SERVER_IP[20]; // 클라이언트 주소
 extern CRITICAL_SECTION ThreadSection;
 
 extern std::vector<std::string> ConnectedPlayer;
