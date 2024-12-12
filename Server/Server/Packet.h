@@ -13,6 +13,7 @@ enum PacketTypeEnum {
 ////////////////////////// 패킷 구조체 모음
 
 #pragma pack(push, 1)
+
 // 로비 (클라 -> 서버)
 typedef struct {
 	char PlayerTag[20];    // 플레이어 이름

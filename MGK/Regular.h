@@ -58,7 +58,7 @@ public:
 
 		TrackTag = TrackTagStr;
 
-		std::cout << "Monster Track Tag: " << TrackTag << std::endl;
+		std::cout << "Monster Track Tag: " << TrackTag << "ID: " << ID << std::endl;
 	}
 
 	void UpdateFunc(float FT) {

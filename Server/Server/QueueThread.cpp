@@ -42,6 +42,23 @@ void SendToAll(const char* PacketType, const char* Packet, int Size) {
     }
 }
 
+void SendToMe(ClientInfo* Info, const char* PacketType, const char* Packet, int Size) {
+    int ReturnValue{};
+    EnterCriticalSection(&ThreadSection);
+    auto& Local = ConnectedClients;
+    LeaveCriticalSection(&ThreadSection);
+
+    for (auto const& Client : Local) {
+        ReturnValue = send(Client->ClientSocket, PacketType, sizeof(uint8_t), 0);
+        if (ReturnValue == SOCKET_ERROR)
+            continue;
+
+        ReturnValue = send(Client->ClientSocket, Packet, Size, 0);
+        if (ReturnValue == SOCKET_ERROR)
+            continue;
+    }
+}
+
 // 서버 -> 클라이언트 큐 스레드
 DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
     while (true) {

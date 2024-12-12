@@ -47,7 +47,7 @@ typedef struct { // 플레이어 이동
 typedef struct { // 몬스터 추가 
 	int AddDir; // 추가되는 방향
 	int ID; // 아이디
-	char TrackTag[20]; // 추적 대상 태그
+	char TrackTag[20];
 }SC_MONSTER_ADD_PACKET;
 
 typedef struct { // 죽은 몬스터 아이디 (클라 -> 서버)

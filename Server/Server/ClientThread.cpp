@@ -3,6 +3,7 @@
 #include "Packet.h"
 #include "Container.h"
 #include <algorithm>
+#include <iostream>
 
 // 클라이언트 스레드
 DWORD WINAPI ClientThread(LPVOID lpParam) {
@@ -52,6 +53,10 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             if (It == end(NameList))
                 NameList.emplace_back((std::string)CSInfoPack.PlayerTag);
             LeaveCriticalSection(&ThreadSection);
+
+            // 접속 시 자신의 닉네임을 부여받는다.
+            if (!ThisTag.empty())
+                ThisTag = (std::string)CSInfoPack.PlayerTag;
         }
 
         // 플레이어 움직임
@@ -79,15 +84,14 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         // 타 클라이언트에서 몬스터 삭제 이벤트가 발생한 경우 나머지 클라에서도 해당 몬스터를 삭제하도록 한다
         if (RecvPackType == PACKET_TYPE_MONSTER_DELETE) {
             CS_MONSTER_DELETE_PACKET CSMonsterDeletePack{};
-
             ReturnValue = recv(ClientSocket, (char*)&CSMonsterDeletePack, sizeof(CS_MONSTER_DELETE_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
                 ConnectState = false;
 
             InputPacketInfo InputPackData{};
             InputPackData.SCMonsterDeletePack.ID = CSMonsterDeletePack.ID;
-            InputPackData.Client = ThisClient;
             InputPackData.PacketType = RecvPackType;
+            InputPackData.Client = ThisClient;
 
             ClientPacketQueue.push(InputPackData);
         }

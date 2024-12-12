@@ -44,7 +44,7 @@ public:
 		TargetPoint.y = Random::Gen(DIST_REAL, RealPosition.y - 0.03 - Recoil, RealPosition.y + 0.03 + Recoil);
 
 		// monster 태그를 가진 범위를 얻는다.
-		ObjectRange MonsterRange = scene.EqualRange("regular");
+		ObjectRange MonsterRange = scene.EqualRange("monster");
 
 		// 범위 내에 있는 모든 오브젝트의 AABB 충돌 검사를 통해 대미지 부여 여부를 결정한다.
 		for (auto It = MonsterRange.First; It != MonsterRange.End; ++It) {

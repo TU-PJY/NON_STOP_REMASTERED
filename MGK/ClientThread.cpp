@@ -48,7 +48,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
     std::cout << "Send Packet:" << SendPacketType << "\n";
     if (ReturnValue == SOCKET_ERROR)
-        err_quit("send() PACKET_TYPE_LOBBY");
+        err_quit("send() SendPacketType");
 
     // 클라이언트 자신의 상태를 패킷에 복사
     CS_INFO_PACKET CSInfoPack{};
@@ -60,7 +60,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     //  패킷 보내기
     ReturnValue = send(ClientSocket, (char*)&CSInfoPack, sizeof(CS_INFO_PACKET), 0);
     if (ReturnValue == SOCKET_ERROR)
-        err_quit("send() CS_LOBBY_PACKET");
+        err_quit("send() CS_INFO_PACKET");
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -109,8 +109,34 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
         ReturnValue = send(ClientSocket, (char*)&CSPlayerPack, sizeof(CS_PLAYER_PACKET), 0);
         if (ReturnValue == SOCKET_ERROR)
-            err_quit("send() CS_LOBBY_PACKET");
+            err_quit("send() CS_PLAYER_PACKET");
         
+
+        // 몬스터 삭제 동기화
+        EnterCriticalSection(&ThreadSection);
+        auto LocalList = DeleteMonsterList;
+        LeaveCriticalSection(&ThreadSection);
+
+        if (!LocalList.empty()) {
+            int SendPacketType = PACKET_TYPE_MONSTER_DELETE;
+
+            for (auto & L : LocalList) {
+                ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("recv() SendPacketType");
+
+                CS_MONSTER_DELETE_PACKET CSMonsterDeletePack{};
+                CSMonsterDeletePack.ID = L;
+
+                ReturnValue = send(ClientSocket, (char*)&CSMonsterDeletePack, sizeof(CS_MONSTER_DELETE_PACKET), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("send() CS_MONSTER_DELETE_PACKET");
+            }
+
+            EnterCriticalSection(&ThreadSection);
+            DeleteMonsterList.clear();
+            LeaveCriticalSection(&ThreadSection);
+        }
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -128,7 +154,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             SC_INFO_PACKET SCInfoPack{};
             ReturnValue = recv(ClientSocket, (char*)&SCInfoPack, sizeof(SC_INFO_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
-                err_quit("recv() SC_LOBBY_PACKET");
+                err_quit("recv() SC_INFO_PACKET");
 
             EnterCriticalSection(&ThreadSection);
 
@@ -153,7 +179,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             int SendPacketType = PACKET_TYPE_ENTER;
             ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
             if (ReturnValue == SOCKET_ERROR)
-                err_quit("send() CS_LOBBY_PACKET");
+                err_quit("send() SendPacketType");
 
             CS_INFO_PACKET CSInfoPack{};
             strcpy(CSInfoPack.PlayerTag, PlayerTag.c_str());
@@ -161,7 +187,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
             ReturnValue = send(ClientSocket, (char*)&CSInfoPack, sizeof(CS_INFO_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
-                err_quit("send() CS_LOBBY_PACKET");
+                err_quit("send() CS_INFO_PACKET");
         }
 
 //////////////////////////////////////////////////////////////////////
@@ -172,7 +198,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             SC_PLAYER_PACKET SCPlayerPack{};
             ReturnValue = recv(ClientSocket, (char*)&SCPlayerPack, sizeof(SC_PLAYER_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
-                err_quit("recv() SC_LOBBY_PACKET");
+                err_quit("recv() SC_PLAYER_PACKET");
 
             CS_PLAYER_PACKET CSPlayerPack{};
 
@@ -193,11 +219,11 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             SC_MONSTER_ADD_PACKET SCMonsterAddPack{};
             ReturnValue = recv(ClientSocket, (char*)&SCMonsterAddPack, sizeof(SC_MONSTER_ADD_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
-                err_quit("recv() SC_LOBBY_PACKET");
+                err_quit("recv() SC_MONSTER_ADD_PACKET");
 
             // 몬스터 추가 패킷을 받으면 클라이언트에서 몬스터를 추가한다
             EnterCriticalSection(&ThreadSection);
-            scene.AddObject(new RegularMonster(SCMonsterAddPack.AddDir, SCMonsterAddPack.ID, (std::string)SCMonsterAddPack.TrackTag), "regular", LAYER_2);
+            scene.AddObject(new RegularMonster(SCMonsterAddPack.AddDir, SCMonsterAddPack.ID, (std::string)SCMonsterAddPack.TrackTag), "monster", LAYER_2);
             LeaveCriticalSection(&ThreadSection);
         }
 
@@ -206,14 +232,17 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             SC_MONSTER_ADD_PACKET SCMonsterDeletePack{};
             ReturnValue = recv(ClientSocket, (char*)&SCMonsterDeletePack, sizeof(SC_MONSTER_DELETE_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
-                err_quit("recv() SC_LOBBY_PACKET");
+                err_quit("recv() SC_MONSTER_DELETE_PACKET");
+
+            std::cout << "Get ID: " << SCMonsterDeletePack.ID << std::endl;
 
             // 해당하는 아이디를 가지는 몬스터가 있으면 삭제한다
             EnterCriticalSection(&ThreadSection);
-            auto Range = scene.EqualRange("regular");
-            for (auto It = Range.First; It != Range.End; It++)
+            auto Range = scene.EqualRange("monster");
+            for (auto It = Range.First; It != Range.End; It++) {
                 if (It->second->GetID() == SCMonsterDeletePack.ID)
                     scene.DeleteObject(It->second);
+            }
             LeaveCriticalSection(&ThreadSection);
         }
     }
