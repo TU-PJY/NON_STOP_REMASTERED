@@ -229,10 +229,12 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
         // 몬스터 삭제
         if (RecvPackType == PACKET_TYPE_MONSTER_DELETE) {
-            SC_MONSTER_ADD_PACKET SCMonsterDeletePack{};
+            SC_MONSTER_DELETE_PACKET SCMonsterDeletePack{};
             ReturnValue = recv(ClientSocket, (char*)&SCMonsterDeletePack, sizeof(SC_MONSTER_DELETE_PACKET), 0);
             if (ReturnValue == SOCKET_ERROR)
                 err_quit("recv() SC_MONSTER_DELETE_PACKET");
+
+            std::cout << "Get ID: " << SCMonsterDeletePack.ID << std::endl;
 
             // 해당하는 아이디를 가지는 몬스터가 있으면 삭제한다
             EnterCriticalSection(&ThreadSection);
