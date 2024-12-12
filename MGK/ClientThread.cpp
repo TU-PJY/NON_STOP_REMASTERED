@@ -178,10 +178,8 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                     err_quit("send() SendPacketType");
 
                 CS_INFO_PACKET CSInfoPack{};
-                EnterCriticalSection(&ThreadSection);
                 strcpy(CSInfoPack.PlayerTag, PlayerTag.c_str());
                 strcpy(CSInfoPack.GunType, PlayerGunType.c_str());
-                LeaveCriticalSection(&ThreadSection);
 
                 ReturnValue = send(ClientSocket, (char*)&CSInfoPack, sizeof(CS_INFO_PACKET), 0);
                 if (ReturnValue == SOCKET_ERROR)

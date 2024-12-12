@@ -130,8 +130,12 @@ public:
 		// 30초간 아무런 변화가 없을 시 플레이어가 없는 것으로 간주하고 scene에서 삭제한다.
 		KickTimer.Update(FT);
 
-		if (KickTimer.Sec() >= 30) 
+		if (KickTimer.Sec() >= 30) {
+			auto It = std::find(begin(ConnectedPlayer), end(ConnectedPlayer), Tag);
+			if (It != end(ConnectedPlayer))
+				ConnectedPlayer.erase(It);
 			scene.DeleteObject(this);
+		}
 		
 		// 조작이 감지되면 타이머가 초기화 된다.
 		if (PrevPosition != Position) {
@@ -218,6 +222,6 @@ public:
 		// 플레이어 닉네임 표시
 		Line.SetColor(0.0, 0.0, 0.0);
 		Line.Draw(Position.x - 0.15, Position.y + 0.27, Position.x + 0.15, Position.y + 0.27, 0.1, 0.3);
-		Text.Render(Position.x, Position.y + 0.25, 0.1, 1.0, L"%ls", ToWstr(PlayerTag));
+		Text.Render(Position.x, Position.y + 0.25, 0.1, 1.0, L"%ls", ToWstr(Tag));
 	}
 };
