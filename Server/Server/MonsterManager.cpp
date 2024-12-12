@@ -9,7 +9,7 @@ std::random_device rd;
 std::uniform_int_distribution uid {0, 1};
 
 float GenTimer;
-float GenInterval = 3.0;
+float GenInterval = 2.0;
 float DeltaTime;
 
 int MonsterID = 1;
@@ -48,7 +48,7 @@ DWORD WINAPI MonsterThread(LPVOID lpParam) {
 
                 ++MonsterID;
 
-              //  std::cout << "Added Monster ID: " << MonsterID << " Dir: " << RandomDir << std::endl;
+                std::cout << "Added Monster ID: " << MonsterID << " Dir: " << RandomDir << std::endl;
                 GenTimer = 0.0;
             }
         }

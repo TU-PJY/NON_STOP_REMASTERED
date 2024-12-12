@@ -6,6 +6,8 @@
 #include "OtherPlayer.h"
 #include "Regular.h"
 
+#include <chrono>
+
 // 클라이언트 스레드
 DWORD WINAPI ClientThread(LPVOID lpParam) {
     int ReturnValue{};
@@ -20,6 +22,14 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     SOCKET ClientSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (ClientSocket == INVALID_SOCKET)
         err_quit("socket()");
+
+    int flag = 1; // 비활성화하려면 1
+    if (setsockopt(ClientSocket, IPPROTO_TCP, TCP_NODELAY, (char*)&flag, sizeof(flag)) == SOCKET_ERROR) {
+        std::cerr << "setsockopt(TCP_NODELAY) failed\n";
+        closesocket(ClientSocket);
+        WSACleanup();
+        return 1;
+    }
 
     // connect()
     struct sockaddr_in ServerAddr;
@@ -65,6 +75,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
+    auto now = std::chrono::steady_clock::now();
+    auto lastSendTime = now;
+
     while (ConnectState) {
         EnterCriticalSection(&ThreadSection);
         bool LocalConnectState = ConnectState;
@@ -74,69 +87,75 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         if (!LocalConnectState)
             break;
 
+        //now = std::chrono::steady_clock::now();
+
         // 플레이 모드 패킷 타입 전송
         // 움직임 패킷 전송
-        int SendPacketType = PACKET_TYPE_PLAYER;
-        ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
-        if (ReturnValue == SOCKET_ERROR)
-            err_quit("recv() PakcetType");
+        //if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastSendTime).count() > 33) {
+            int SendPacketType = PACKET_TYPE_PLAYER;
+            ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
+            if (ReturnValue == SOCKET_ERROR)
+                err_quit("recv() PakcetType");
 
-        CS_PLAYER_PACKET CSPlayerPack{};
-        glm::vec2 SendPosition{};
-        int SendLookDir{};
-        GLfloat SendGunRotation{};
-        GLfloat SendRecoilPosition{};
-        int SendHP{};
-            
-        // 자신의 정보를 타 클라이언트에 전달한다
-        EnterCriticalSection(&ThreadSection);
-        if (auto Player = scene.Find("player"); Player) {
-            strcpy(CSPlayerPack.PlayerTag, PlayerTag.c_str());
-            SendPosition = Player->GetPosition();
-            SendLookDir = Player->GetLookDir();
-            SendGunRotation = Player->GetGunRotation();
-            SendRecoilPosition = Player->GetRecoilPosition();
-            SendHP = Player->GetHP();
-        }
-        LeaveCriticalSection(&ThreadSection);
+            CS_PLAYER_PACKET CSPlayerPack{};
+            glm::vec2 SendPosition{};
+            int SendLookDir{};
+            GLfloat SendGunRotation{};
+            GLfloat SendRecoilPosition{};
+            int SendHP{};
 
-        CSPlayerPack.x = SendPosition.x;
-        CSPlayerPack.y = SendPosition.y;
-        CSPlayerPack.LookDir = SendLookDir;
-        CSPlayerPack.GunRotation = SendGunRotation;
-        CSPlayerPack.RecoilPosition = SendRecoilPosition;
-        CSPlayerPack.HP = SendHP;
-
-        ReturnValue = send(ClientSocket, (char*)&CSPlayerPack, sizeof(CS_PLAYER_PACKET), 0);
-        if (ReturnValue == SOCKET_ERROR)
-            err_quit("send() CS_PLAYER_PACKET");
-        
-
-        // 몬스터 삭제 동기화
-        EnterCriticalSection(&ThreadSection);
-        auto LocalList = DeleteMonsterList;
-        LeaveCriticalSection(&ThreadSection);
-
-        if (!LocalList.empty()) {
-            int SendPacketType = PACKET_TYPE_MONSTER_DELETE;
-
-            for (auto & L : LocalList) {
-                ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
-                if (ReturnValue == SOCKET_ERROR)
-                    err_quit("recv() SendPacketType");
-
-                CS_MONSTER_DELETE_PACKET CSMonsterDeletePack{};
-                CSMonsterDeletePack.ID = L;
-
-                ReturnValue = send(ClientSocket, (char*)&CSMonsterDeletePack, sizeof(CS_MONSTER_DELETE_PACKET), 0);
-                if (ReturnValue == SOCKET_ERROR)
-                    err_quit("send() CS_MONSTER_DELETE_PACKET");
-            }
-
+            // 자신의 정보를 타 클라이언트에 전달한다
             EnterCriticalSection(&ThreadSection);
-            DeleteMonsterList.clear();
+            if (auto Player = scene.Find("player"); Player) {
+                strcpy(CSPlayerPack.PlayerTag, PlayerTag.c_str());
+                SendPosition = Player->GetPosition();
+                SendLookDir = Player->GetLookDir();
+                SendGunRotation = Player->GetGunRotation();
+                SendRecoilPosition = Player->GetRecoilPosition();
+                SendHP = Player->GetHP();
+            }
             LeaveCriticalSection(&ThreadSection);
-        }
+
+            CSPlayerPack.x = SendPosition.x;
+            CSPlayerPack.y = SendPosition.y;
+            CSPlayerPack.LookDir = SendLookDir;
+            CSPlayerPack.GunRotation = SendGunRotation;
+            CSPlayerPack.RecoilPosition = SendRecoilPosition;
+            CSPlayerPack.HP = SendHP;
+
+            ReturnValue = send(ClientSocket, (char*)&CSPlayerPack, sizeof(CS_PLAYER_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR)
+                err_quit("send() CS_PLAYER_PACKET");
+
+           // lastSendTime = now;
+     //   }
+
+
+            // 몬스터 삭제 동기화
+            EnterCriticalSection(&ThreadSection);
+            auto LocalList = DeleteMonsterList;
+            LeaveCriticalSection(&ThreadSection);
+
+            if (!LocalList.empty()) {
+                int SendPacketType = PACKET_TYPE_MONSTER_DELETE;
+
+                for (auto& L : LocalList) {
+                    ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
+                    if (ReturnValue == SOCKET_ERROR)
+                        err_quit("recv() SendPacketType");
+
+                    CS_MONSTER_DELETE_PACKET CSMonsterDeletePack{};
+                    CSMonsterDeletePack.ID = L;
+
+                    ReturnValue = send(ClientSocket, (char*)&CSMonsterDeletePack, sizeof(CS_MONSTER_DELETE_PACKET), 0);
+                    if (ReturnValue == SOCKET_ERROR)
+                        err_quit("send() CS_MONSTER_DELETE_PACKET");
+                }
+
+                EnterCriticalSection(&ThreadSection);
+                DeleteMonsterList.clear();
+                LeaveCriticalSection(&ThreadSection);
+            }
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////

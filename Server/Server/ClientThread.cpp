@@ -25,6 +25,14 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     ClientAddr = ThisClient->ClientAddr;
     inet_ntop(AF_INET, &ClientAddr.sin_addr, ThisClient->Addr, sizeof(ThisClient->Addr));
 
+    int flag = 1; // 비활성화하려면 1
+    if (setsockopt(ClientSocket, IPPROTO_TCP, TCP_NODELAY, (char*)&flag, sizeof(flag)) == SOCKET_ERROR) {
+        std::cerr << "setsockopt(TCP_NODELAY) failed\n";
+        closesocket(ClientSocket);
+        WSACleanup();
+        return 1;
+    }
+
     while (ConnectState) {
         // 클라이언트로부터 패킷 타입을 먼저 받는다
         ReturnValue = recv(ClientSocket, (char*)&RecvPackType, sizeof(uint8_t), 0);
@@ -57,7 +65,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                 }
                 if (It == end(NameList)) {
                     Duplicated = false;
-                    NameList.emplace_back((std::string)CSInfoPack.PlayerTag);
+                    NameList.push_back((std::string)CSInfoPack.PlayerTag);
                 }
             }
             LeaveCriticalSection(&ThreadSection);
