@@ -7,6 +7,7 @@ enum PacketTypeEnum {
 	PACKET_TYPE_ENTER, // 로비 패킷
 	PACKET_TYPE_PLAYER,
 	PACKET_TYPE_MONSTER_ADD,
+	PACKET_TYPE_MONSTER_DAMAGE, // 몬스터에게 가한 대미지
 	PACKET_TYPE_MONSTER_DELETE
 };
 
@@ -81,4 +82,5 @@ typedef struct {
 	SC_PLAYER_PACKET SCPlayerPack;
 	SC_MONSTER_ADD_PACKET SCMonsterAddPack;
 	SC_MONSTER_DELETE_PACKET SCMonsterDeletePack;
+	SC_MONSTER_DAMAGE_PACKET SCMonsterDamagePack;
 } InputPacketInfo;

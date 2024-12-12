@@ -49,19 +49,25 @@ public:
 		// 범위 내에 있는 모든 오브젝트의 AABB 충돌 검사를 통해 대미지 부여 여부를 결정한다.
 		for (auto It = MonsterRange.First; It != MonsterRange.End; ++It) {
 			if (It->second->GetAABB().CheckCollisionPoint(TargetPoint.x, TargetPoint.y)) {
+				int Damage{};
 
 				// 플레이어의 총에 따라 대미지가 다르게 부여된다.
 				if (PlayerGunType == "SCAR_H")
-					It->second->GiveDamage(25);
+					Damage = 25;
 
 				else if(PlayerGunType == "M16")
-					It->second->GiveDamage(18);
+					Damage = 18;
 
 				else if(PlayerGunType == "MP44")
-					It->second->GiveDamage(35);
+					Damage = 35;
 
 				else if (PlayerGunType == "MG42")
-					It->second->GiveDamage(10);
+					Damage = 10;
+
+				It->second->GiveDamage(Damage);
+
+				// 대미지를 받은 몬스터 리스트에 아이디 및 대미지 추가 
+				DamageMonsterList.push_back({ It->second->GetID(), Damage });
 			}
 		}
 	}

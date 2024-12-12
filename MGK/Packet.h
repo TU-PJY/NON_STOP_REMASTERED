@@ -8,6 +8,7 @@ enum PacketTypeEnum {
 	PACKET_TYPE_ENTER, // 로비 패킷
 	PACKET_TYPE_PLAYER, // 플레이어 움직임
 	PACKET_TYPE_MONSTER_ADD, // 몬스터 추가
+	PACKET_TYPE_MONSTER_DAMAGE, // 몬스터에게 가한 대미지
 	PACKET_TYPE_MONSTER_DELETE // 몬스터 제거
 };
 

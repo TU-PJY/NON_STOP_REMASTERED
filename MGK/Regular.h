@@ -31,6 +31,9 @@ private:
 	// 추적대상 닉네임
 	std::string TrackTag{};
 
+	
+	LineBrush Line{};
+
 public:
 	AABB GetAABB() {
 		return aabb;
@@ -129,5 +132,11 @@ public:
 
 		Render(RegularMonsterImage);
 		aabb.Render();
+
+		// 몬스터 체력 표시
+		Line.SetColor(0.0, 0.0, 0.0);
+		Line.Draw(Position.x - 0.15 - 0.025, Position.y + 0.2, Position.x + 0.15 + 0.025, Position.y + 0.2, 0.05, 1.0);
+		Line.SetColor(0.0, 0.6, 0.0);
+		Line.Draw(Position.x - 0.145 - 0.025, Position.y + 0.2, Position.x - 0.145 + (0.29 + 0.025) * ((float)HP / 100.0), Position.y + 0.2, 0.03, 1.0);
 	}
 };

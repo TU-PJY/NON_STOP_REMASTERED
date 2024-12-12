@@ -39,6 +39,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         if (ReturnValue == SOCKET_ERROR)
             break;
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
         // 플레이어 입장
         if (RecvPackType == PACKET_TYPE_ENTER) {
             CS_INFO_PACKET CSInfoPack{};
@@ -71,6 +74,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             ClientPacketQueue.push(InputPackData);
         }
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
         // 플레이어 움직임
         if (RecvPackType == PACKET_TYPE_PLAYER) {
             CS_PLAYER_PACKET CSPlayerPack{};
@@ -92,6 +98,25 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
 
             ClientPacketQueue.push(InputPackData);
         }
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+        // 타 클라이언트에서 몬스터 타격 이벤트가 발생한 경우 나머지 클라에서도 해당 몬스터를 삭제하도록 한다
+        if (RecvPackType == PACKET_TYPE_MONSTER_DAMAGE) {
+            CS_MONSTER_DAMAGE_PACKET CSMonsterDamagePack{};
+            ReturnValue = recv(ClientSocket, (char*)&CSMonsterDamagePack, sizeof(CS_MONSTER_DAMAGE_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR)
+                ConnectState = false;
+
+            InputPacketInfo InputPackData{};
+            InputPackData.SCMonsterDamagePack.ID = CSMonsterDamagePack.ID;
+            InputPackData.SCMonsterDamagePack.Damage = CSMonsterDamagePack.Damage;
+            InputPackData.PacketType = RecvPackType;
+            InputPackData.Client = ThisClient;
+
+            ClientPacketQueue.push(InputPackData);
+        }
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
         // 타 클라이언트에서 몬스터 삭제 이벤트가 발생한 경우 나머지 클라에서도 해당 몬스터를 삭제하도록 한다
         if (RecvPackType == PACKET_TYPE_MONSTER_DELETE) {

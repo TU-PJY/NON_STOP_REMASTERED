@@ -122,33 +122,62 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         if (ReturnValue == SOCKET_ERROR)
             err_quit("send() CS_PLAYER_PACKET");
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+        // 몬스터 대미지 동기화
+        EnterCriticalSection(&ThreadSection);
+        auto LocalDamageList = DamageMonsterList;
+        LeaveCriticalSection(&ThreadSection);
 
-            // 몬스터 삭제 동기화
-            EnterCriticalSection(&ThreadSection);
-            auto LocalList = DeleteMonsterList;
-            LeaveCriticalSection(&ThreadSection);
+        if (!LocalDamageList.empty()) {
+            int SendPacketType = PACKET_TYPE_MONSTER_DAMAGE;
 
-            if (!LocalList.empty()) {
-                int SendPacketType = PACKET_TYPE_MONSTER_DELETE;
+            for (auto const& L : LocalDamageList) {
+                ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("recv() SendPacketType");
 
-                for (auto& L : LocalList) {
-                    ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
-                    if (ReturnValue == SOCKET_ERROR)
-                        err_quit("recv() SendPacketType");
+                CS_MONSTER_DAMAGE_PACKET CSMonsterDamagePack{};
+                CSMonsterDamagePack.ID = L.ID;
+                CSMonsterDamagePack.Damage = L.Damage;
 
-                    CS_MONSTER_DELETE_PACKET CSMonsterDeletePack{};
-                    CSMonsterDeletePack.ID = L;
-
-                    ReturnValue = send(ClientSocket, (char*)&CSMonsterDeletePack, sizeof(CS_MONSTER_DELETE_PACKET), 0);
-                    if (ReturnValue == SOCKET_ERROR)
-                        err_quit("send() CS_MONSTER_DELETE_PACKET");
-                }
-
-                EnterCriticalSection(&ThreadSection);
-                DeleteMonsterList.clear();
-                LeaveCriticalSection(&ThreadSection);
+                ReturnValue = send(ClientSocket, (char*)&CSMonsterDamagePack, sizeof(CS_MONSTER_DAMAGE_PACKET), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("send() CS_MONSTER_DELETE_PACKET");
             }
 
+            EnterCriticalSection(&ThreadSection);
+            DamageMonsterList.clear();
+            LeaveCriticalSection(&ThreadSection);
+        }
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+        // 몬스터 삭제 동기화
+        EnterCriticalSection(&ThreadSection);
+        auto LocalDeadList = DeleteMonsterList;
+        LeaveCriticalSection(&ThreadSection);
+
+        if (!LocalDeadList.empty()) {
+            int SendPacketType = PACKET_TYPE_MONSTER_DELETE;
+
+            for (auto& L : LocalDeadList) {
+                ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("recv() SendPacketType");
+
+                CS_MONSTER_DELETE_PACKET CSMonsterDeletePack{};
+                CSMonsterDeletePack.ID = L;
+
+                ReturnValue = send(ClientSocket, (char*)&CSMonsterDeletePack, sizeof(CS_MONSTER_DELETE_PACKET), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("send() CS_MONSTER_DELETE_PACKET");
+            }
+
+            EnterCriticalSection(&ThreadSection);
+            DeleteMonsterList.clear();
+            LeaveCriticalSection(&ThreadSection);
+        }
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
@@ -234,6 +263,9 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             LeaveCriticalSection(&ThreadSection);
         }
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
         // 몬스터 추가
         if (RecvPackType == PACKET_TYPE_MONSTER_ADD) {
             SC_MONSTER_ADD_PACKET SCMonsterAddPack{};
@@ -246,6 +278,27 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             scene.AddObject(new RegularMonster(SCMonsterAddPack.AddDir, SCMonsterAddPack.ID, (std::string)SCMonsterAddPack.TrackTag), "monster", LAYER_2);
             LeaveCriticalSection(&ThreadSection);
         }
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+        // 몬스터 대미지
+        if (RecvPackType == PACKET_TYPE_MONSTER_DAMAGE) {
+            SC_MONSTER_DAMAGE_PACKET SCMonsterDamagePack{};
+            ReturnValue = recv(ClientSocket, (char*)&SCMonsterDamagePack, sizeof(SC_MONSTER_DAMAGE_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR)
+                err_quit("recv() SC_MONSTER_DAMAGE_PACKET");
+
+            // 해당하는 아이디를 가지는 몬스터가 있으면 대미지를 가한다.
+            EnterCriticalSection(&ThreadSection);
+            auto Range = scene.EqualRange("monster");
+            for (auto It = Range.First; It != Range.End; It++) {
+                if (It->second->GetID() == SCMonsterDamagePack.ID)
+                    It->second->GiveDamage(SCMonsterDamagePack.Damage);
+            }
+            LeaveCriticalSection(&ThreadSection);
+        }
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
         // 몬스터 삭제
         if (RecvPackType == PACKET_TYPE_MONSTER_DELETE) {

@@ -49,3 +49,5 @@ std::string PlayerTag;
 bool PlayerReadyState;
 
 std::vector<int> DeleteMonsterList;
+
+std::vector<DamageInfo> DamageMonsterList;

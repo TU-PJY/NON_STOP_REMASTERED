@@ -46,5 +46,14 @@ extern std::string PlayerGunType;
 extern std::string PlayerTag;
 extern bool PlayerReadyState;
 
+// 대미지 입은 몬스터 ID및 대미지
+typedef struct {
+    int ID;
+    int Damage;
+}DamageInfo;
+
 // 죽은 몬스터 리스트
 extern std::vector<int> DeleteMonsterList;
+
+// 대미지 입은 몬스터 리스트
+extern std::vector<DamageInfo> DamageMonsterList;
