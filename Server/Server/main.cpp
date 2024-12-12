@@ -48,12 +48,12 @@ int main(int argc, char* argv[]) {
     else
         CloseHandle(Thread);
 
-    // 몬스터 추가 스레드 생성
-    HANDLE MThread = CreateThread(NULL, 0, MonsterThread, NULL, 0, NULL);
-    if (!MThread)
-        std::println("Failed to create monster thread.");
-    else
-        CloseHandle(MThread);
+    //// 몬스터 추가 스레드 생성
+    //HANDLE MThread = CreateThread(NULL, 0, MonsterThread, NULL, 0, NULL);
+    //if (!MThread)
+    //    std::println("Failed to create monster thread.");
+    //else
+    //    CloseHandle(MThread);
 
     int ID = 0;
     NumConnected = 0;

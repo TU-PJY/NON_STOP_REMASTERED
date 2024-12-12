@@ -28,7 +28,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
     while (ConnectState) {
         // 클라이언트로부터 패킷 타입을 먼저 받는다
         ReturnValue = recv(ClientSocket, (char*)&RecvPackType, sizeof(uint8_t), 0);
-     //   std::println("RECV {}:", RecvPackType);
         if (ReturnValue == SOCKET_ERROR)
             break;
 
@@ -57,8 +56,8 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
                     break;
                 }
                 if (It == end(NameList)) {
-                    NameList.emplace_back((std::string)CSInfoPack.PlayerTag);
                     Duplicated = false;
+                    NameList.emplace_back((std::string)CSInfoPack.PlayerTag);
                 }
             }
             LeaveCriticalSection(&ThreadSection);
