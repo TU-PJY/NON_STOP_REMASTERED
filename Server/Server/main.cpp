@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
     if (!MThread)
         std::println("Failed to create monster thread.");
     else
-        CloseHandle(Thread);
+        CloseHandle(MThread);
 
     int ID = 0;
     NumConnected = 0;
