@@ -49,13 +49,15 @@ void SendToMe(ClientInfo* Info, const char* PacketType, const char* Packet, int 
     LeaveCriticalSection(&ThreadSection);
 
     for (auto const& Client : Local) {
-        ReturnValue = send(Client->ClientSocket, PacketType, sizeof(uint8_t), 0);
-        if (ReturnValue == SOCKET_ERROR)
-            continue;
+        if (Client == Info) {
+            ReturnValue = send(Client->ClientSocket, PacketType, sizeof(uint8_t), 0);
+            if (ReturnValue == SOCKET_ERROR)
+                continue;
 
-        ReturnValue = send(Client->ClientSocket, Packet, Size, 0);
-        if (ReturnValue == SOCKET_ERROR)
-            continue;
+            ReturnValue = send(Client->ClientSocket, Packet, Size, 0);
+            if (ReturnValue == SOCKET_ERROR)
+                continue;
+        }
     }
 }
 

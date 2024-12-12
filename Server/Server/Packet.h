@@ -71,5 +71,4 @@ typedef struct {
 	SC_PLAYER_PACKET SCPlayerPack;
 	SC_MONSTER_ADD_PACKET SCMonsterAddPack;
 	SC_MONSTER_DELETE_PACKET SCMonsterDeletePack;
-
 } InputPacketInfo;

@@ -88,6 +88,8 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             if (ReturnValue == SOCKET_ERROR)
                 ConnectState = false;
 
+            std::cout << "GET ID: " << CSMonsterDeletePack.ID << std::endl;
+
             InputPacketInfo InputPackData{};
             InputPackData.SCMonsterDeletePack.ID = CSMonsterDeletePack.ID;
             InputPackData.PacketType = RecvPackType;

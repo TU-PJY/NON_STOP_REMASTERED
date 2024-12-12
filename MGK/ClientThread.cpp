@@ -234,8 +234,6 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             if (ReturnValue == SOCKET_ERROR)
                 err_quit("recv() SC_MONSTER_DELETE_PACKET");
 
-            std::cout << "Get ID: " << SCMonsterDeletePack.ID << std::endl;
-
             // 해당하는 아이디를 가지는 몬스터가 있으면 삭제한다
             EnterCriticalSection(&ThreadSection);
             auto Range = scene.EqualRange("monster");

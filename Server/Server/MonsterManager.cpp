@@ -8,9 +8,6 @@
 std::random_device rd;
 std::uniform_int_distribution uid {0, 1};
 
-
-std::vector<int> MonsterIDList;
-
 float GenTimer;
 float GenInterval = 2.0;
 float DeltaTime;
@@ -48,8 +45,6 @@ DWORD WINAPI MonsterThread(LPVOID lpParam) {
                 strcpy(InputPackInfo.SCMonsterAddPack.TrackTag, TrackTag.c_str());
 
                 ClientPacketQueue.push(InputPackInfo);
-
-                MonsterIDList.emplace_back(MonsterID);
 
                 ++MonsterID;
 
