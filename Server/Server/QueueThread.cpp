@@ -62,6 +62,10 @@ DWORD WINAPI ClientQueueThread(LPVOID lpParam) {
             case PACKET_TYPE_MONSTER_ADD:
                 SendToAll((char*)&InputPackInfo.PacketType, (char*)&InputPackInfo.SCMonsterAddPack, sizeof(SC_MONSTER_ADD_PACKET));
                 break;
+
+            case PACKET_TYPE_MONSTER_DELETE:
+                SendToOther(InputPackInfo.Client, (char*)&InputPackInfo.PacketType, (char*)&InputPackInfo.SCMonsterDeletePack, sizeof(SC_MONSTER_DELETE_PACKET));
+                break;
             }
         }
     }

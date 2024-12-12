@@ -44,7 +44,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         }
 
         // 플레이어 움직임
-        else if (RecvPackType == PACKET_TYPE_PLAYER) {
+        if (RecvPackType == PACKET_TYPE_PLAYER) {
             CS_PLAYER_PACKET CSPlayerPack{};
 
             ReturnValue = recv(ClientSocket, (char*)&CSPlayerPack, sizeof(CS_PLAYER_PACKET), 0);
@@ -61,6 +61,22 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             InputPackData.SCPlayerPack.HP = CSPlayerPack.HP;
             InputPackData.PacketType = RecvPackType;
             InputPackData.Client = ThisClient;
+
+            ClientPacketQueue.push(InputPackData);
+        }
+
+        // 타 클라이언트에서 몬스터 삭제 이벤트가 발생한 경우 나머지 클라에서도 해당 몬스터를 삭제하도록 한다
+        if (RecvPackType == PACKET_TYPE_MONSTER_DELETE) {
+            CS_MONSTER_DELETE_PACKET CSMonsterDeletePack{};
+
+            ReturnValue = recv(ClientSocket, (char*)&CSMonsterDeletePack, sizeof(CS_MONSTER_DELETE_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR)
+                ConnectState = false;
+
+            InputPacketInfo InputPackData{};
+            InputPackData.SCMonsterDeletePack.ID = CSMonsterDeletePack.ID;
+            InputPackData.Client = ThisClient;
+            InputPackData.PacketType = RecvPackType;
 
             ClientPacketQueue.push(InputPackData);
         }

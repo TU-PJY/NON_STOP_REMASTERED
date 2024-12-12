@@ -115,6 +115,30 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
         ReturnValue = send(ClientSocket, (char*)&CSPlayerPack, sizeof(CS_PLAYER_PACKET), 0);
         if (ReturnValue == SOCKET_ERROR)
             err_quit("send() CS_LOBBY_PACKET");
+
+
+
+        // 죽은 몬스터가 있을 경우 타 클라이언트에서 해당 몬스터를 삭제하도록 한다
+        EnterCriticalSection(&ThreadSection);
+        auto LocalDeleteMonsterList = DeleteMonsterList;
+        LeaveCriticalSection(&ThreadSection);
+
+        if (!LocalDeleteMonsterList.empty()) {
+            for (auto const& D : LocalDeleteMonsterList) {
+                int SendPacketType = PACKET_TYPE_MONSTER_DELETE;
+                ReturnValue = send(ClientSocket, (char*)&SendPacketType, sizeof(uint8_t), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("recv() PakcetType");
+
+                CS_MONSTER_DELETE_PACKET CSMonsterDeletePack{};
+                CSMonsterDeletePack.ID = D;
+                ReturnValue = send(ClientSocket, (char*)&CSMonsterDeletePack, sizeof(CS_MONSTER_DELETE_PACKET), 0);
+                if (ReturnValue == SOCKET_ERROR)
+                    err_quit("send() CS_MONSTER_DELETE_PACKET");
+            }
+
+            LocalDeleteMonsterList.clear();
+        }
         
 
 //////////////////////////////////////////////////////////////////////
@@ -205,6 +229,24 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             // 몬스터 추가 패킷을 받으면 클라이언트에서 몬스터를 추가한다
             EnterCriticalSection(&ThreadSection);
             scene.AddObject(new RegularMonster(SCMonsterAddPack.AddDir, SCMonsterAddPack.ID), "regular", LAYER_2);
+            LeaveCriticalSection(&ThreadSection);
+        }
+
+        // 몬스터 삭제
+        if (RecvPackType == PACKET_TYPE_MONSTER_DELETE) {
+            SC_MONSTER_ADD_PACKET SCMonsterDeletePack{};
+            ReturnValue = recv(ClientSocket, (char*)&SCMonsterDeletePack, sizeof(SC_MONSTER_DELETE_PACKET), 0);
+            if (ReturnValue == SOCKET_ERROR)
+                err_quit("recv() SC_LOBBY_PACKET");
+
+            EnterCriticalSection(&ThreadSection);
+            ObjectRange Range = scene.EqualRange("regular");
+
+            // 동일 아이디를 가지는 몬스터가 있을 경우 해당 몬스터를 삭제한다.
+            for (auto It = Range.First; It != Range.End; ++It) {
+                if (It->second->GetID() == SCMonsterDeletePack.ID)
+                    scene.DeleteObject(It->second);
+            }
             LeaveCriticalSection(&ThreadSection);
         }
     }

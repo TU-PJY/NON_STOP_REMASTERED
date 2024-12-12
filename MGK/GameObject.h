@@ -120,6 +120,7 @@ public:
 	virtual void SetShootState(bool Value) {  }
 	virtual int GetHP() { return{}; }
 	virtual void SetHP(int Value) { }
+	virtual int GetID() { return{}; }
 
 private:
 	void PrepareRender(); 

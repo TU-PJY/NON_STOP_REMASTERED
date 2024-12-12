@@ -47,3 +47,5 @@ bool ConnectState;
 std::string PlayerGunType;
 std::string PlayerTag;
 bool PlayerReadyState;
+
+std::vector<int> DeleteMonsterList;

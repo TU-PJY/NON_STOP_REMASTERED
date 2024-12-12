@@ -45,3 +45,6 @@ extern bool ConnectState;
 extern std::string PlayerGunType;
 extern std::string PlayerTag;
 extern bool PlayerReadyState;
+
+// 죽은 몬스터 리스트
+extern std::vector<int> DeleteMonsterList;

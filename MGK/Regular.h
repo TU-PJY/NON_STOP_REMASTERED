@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Scene.h"
+#include "TCP_Header.h"
 
 class RegularMonster : public GameObject {
 private:
@@ -37,6 +38,10 @@ public:
 		RedColor = 1.0;
 	}
 
+	int GetID() {
+		return ID;
+	}
+
 	RegularMonster(int GenDir, int IDValue) {
 		if (GenDir == 0)
 			Position.x = -8.0;
@@ -51,8 +56,11 @@ public:
 
 	void UpdateFunc(float FT) {
 		// 체력이 0이 되면 스스로 삭제
-		if (HP <= 0)
+		if (HP <= 0) {
+			// 삭제할 몬스터 목록에 자신의 ID 추가
+			DeleteMonsterList.emplace_back(ID);
 			scene.DeleteObject(this);
+		}
 
 		if (auto player = scene.Find("player"); player) {
 			glm::vec2 PlayerPosition = player->GetPosition();

@@ -6,7 +6,8 @@ enum PacketTypeEnum {
 	PACKET_TYPE_NONE, // 타입 없음
 	PACKET_TYPE_ENTER, // 로비 패킷
 	PACKET_TYPE_PLAYER,
-	PACKET_TYPE_MONSTER_ADD
+	PACKET_TYPE_MONSTER_ADD,
+	PACKET_TYPE_MONSTER_DELETE
 };
 
 ////////////////////////// 패킷 구조체 모음
@@ -47,6 +48,14 @@ typedef struct { // 몬스터 추가
 	int ID; // 아이디
 }SC_MONSTER_ADD_PACKET;
 
+typedef struct { // 죽은 몬스터 아이디 (클라 -> 서버)
+	int ID;
+}CS_MONSTER_DELETE_PACKET;
+
+typedef struct { // 죽은 몬스터 아이디 (서버 -> 클라)
+	int ID;
+}SC_MONSTER_DELETE_PACKET;
+
 #pragma pack(pop)
 
 // 큐에서 처리하는 서버 -> 클라이언트 구조체
@@ -59,4 +68,6 @@ typedef struct {
 	SC_INFO_PACKET SCInfoPack;
 	SC_PLAYER_PACKET SCPlayerPack;
 	SC_MONSTER_ADD_PACKET SCMonsterAddPack;
+	SC_MONSTER_DELETE_PACKET SCMonsterDeletePack;
+
 } InputPacketInfo;
