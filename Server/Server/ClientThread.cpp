@@ -45,19 +45,16 @@ DWORD WINAPI ClientThread(LPVOID lpParam) {
             InputPackData.PacketType = RecvPackType;
             InputPackData.Client = ThisClient;
 
+            std::cout << "Added Tag: " << CSInfoPack.PlayerTag << std::endl;
+
             // 접속한 플레이어의 닉네임을 추가한다.
             EnterCriticalSection(&ThreadSection);
             auto It = std::find(begin(NameList), end(NameList), (std::string)CSInfoPack.PlayerTag);
             if (It == end(NameList)) 
                 NameList.emplace_back((std::string)CSInfoPack.PlayerTag);
-            
             LeaveCriticalSection(&ThreadSection);
 
             ClientPacketQueue.push(InputPackData);
-
-            // 접속 시 자신의 닉네임을 부여받는다.
-           // if (!ThisTag.empty())
-               // ThisTag = (std::string)CSInfoPack.PlayerTag;
         }
 
         // 플레이어 움직임

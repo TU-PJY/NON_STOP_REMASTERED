@@ -19,47 +19,47 @@ DWORD WINAPI MonsterThread(LPVOID lpParam) {
     auto previousTime = std::chrono::high_resolution_clock::now();
 
     while (true) {
-        EnterCriticalSection(&ThreadSection);
-        int LocalConnectedPlayer = ConnectedClients.size();
-        LeaveCriticalSection(&ThreadSection);
+        //EnterCriticalSection(&ThreadSection);
+        //int LocalConnectedPlayer = ConnectedClients.size();
+        //LeaveCriticalSection(&ThreadSection);
 
-        if (LocalConnectedPlayer > 1) {
-            GenTimer += DeltaTime;
+        //if (LocalConnectedPlayer > 1) {
+        //    GenTimer += DeltaTime;
 
-            if (GenTimer >= GenInterval) {
-                std::uniform_int_distribution IndexUID{ 0, LocalConnectedPlayer - 1 };
+        //    if (GenTimer >= GenInterval) {
+        //        std::uniform_int_distribution IndexUID{ 0, LocalConnectedPlayer - 1 };
 
-                int RandomDir = uid(rd);
-                int RandomIndex = IndexUID(rd);
+        //        int RandomDir = uid(rd);
+        //        int RandomIndex = IndexUID(rd);
 
-                EnterCriticalSection(&ThreadSection);
-                auto LocalNameList = NameList;
-                LeaveCriticalSection(&ThreadSection);
+        //        EnterCriticalSection(&ThreadSection);
+        //        auto LocalNameList = NameList;
+        //        LeaveCriticalSection(&ThreadSection);
 
-                std::string TrackTag = LocalNameList[RandomIndex];
+        //        std::string TrackTag = LocalNameList[RandomIndex];
 
-                InputPacketInfo InputPackInfo{};
-                InputPackInfo.PacketType = PACKET_TYPE_MONSTER_ADD;
-                InputPackInfo.SCMonsterAddPack.AddDir = RandomDir;
-                InputPackInfo.SCMonsterAddPack.ID = MonsterID;
-                strcpy(InputPackInfo.SCMonsterAddPack.TrackTag, TrackTag.c_str());
+        //        InputPacketInfo InputPackInfo{};
+        //        InputPackInfo.PacketType = PACKET_TYPE_MONSTER_ADD;
+        //        InputPackInfo.SCMonsterAddPack.AddDir = RandomDir;
+        //        InputPackInfo.SCMonsterAddPack.ID = MonsterID;
+        //        strcpy(InputPackInfo.SCMonsterAddPack.TrackTag, TrackTag.c_str());
 
-                ClientPacketQueue.push(InputPackInfo);
+        //        ClientPacketQueue.push(InputPackInfo);
 
-                ++MonsterID;
+        //        ++MonsterID;
 
-                std::cout << "Added Monster ID: " << MonsterID << " Dir: " << RandomDir << std::endl;
-                GenTimer = 0.0;
-            }
-        }
+        //      //  std::cout << "Added Monster ID: " << MonsterID << " Dir: " << RandomDir << std::endl;
+        //        GenTimer = 0.0;
+        //    }
+        //}
 
-        // 현재 시간 측정
-        auto currentTime = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<float> deltaTime = currentTime - previousTime;
-        previousTime = currentTime; // 이전 시간을 갱신
+        //// 현재 시간 측정
+        //auto currentTime = std::chrono::high_resolution_clock::now();
+        //std::chrono::duration<float> deltaTime = currentTime - previousTime;
+        //previousTime = currentTime; // 이전 시간을 갱신
 
-        // DeltaTime 값
-        DeltaTime = deltaTime.count(); // DeltaTime을 초 단위로 변환
+        //// DeltaTime 값
+        //DeltaTime = deltaTime.count(); // DeltaTime을 초 단위로 변환
     }
 
     return 0;
